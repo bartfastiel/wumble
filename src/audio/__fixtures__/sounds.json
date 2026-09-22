@@ -1,0 +1,126 @@
+{
+ "epiano": {
+  "name": "E-Piano",
+  "type": "fm",
+  "ratio": 1,
+  "index": 2.4,
+  "gain": 0.5,
+  "decay": 0.9,
+  "sustain": 0.3,
+  "release": 0.25
+ },
+ "bell": {
+  "name": "Glocke",
+  "type": "fm",
+  "ratio": 3.5,
+  "index": 1.1,
+  "gain": 0.35,
+  "decay": 1.6,
+  "sustain": 0.15,
+  "release": 0.6
+ },
+ "organ": {
+  "name": "Orgel",
+  "type": "organ",
+  "gain": 0.22,
+  "release": 0.08
+ },
+ "softPad": {
+  "name": "Weiches Pad",
+  "type": "softPad",
+  "gain": 0.035,
+  "release": 0.35
+ },
+ "sineBass": {
+  "name": "Sinus-Bass",
+  "type": "sineBass",
+  "gain": 0.25,
+  "release": 0.3
+ },
+ "piano": {
+  "name": "Klavier",
+  "type": "sample",
+  "set": "piano",
+  "gain": 1.2,
+  "attack": 0.003,
+  "release": 0.35,
+  "wet": 0.8
+ },
+ "violin": {
+  "name": "Violine",
+  "type": "sample",
+  "set": "violin",
+  "gain": 1,
+  "attack": 0.008,
+  "release": 0.3,
+  "wet": 1.3
+ },
+ "strings": {
+  "name": "Streicher",
+  "type": "sample",
+  "set": "strings",
+  "gain": 0.45,
+  "attack": 0.008,
+  "release": 0.3,
+  "wet": 1.5
+ },
+ "doubleBass": {
+  "name": "Kontrabass",
+  "type": "sample",
+  "set": "doubleBass",
+  "gain": 0.9,
+  "attack": 0.008,
+  "release": 0.3,
+  "wet": 0.6
+ },
+ "churchOrgan": {
+  "name": "Kirchenorgel",
+  "type": "sample",
+  "set": "organ",
+  "gain": 1.2,
+  "attack": 0.005,
+  "release": 0.15,
+  "wet": 1,
+  "hall": "church"
+ },
+ "supersaw": {
+  "name": "Supersaw",
+  "type": "supersaw",
+  "gain": 0.11,
+  "attack": 0.01,
+  "cutoff": [
+   8000,
+   2000
+  ],
+  "sweep": 0.25,
+  "release": 0.25,
+  "wet": 0.8
+ },
+ "pad": {
+  "name": "Pad",
+  "type": "supersaw",
+  "gain": 0.04,
+  "attack": 0.4,
+  "cutoff": [
+   3000,
+   1200
+  ],
+  "sweep": 0.8,
+  "release": 0.6,
+  "wet": 1.4
+ },
+ "synthBass": {
+  "name": "Synth-Bass",
+  "type": "synthBass",
+  "gain": 0.22,
+  "release": 0.2,
+  "wet": 0.3
+ },
+ "pluck": {
+  "name": "Pluck",
+  "type": "pluck",
+  "gain": 1,
+  "release": 0.15,
+  "wet": 1
+ }
+}

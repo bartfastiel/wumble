@@ -1,0 +1,168 @@
+# Checks per pull request and per push to main. The job names are the required checks of the branch protection.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch: # a branch without a pull request: gh workflow run ci.yml --ref <branch>
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Upload coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: coverage/lcov.info
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npm run size
+      - run: npm run single-file
+      - name: Upload single file
+        uses: actions/upload-artifact@v7
+        with:
+          name: wumble.html
+          path: dist/wumble.html
+
+  e2e:
+    name: E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Determine Playwright version
+        id: playwright
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Cache browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
+      - name: Install browsers
+        run: npx playwright install --with-deps chromium webkit
+      - run: npm run e2e
+        env:
+          CI: true
+      - name: Upload e2e coverage
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-e2e
+          path: coverage/e2e/lcov.info
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+  # Runs only with SONAR_TOKEN (repository secret) – forks and Dependabot get no secrets, so it is skipped there.
+  sonar:
+    name: Sonar
+    needs: [test, e2e]
+    runs-on: ubuntu-latest
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      PROJECT_KEY: bartfastiel_wumble
+    steps:
+      - name: Skipped – SONAR_TOKEN missing
+        if: env.SONAR_TOKEN == ''
+        run: echo "::notice::SONAR_TOKEN not set – no Sonar analysis."
+      - uses: actions/checkout@v7
+        if: env.SONAR_TOKEN != ''
+        with:
+          fetch-depth: 0
+      - name: Download unit coverage
+        if: env.SONAR_TOKEN != ''
+        uses: actions/download-artifact@v8
+        with:
+          name: coverage
+          path: coverage
+      - name: Download e2e coverage
+        if: env.SONAR_TOKEN != ''
+        uses: actions/download-artifact@v8
+        with:
+          name: coverage-e2e
+          path: coverage/e2e
+      - name: Sonar analysis
+        if: env.SONAR_TOKEN != ''
+        uses: SonarSource/sonarqube-scan-action@v8
+      - name: Quality Gate
+        if: env.SONAR_TOKEN != '' && github.event_name == 'pull_request'
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5
+      # After the quality gate the analysis is available; the project is public, the token only serves as basic-auth user.
+      - name: Open issues on new code
+        if: env.SONAR_TOKEN != '' && github.event_name == 'pull_request'
+        env:
+          PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          response="$(curl -s --max-time 15 -u "${SONAR_TOKEN}:" \
+            "https://sonarcloud.io/api/issues/search?componentKeys=${PROJECT_KEY}&pullRequest=${PULL_REQUEST_NUMBER}&resolved=false&ps=100")"
+          total="$(printf '%s' "${response}" | jq -r '.total // empty')"
+          if [ -z "${total}" ]; then
+            echo "::error::Sonar response without issue count: ${response}"
+            exit 1
+          fi
+          if [ "${total}" != "0" ]; then
+            printf '%s' "${response}" | jq -r --arg key "${PROJECT_KEY}:" \
+              '.issues[] | (.component | sub("^" + $key; "")) as $file | if .line then "::error file=\($file),line=\(.line)::\(.rule) \(.message)" else "::error file=\($file)::\(.rule) \(.message)" end'
+            echo "::error::${total} open Sonar issue(s) on the new code of this pull request: https://sonarcloud.io/project/issues?id=${PROJECT_KEY}&pullRequest=${PULL_REQUEST_NUMBER}&resolved=false"
+            exit 1
+          fi

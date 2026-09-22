@@ -1,0 +1,83 @@
+{
+ "epiano": {
+  "name": "E-Piano",
+  "hint": "FM-Piano, weiches Pad, Sinus-Bass",
+  "melody": "epiano",
+  "chord": "softPad",
+  "bass": "sineBass"
+ },
+ "bell": {
+  "name": "Glocke",
+  "hint": "FM-Glocke, weiches Pad, Sinus-Bass",
+  "melody": "bell",
+  "chord": "softPad",
+  "bass": "sineBass"
+ },
+ "organ": {
+  "name": "Orgel",
+  "hint": "additive Orgel, weiches Pad, Sinus-Bass",
+  "melody": "organ",
+  "chord": "softPad",
+  "bass": "sineBass"
+ },
+ "piano": {
+  "name": "Klavier",
+  "hint": "Salamander-Flügel",
+  "melody": "piano",
+  "chord": [
+   "piano",
+   0.5
+  ],
+  "bass": [
+   "piano",
+   1.2
+  ]
+ },
+ "strings": {
+  "name": "Streicher",
+  "hint": "Solo-Violine, Sektion, Kontrabass",
+  "melody": "violin",
+  "chord": "strings",
+  "bass": "doubleBass"
+ },
+ "church": {
+  "name": "Kirchenorgel",
+  "hint": "Rode-Orgel mit Kirchenhall",
+  "melody": "churchOrgan",
+  "chord": [
+   "churchOrgan",
+   0.4
+  ],
+  "bass": [
+   "churchOrgan",
+   0.6
+  ]
+ },
+ "pop": {
+  "name": "Pop",
+  "hint": "Supersaw, Pad, Synth-Bass",
+  "melody": "supersaw",
+  "chord": "pad",
+  "bass": "synthBass"
+ },
+ "jazzTrio": {
+  "name": "Jazz-Trio",
+  "hint": "E-Piano, Flügel-Akkorde, Kontrabass",
+  "melody": "epiano",
+  "chord": [
+   "piano",
+   0.5
+  ],
+  "bass": "doubleBass"
+ },
+ "guitar": {
+  "name": "Gitarre",
+  "hint": "gezupfte Saiten (Karplus-Strong), Kontrabass",
+  "melody": "pluck",
+  "chord": [
+   "pluck",
+   0.2
+  ],
+  "bass": "doubleBass"
+ }
+}

@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "dist/relay",
+    "rootDir": "relay",
+    "lib": ["ES2022"],
+    "types": ["node"]
+  },
+  "include": ["relay/relay.ts"]
+}

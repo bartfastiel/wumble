@@ -1,0 +1,30 @@
+import './ui/styles.css';
+import { locale } from './i18n';
+import { WmApp } from './ui/wm-app';
+import { WmAudience } from './ui/wm-audience';
+import { WmCredits } from './ui/wm-credits';
+import { WmDone } from './ui/wm-done';
+import { WmField } from './ui/wm-field';
+import { WmHeader } from './ui/wm-header';
+import { WmHelp } from './ui/wm-help';
+import { WmLibrary } from './ui/wm-library';
+import { WmListener } from './ui/wm-listener';
+import { WmScan } from './ui/wm-scan';
+import { WmSettings } from './ui/wm-settings';
+import { exposeForTests } from './ui/test-hook';
+
+document.documentElement.lang = locale();
+customElements.define('wm-header', WmHeader);
+customElements.define('wm-field', WmField);
+customElements.define('wm-library', WmLibrary);
+customElements.define('wm-settings', WmSettings);
+customElements.define('wm-help', WmHelp);
+customElements.define('wm-scan', WmScan);
+customElements.define('wm-audience', WmAudience);
+customElements.define('wm-listener', WmListener);
+customElements.define('wm-done', WmDone);
+customElements.define('wm-credits', WmCredits);
+customElements.define('wm-app', WmApp);
+
+const root = document.querySelector('wm-app');
+if (root instanceof WmApp) exposeForTests(root);

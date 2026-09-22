@@ -1,0 +1,10480 @@
+{
+ "6/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "6/blues": [
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  }
+ ],
+ "6/rock": [
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": "♮"
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "6/techno": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "6/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "6/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "6/dorian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "6/phrygian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "6/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "6/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "6/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "6/wholeTone": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  }
+ ],
+ "6/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  }
+ ],
+ "5/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "5/blues": [
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": "♮"
+  }
+ ],
+ "5/rock": [
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": "♮"
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "5/techno": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "5/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "5/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "5/dorian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "5/phrygian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "5/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "5/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "5/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "5/wholeTone": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  }
+ ],
+ "5/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  }
+ ],
+ "4/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "4/blues": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  }
+ ],
+ "4/rock": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": "♮"
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  }
+ ],
+ "4/techno": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "4/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "4/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "4/dorian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "4/phrygian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "4/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♯"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♯"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "4/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "4/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "4/wholeTone": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  }
+ ],
+ "4/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♯"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♯"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  }
+ ],
+ "3/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "3/blues": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  }
+ ],
+ "3/rock": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  }
+ ],
+ "3/techno": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "3/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "3/pentatonic": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "3/dorian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "3/phrygian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "3/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♯"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♯"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "3/mixolydian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "3/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "3/wholeTone": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  }
+ ],
+ "3/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♯"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♯"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  }
+ ],
+ "2/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "2/blues": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "2/rock": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": "♮"
+  }
+ ],
+ "2/techno": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "2/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "2/pentatonic": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "2/dorian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "2/phrygian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "2/lydian": [
+  {
+   "step": -5,
+   "accidental": "♯"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♯"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♯"
+  }
+ ],
+ "2/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "2/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "2/wholeTone": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  }
+ ],
+ "2/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": "♯"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♯"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  }
+ ],
+ "1/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/blues": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  }
+ ],
+ "1/rock": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": "♮"
+  }
+ ],
+ "1/techno": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  }
+ ],
+ "1/dorian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/phrygian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♯"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♯"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "1/wholeTone": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  }
+ ],
+ "1/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♯"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♯"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": "♮"
+  }
+ ],
+ "0/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/blues": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  }
+ ],
+ "0/rock": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": "♭"
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "0/techno": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  }
+ ],
+ "0/dorian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/phrygian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♯"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": "♯"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "0/wholeTone": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 11,
+   "accidental": "♭"
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  }
+ ],
+ "0/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": "♯"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  }
+ ],
+ "-1/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-1/blues": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  }
+ ],
+ "-1/rock": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": "♭"
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "-1/techno": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-1/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-1/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "-1/dorian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-1/phrygian": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  }
+ ],
+ "-1/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-1/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-1/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-1/wholeTone": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  }
+ ],
+ "-1/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  }
+ ],
+ "-2/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-2/blues": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": "♭"
+  }
+ ],
+ "-2/rock": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": "♭"
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "-2/techno": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  }
+ ],
+ "-2/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-2/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "-2/dorian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-2/phrygian": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  }
+ ],
+ "-2/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-2/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-2/harmonicMinor": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-2/wholeTone": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": "♭"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  }
+ ],
+ "-2/harmonicSeries": [
+  {
+   "step": -4,
+   "accidental": "♭"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  }
+ ],
+ "-3/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-3/blues": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  }
+ ],
+ "-3/rock": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": "♭"
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 16,
+   "accidental": "♭"
+  }
+ ],
+ "-3/techno": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-3/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-3/pentatonic": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "-3/dorian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-3/phrygian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-3/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-3/mixolydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-3/harmonicMinor": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-3/wholeTone": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  }
+ ],
+ "-3/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♭"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♭"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  }
+ ],
+ "-4/classical": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-4/blues": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  }
+ ],
+ "-4/rock": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 16,
+   "accidental": "♭"
+  }
+ ],
+ "-4/techno": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-4/jazz": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-4/pentatonic": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "-4/dorian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-4/phrygian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-4/lydian": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-4/mixolydian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-4/harmonicMinor": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  }
+ ],
+ "-4/wholeTone": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": "♭"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": ""
+  }
+ ],
+ "-4/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": "♭"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  }
+ ],
+ "-5/classical": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-5/blues": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  }
+ ],
+ "-5/rock": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": "♮"
+  },
+  {
+   "step": 16,
+   "accidental": ""
+  }
+ ],
+ "-5/techno": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-5/jazz": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-5/pentatonic": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 15,
+   "accidental": ""
+  }
+ ],
+ "-5/dorian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-5/phrygian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-5/lydian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "-5/mixolydian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-5/harmonicMinor": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-5/wholeTone": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  }
+ ],
+ "-5/harmonicSeries": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  }
+ ],
+ "-6/classical": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-6/blues": [
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  }
+ ],
+ "-6/rock": [
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": "♮"
+  },
+  {
+   "step": 11,
+   "accidental": "♮"
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": "♮"
+  },
+  {
+   "step": 16,
+   "accidental": ""
+  }
+ ],
+ "-6/techno": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-6/jazz": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-6/pentatonic": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 13,
+   "accidental": ""
+  },
+  {
+   "step": 14,
+   "accidental": ""
+  },
+  {
+   "step": 16,
+   "accidental": ""
+  }
+ ],
+ "-6/dorian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-6/phrygian": [
+  {
+   "step": -5,
+   "accidental": "♮"
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": "♮"
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": "♮"
+  }
+ ],
+ "-6/lydian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-6/mixolydian": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": ""
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": ""
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-6/harmonicMinor": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -4,
+   "accidental": "♮"
+  },
+  {
+   "step": -3,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": "♮"
+  },
+  {
+   "step": 4,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  }
+ ],
+ "-6/wholeTone": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 9,
+   "accidental": ""
+  },
+  {
+   "step": 10,
+   "accidental": ""
+  },
+  {
+   "step": 11,
+   "accidental": ""
+  },
+  {
+   "step": 12,
+   "accidental": "♮"
+  }
+ ],
+ "-6/harmonicSeries": [
+  {
+   "step": -4,
+   "accidental": ""
+  },
+  {
+   "step": -3,
+   "accidental": ""
+  },
+  {
+   "step": -2,
+   "accidental": "♮"
+  },
+  {
+   "step": -1,
+   "accidental": ""
+  },
+  {
+   "step": -1,
+   "accidental": "♮"
+  },
+  {
+   "step": 0,
+   "accidental": "♮"
+  },
+  {
+   "step": 1,
+   "accidental": ""
+  },
+  {
+   "step": 2,
+   "accidental": ""
+  },
+  {
+   "step": 3,
+   "accidental": ""
+  },
+  {
+   "step": 4,
+   "accidental": ""
+  },
+  {
+   "step": 5,
+   "accidental": "♮"
+  },
+  {
+   "step": 6,
+   "accidental": ""
+  },
+  {
+   "step": 6,
+   "accidental": "♮"
+  },
+  {
+   "step": 7,
+   "accidental": "♮"
+  },
+  {
+   "step": 8,
+   "accidental": ""
+  }
+ ]
+}

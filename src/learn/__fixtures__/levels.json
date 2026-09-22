@@ -1,0 +1,20 @@
+{
+ "easy": {
+  "delay": null,
+  "fade": null,
+  "factor": null,
+  "rings": null
+ },
+ "medium": {
+  "delay": 400,
+  "fade": 1200,
+  "factor": 1,
+  "rings": true
+ },
+ "hard": {
+  "delay": 1000,
+  "fade": 1200,
+  "factor": 2,
+  "rings": false
+ }
+}

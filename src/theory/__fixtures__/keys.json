@@ -1,0 +1,15 @@
+[
+  {"k":6,"tonic":6,"sharp":true,"hue":265,"signature":"6 ♯","label":"F♯-Dur / D♯-Moll","title":"F♯-Dur ♯♯♯♯♯♯","labelGerman":"F♯-Dur / D♯-Moll","titleGerman":"F♯-Dur ♯♯♯♯♯♯"},
+  {"k":5,"tonic":11,"sharp":true,"hue":295,"signature":"5 ♯","label":"B-Dur / G♯-Moll","title":"B-Dur ♯♯♯♯♯","labelGerman":"H-Dur / G♯-Moll","titleGerman":"H-Dur ♯♯♯♯♯"},
+  {"k":4,"tonic":4,"sharp":true,"hue":325,"signature":"4 ♯","label":"E-Dur / C♯-Moll","title":"E-Dur ♯♯♯♯","labelGerman":"E-Dur / C♯-Moll","titleGerman":"E-Dur ♯♯♯♯"},
+  {"k":3,"tonic":9,"sharp":true,"hue":355,"signature":"3 ♯","label":"A-Dur / F♯-Moll","title":"A-Dur ♯♯♯","labelGerman":"A-Dur / F♯-Moll","titleGerman":"A-Dur ♯♯♯"},
+  {"k":2,"tonic":2,"sharp":true,"hue":25,"signature":"2 ♯","label":"D-Dur / B-Moll","title":"D-Dur ♯♯","labelGerman":"D-Dur / H-Moll","titleGerman":"D-Dur ♯♯"},
+  {"k":1,"tonic":7,"sharp":true,"hue":55,"signature":"1 ♯","label":"G-Dur / E-Moll","title":"G-Dur ♯","labelGerman":"G-Dur / E-Moll","titleGerman":"G-Dur ♯"},
+  {"k":0,"tonic":0,"sharp":true,"hue":85,"signature":"–","label":"C-Dur / A-Moll","title":"C-Dur","labelGerman":"C-Dur / A-Moll","titleGerman":"C-Dur"},
+  {"k":-1,"tonic":5,"sharp":false,"hue":115,"signature":"1 ♭","label":"F-Dur / D-Moll","title":"F-Dur ♭","labelGerman":"F-Dur / D-Moll","titleGerman":"F-Dur ♭"},
+  {"k":-2,"tonic":10,"sharp":false,"hue":145,"signature":"2 ♭","label":"B♭-Dur / G-Moll","title":"B♭-Dur ♭♭","labelGerman":"B-Dur / G-Moll","titleGerman":"B-Dur ♭♭"},
+  {"k":-3,"tonic":3,"sharp":false,"hue":175,"signature":"3 ♭","label":"E♭-Dur / C-Moll","title":"E♭-Dur ♭♭♭","labelGerman":"E♭-Dur / C-Moll","titleGerman":"E♭-Dur ♭♭♭"},
+  {"k":-4,"tonic":8,"sharp":false,"hue":205,"signature":"4 ♭","label":"A♭-Dur / F-Moll","title":"A♭-Dur ♭♭♭♭","labelGerman":"A♭-Dur / F-Moll","titleGerman":"A♭-Dur ♭♭♭♭"},
+  {"k":-5,"tonic":1,"sharp":false,"hue":235,"signature":"5 ♭","label":"D♭-Dur / B♭-Moll","title":"D♭-Dur ♭♭♭♭♭","labelGerman":"D♭-Dur / B-Moll","titleGerman":"D♭-Dur ♭♭♭♭♭"},
+  {"k":-6,"tonic":6,"sharp":false,"hue":265,"signature":"6 ♭","label":"G♭-Dur / E♭-Moll","title":"G♭-Dur ♭♭♭♭♭♭","labelGerman":"G♭-Dur / E♭-Moll","titleGerman":"G♭-Dur ♭♭♭♭♭♭"}
+]
