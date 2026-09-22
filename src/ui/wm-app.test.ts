@@ -207,6 +207,22 @@ describe('wm-app', () => {
     expect(document.body.classList.contains('listening')).toBe(false);
   });
 
+  it('tells the audience the tone, with or without a chord under it', () => {
+    const { app } = mount();
+    const told: [string, string][] = [];
+    app.room.tone = (name, chord) => told.push([name, chord]);
+    Object.defineProperty(app.room, 'isOpen', { get: () => true });
+    app.player.press(1, app.player.model.tones.indexOf(67));
+    app.player.release(1);
+    app.player.chooseChord(app.player.model.home);
+    app.player.press(2, app.player.model.tones.indexOf(64));
+    app.player.release(2);
+    expect(told).toEqual([
+      ['G', ''], // nothing chosen on the map: the tone stands alone
+      ['E', 'C'],
+    ]);
+  });
+
   it('lets applause from the room float over the field', async () => {
     const { root, app, relay } = mount();
     click('wm-credits button');

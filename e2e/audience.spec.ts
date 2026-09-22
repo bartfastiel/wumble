@@ -70,11 +70,17 @@ test.describe('audience', () => {
     await expect(listener.locator('wm-listener .title')).toHaveText('Freies Spiel');
     await page.evaluate(() => {
       const { player } = window.__wumble.app;
-      player.chooseChord(player.model.home);
       player.press(2, player.model.tones.indexOf(67));
       player.release(2);
     });
     await expect(listener.locator('wm-listener .tone')).toHaveText('G');
+    await expect(listener.locator('wm-listener .chord')).toBeEmpty(); // no chord chosen: the tone stands alone
+    await page.evaluate(() => {
+      const { player } = window.__wumble.app;
+      player.chooseChord(player.model.home);
+      player.press(3, player.model.tones.indexOf(64));
+      player.release(3);
+    });
     await expect(listener.locator('wm-listener .chord')).toHaveText('C');
   });
 });

@@ -22,7 +22,6 @@ import { type Settings, styleSettings } from '../play/settings';
 import { loadSettings, saveSettings, type SettingsStorage } from '../play/settings-storage';
 import { createStore, type Store } from '../play/store';
 import { chordLabel, toneLabel } from '../theory/labels';
-import { chordAt } from '../theory/model';
 import { pcOf } from '../theory/pitch';
 import { melodyFrequency } from '../theory/tuning';
 
@@ -244,14 +243,15 @@ export const createApp = (options: AppOptions): App => {
     syncBand();
   };
 
-  // Free play for the audience: the tone's name and the chord symbol sounding with it
+  // Free play for the audience: the tone's name and, if one sounds, the chord symbol with it
   const tellAudience = (tone: number, chord: number): void => {
     const model = store.model();
     const labeling = { mode: 'names', german: store.get().german } as const;
     const semitone = pcOf((model.tones[tone] ?? model.key.tonic) - model.key.tonic);
+    const sounding = model.chords[chord];
     room.tone(
       toneLabel(model.key, model.style, semitone, labeling),
-      chordLabel(chordAt(model, chord), false, labeling),
+      sounding === undefined ? '' : chordLabel(sounding, false, labeling),
     );
   };
 

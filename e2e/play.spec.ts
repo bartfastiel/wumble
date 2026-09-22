@@ -9,9 +9,15 @@ test.describe('free play', () => {
     await page.mouse.down();
     const held = await page.evaluate(() => {
       const { player } = window.__wumble.app;
-      return { pointers: player.pointers.size, lit: [...player.lit.keys()] };
+      const [pointer] = player.pointers.values();
+      return {
+        pointers: player.pointers.size,
+        lit: [...player.lit.keys()],
+        sounding: pointer === undefined ? null : player.model.tones[pointer.tone],
+      };
     });
-    expect(held).toEqual({ pointers: 1, lit: [64] });
+    expect(held.pointers).toBe(1);
+    expect(held.lit).toEqual([held.sounding]); // exactly the stripe that was touched, nothing else
     await page.mouse.up();
     expect(await page.evaluate(() => window.__wumble.app.player.pointers.size)).toBe(0);
   });
