@@ -61,11 +61,11 @@ test.describe('audience', () => {
     await listener.locator('wm-listener button.applause').click();
     await expect
       .poll(() => page.evaluate(() => window.__wumble.root.field.floating.map((floater) => floater.text)))
-      .toContain('👏');
+      .toContain('clap');
 
     for (let i = 2; i < 27; i++) await hit(page, i);
     await expect(page.locator('wm-done')).toBeVisible();
-    await expect(listener.locator('wm-listener .big')).toHaveText('🎉 Geschafft');
+    await expect(listener.locator('wm-listener .big')).toHaveText('Geschafft');
     await page.locator('wm-done button.secondary').click();
     await expect(listener.locator('wm-listener .title')).toHaveText('Freies Spiel');
     await page.evaluate(() => {

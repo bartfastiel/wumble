@@ -14,7 +14,6 @@ import { WmHelp } from './wm-help';
 import { WmLibrary } from './wm-library';
 import { WmListener } from './wm-listener';
 import { WmScan } from './wm-scan';
-import { WmSettings } from './wm-settings';
 
 const memory = (): Storage => {
   const items = new Map<string, string>();
@@ -61,7 +60,6 @@ beforeAll(() => {
   customElements.define('wm-header', WmHeader);
   customElements.define('wm-field', WmField);
   customElements.define('wm-library', WmLibrary);
-  customElements.define('wm-settings', WmSettings);
   customElements.define('wm-help', WmHelp);
   customElements.define('wm-audience', WmAudience);
   customElements.define('wm-listener', WmListener);
@@ -83,7 +81,7 @@ describe('wm-app', () => {
     const { root, storage } = mount();
     expect(root.querySelector('wm-header h1')?.textContent).toBe('Freies Spiel');
     expect(root.querySelector('wm-field canvas')).not.toBeNull();
-    expect(root.querySelectorAll('.panel')).toHaveLength(5);
+    expect(root.querySelectorAll('.panel')).toHaveLength(4);
     expect(root.done.hidden).toBe(true);
     expect(root.welcome.hidden).toBe(false);
     expect(root.querySelector('wm-welcome button')?.textContent).toBe('Spielen');
@@ -106,10 +104,9 @@ describe('wm-app', () => {
 
   it('opens panels from the header and closes them with the back button and Escape', () => {
     const { root } = mount();
-    click('button[data-panel=settings]');
-    expect(root.openPanel).toBe('settings');
-    expect(root.querySelector('wm-settings.open h1')?.textContent).toBe('Einstellungen');
-    click('wm-settings .back');
+    click('button[data-panel=help]');
+    expect(root.openPanel).toBe('help');
+    click('wm-help .back');
     expect(root.openPanel).toBeNull();
     click('button[data-panel=help]');
     expect(root.querySelector('wm-help.open p b')?.textContent).toBe('Jeder Streifen ist ein Ton');
@@ -119,17 +116,32 @@ describe('wm-app', () => {
     expect(root.openPanel).toBe('library');
   });
 
-  it('changes settings through the panel and reflects them in title and URL', () => {
+  it('changes settings from the bar and reflects them in title and URL', () => {
     const { root, app } = mount();
-    click('button[data-panel=settings]');
-    const names = document.querySelector<HTMLInputElement>('wm-settings input[value=names]');
+    click('button[data-section=view]');
+    const tiles = [...document.querySelectorAll<HTMLButtonElement>('.pop .tile')];
+    const names = tiles.find((tile) => tile.title.startsWith('Notennamen'));
     names?.click();
     expect(app.store.get().labels).toBe('names');
     expect(root.querySelector('wm-header h1')?.textContent).toBe('Freies Spiel · C-Dur');
     expect(location.hash).toBe('#labels=names');
-    document.querySelector<HTMLInputElement>('wm-settings input[name=Stil][value=blues]')?.click();
+    click('button[data-section=style]');
+    const blues = [...document.querySelectorAll<HTMLButtonElement>('.pop .tile')].find(
+      (tile) => tile.title === 'Blues',
+    );
+    blues?.click();
     expect(app.store.get()).toMatchObject({ style: 'blues', combi: 'organ', tempo: 96 });
     expect(app.band.tempo()).toBe(96);
+  });
+
+  it('picks a key on the circle of fifths and shows its sign on the button', () => {
+    const { root, app } = mount();
+    click('button[data-section=key]');
+    const seats = [...document.querySelectorAll<SVGGElement>('.wheel .seat')];
+    expect(seats).toHaveLength(13);
+    seats[1]?.dispatchEvent(new MouseEvent('click', { bubbles: true })); // one fifth up from C
+    expect(app.store.get().signature).toBe(1);
+    expect(root.querySelector('button[data-section=key] .sign')?.textContent).toBe('G');
   });
 
   it('starts a song from the library, scores it and ends in the done modal', () => {
@@ -184,7 +196,7 @@ describe('wm-app', () => {
     click('wm-welcome button');
     click('button[data-panel=library]');
     const audience = [...document.querySelectorAll<HTMLButtonElement>('wm-library button')].find(
-      (candidate) => candidate.textContent === '\u{1F465} Publikum',
+      (candidate) => candidate.textContent === 'Publikum',
     );
     audience?.click();
     expect(root.openPanel).toBe('audience');
@@ -243,13 +255,13 @@ describe('wm-app', () => {
     click('wm-welcome button');
     click('button[data-panel=library]');
     [...document.querySelectorAll<HTMLButtonElement>('wm-library button')]
-      .find((candidate) => candidate.textContent === '\u{1F465} Publikum')
+      .find((candidate) => candidate.textContent === 'Publikum')
       ?.click();
     await new Promise((resolve) => setTimeout(resolve, 1));
     const floated: string[] = [];
     root.field.float = (text) => floated.push(text);
     relay.sockets[0]?.deliver(JSON.stringify({ t: 'applause' }));
-    expect(floated).toEqual(['\u{1F44F}']);
+    expect(floated).toEqual(['clap']);
     expect(app.room.listeners).toBe(0);
   });
 

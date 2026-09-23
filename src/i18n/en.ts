@@ -127,7 +127,7 @@ export const en = {
       layers: { one: '1 layer', other: '{n} layers' },
       layer: 'Layer {i} · {tones} · {bars}',
       tones: { one: '1 tone', other: '{n} tones' },
-      empty: 'No layer yet – ● next to the band (or key R) records from the next bar start.',
+      empty: 'No layer yet – the dot next to the band (or key R) records from the next bar start.',
       remove: 'Delete layer',
       clear: 'Delete all',
     },
@@ -184,19 +184,18 @@ export const en = {
       unreachable: 'Room {code} · not reachable, retrying in {seconds} s',
       waiting: 'Waiting for the next song …',
       freePlay: 'Free play',
-      done: '🎉 Done',
+      done: 'Done',
       applause: 'Applause',
     },
   },
   ui: {
     back: 'Back',
     library: 'Songs',
-    settings: 'Settings',
     help: 'Help',
     band: 'Band',
-    scan: '📷 Scan sheet music',
-    echo: '🎤 Echo',
-    audience: '👥 Audience',
+    scan: 'Scan sheet music',
+    echo: 'Echo',
+    audience: 'Audience',
     done: { title: 'Done!', again: 'Once more' },
   },
   settings: {
@@ -209,7 +208,7 @@ export const en = {
     tuning: 'Tuning',
     mode: 'Play mode',
     sound: 'Sound',
-    share: 'Copy a link to these settings',
+    share: 'Share the link',
     copied: 'Copied: {link}',
     standard: 'default',
   },
@@ -255,6 +254,10 @@ export const en = {
       lead: 'Tap the same chord again',
       text: ' and the accompaniment steps back: melody alone. The chord stays chosen all the same – drawn as an outline – because it still decides the width and the colour of every stripe. Tap once more and it sounds again.',
     },
+    bar: {
+      lead: 'The bar above',
+      text: ' has one button per subject, and behind every button a picture instead of a list: the key as a circle of fifths, where neighbours on the ring are neighbours in the music; the style as its own scale; the sound as its instrument with the shape it makes; the band with its schema as a pattern of bars, the tempo on a dial and the loop; the view with the three looks, the labels and the play mode. Whatever holds right now is lit. The key button wears its letter, and the link button copies the address with everything you have set.',
+    },
     songs: {
       lead: 'Songs',
       text: ' show you with glowing dots which tone is next. Rings around a dot mean the same tone comes several times. Which chord you choose underneath is up to you – the tone is what counts. The key decides the colour of the whole surface.',
@@ -269,15 +272,15 @@ export const en = {
     },
     autoHarmony: {
       lead: 'Auto-harmony',
-      text: ' (play mode in the settings): you play tones only, the field finds the chords – the glowing spot on the map is its choice. A briefly tapped tone is a passing tone and leaves the chord as it is; only when your finger stays does the chord change. Choose on the map yourself and you lead.',
+      text: ' (play mode in the bar above): you play tones only, the field finds the chords – the glowing spot on the map is its choice. A briefly tapped tone is a passing tone and leaves the chord as it is; only when your finger stays does the chord change. Choose on the map yourself and you lead.',
     },
     band: {
       lead: 'Band',
-      text: ' (🥁 in the header): one button, and drums, bass and chords play along – in the groove of the style, the blues as a shuffle with boogie bass, jazz with walking bass, techno with an arpeggio. You only play the melody; the band follows the chord you chose last, the song or the auto-harmony – or, in the settings, it plays a schema like the twelve-bar blues and shows you with a pulsing ring which chord is up. Set the tempo with the slider or simply tap it four times.',
+      text: ' (the drum in the bar above): one button, and drums, bass and chords play along – in the groove of the style, the blues as a shuffle with boogie bass, jazz with walking bass, techno with an arpeggio. You only play the melody; the band follows the chord you chose last, the song or the auto-harmony – or it plays a schema like the twelve-bar blues and shows you with a pulsing ring which chord is up. Set the tempo on the dial or simply tap it four times.',
     },
     loop: {
       lead: 'Loop',
-      text: ' (● next to the band, or key R): tap, and from the next bar start the field records two bars of what you play – afterwards it keeps running as a loop in time with the band, and with the next tap you lay the next layer over it. This way you build your own song tone by tone; the layers (and the length of 1, 2 or 4 bars) live in the settings under the band.',
+      text: ' (the dot next to the band, or key R): tap, and from the next bar start the field records two bars of what you play – afterwards it keeps running as a loop in time with the band, and with the next tap you lay the next layer over it. This way you build your own song tone by tone; the layers (and the length of 1, 2 or 4 bars) live under the band button.',
     },
     echo: {
       lead: 'Echo',
@@ -289,7 +292,7 @@ export const en = {
     },
     radio: {
       lead: 'Radio',
-      text: ' (settings under the band): the band keeps playing by itself – phrase by phrase, always fitting the chord, with a little pause in between. As soon as you play a tone yourself it keeps quiet for two bars and lets you join in, then it takes over again.',
+      text: ' (under the band button): the band keeps playing by itself – phrase by phrase, always fitting the chord, with a little pause in between. As soon as you play a tone yourself it keeps quiet for two bars and lets you join in, then it takes over again.',
     },
     keyboard: {
       lead: 'Keyboard',
@@ -301,23 +304,23 @@ export const en = {
     },
     look: {
       lead: 'Look',
-      text: ' (settings): "grown" is the field with waved edges, fanned out and a little restless. "Built" makes everything straight: upright bars, even radii, the map in a grid, graphite with one warm accent. "Polished" is the same straight shape in white lacquer under a cool lamp: fitness reads as brightness and the chosen chord glows pale blue. What it means does not change – width is still fitness, vertical is still pull.',
+      text: ' (in the bar above): "grown" is the field with waved edges, fanned out and a little restless. "Built" makes everything straight: upright bars, even radii, the map in a grid, graphite with one warm accent. "Polished" is the same straight shape in white lacquer under a cool lamp: fitness reads as brightness and the chosen chord glows pale blue. What it means does not change – width is still fitness, vertical is still pull.',
     },
     styles: {
       lead: 'Styles',
-      text: ' (settings) swap scale and chord map: "classical" builds triads of the major scale, "blues" lays seventh chords on the blues scale, "rock" stays in the minor pentatonic, "techno" takes natural minor, "jazz" four-note chords (Cmaj7, Dm7, G7). The school styles bring pentatonic, modes, harmonic minor and whole tone from music lessons onto the field, the "harmonic series" the partials of an alphorn and a natural trumpet. Songs switch to their own style when they load.',
+      text: ' (in the bar above) swap scale and chord map: "classical" builds triads of the major scale, "blues" lays seventh chords on the blues scale, "rock" stays in the minor pentatonic, "techno" takes natural minor, "jazz" four-note chords (Cmaj7, Dm7, G7). The school styles bring pentatonic, modes, harmonic minor and whole tone from music lessons onto the field, the "harmonic series" the partials of an alphorn and a natural trumpet. Songs switch to their own style when they load.',
     },
     tunings: {
       lead: 'Tunings',
-      text: ' (settings) decide how high every tone really sounds. "Equal" is the keyboard compromise and the default; "just", "pythagorean" and "meantone" are historical tunings, relative to the chosen key. "Adaptive just" tunes every chord justly from its own root – the field knows the chord, so it can. The harmonic series switches to "just" by itself and plays the floating alphorn fa (11/8) between the piano keys.',
+      text: ' (in the bar above) decide how high every tone really sounds. "Equal" is the keyboard compromise and the default; "just", "pythagorean" and "meantone" are historical tunings, relative to the chosen key. "Adaptive just" tunes every chord justly from its own root – the field knows the chord, so it can. The harmonic series switches to "just" by itself and plays the floating alphorn fa (11/8) between the piano keys.',
     },
     sounds: {
       lead: 'Sounds',
-      text: ' (settings) are presets for the three layers melody, chord and bass: "piano" plays the Salamander Grand (Alexander Holm, CC BY 3.0), "strings" solo violin, violin section and double bass, "church organ" the Rode organ with four seconds of church reverb (both from the VSCO 2 Community Edition by Versilian Studios, CC0, organ by Simon Dalzell/Ivy Audio); "pop", "jazz trio" and "guitar" mix synthesis and samples, e-piano, bell and organ are pure synthesis. Every style suggests a sound, and you can switch freely afterwards. The samples sit in the page itself – nothing is loaded later.',
+      text: ' (in the bar above) are presets for the three layers melody, chord and bass: "piano" plays the Salamander Grand (Alexander Holm, CC BY 3.0), "strings" solo violin, violin section and double bass, "church organ" the Rode organ with four seconds of church reverb (both from the VSCO 2 Community Edition by Versilian Studios, CC0, organ by Simon Dalzell/Ivy Audio); "pop", "jazz trio" and "guitar" mix synthesis and samples, e-piano, bell and organ are pure synthesis. Every style suggests a sound, and you can switch freely afterwards. The samples sit in the page itself – nothing is loaded later.',
     },
     labels: {
       lead: 'Show me what you do',
-      text: ' (settings) tells you on the side what you are playing: note names, solfege syllables, degrees or functions then stand on every stripe, the spots of the map are named like real chords (Dm7, V7, Sp), and the header names key and accidentals. The key setting always shows the staff with its accidentals – three sharps on the sheet? Then it is A major.',
+      text: ' (in the bar above) tells you on the side what you are playing: note names, solfege syllables, degrees or functions then stand on every stripe, the spots of the map are named like real chords (Dm7, V7, Sp), and the header names key and accidentals. The key setting always shows the staff with its accidentals – three sharps on the sheet? Then it is A major.',
     },
   },
 } as const;

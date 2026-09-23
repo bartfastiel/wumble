@@ -107,7 +107,7 @@ describe('toneColour in the polished look', () => {
       for (const fitness of FITNESSES) {
         const colour = toneColour(fitness, pcOf(midi), midi, { look: 'polished' });
         expect(colour.h).toBe(toneColour(0, pcOf(60), 60, { look: 'polished' }).h);
-        expect(colour.c).toBeLessThan(0.06);
+        expect(colour.c).toBeLessThan(0.1); // a trace of blue, nowhere near a colour
         expect(() => rgb(colour)).not.toThrow();
       }
     }

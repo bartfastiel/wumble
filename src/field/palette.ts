@@ -38,9 +38,9 @@ const PRECISE_HUE: readonly [number, number, number, number] = [68, 78, 210, 244
 const PRECISE_CHROMA: readonly [number, number, number, number] = [0.115, 0.075, 0.016, 0.01];
 // The polished look: white lacquer under a cool lamp. Fitness reads as brightness – what carries is bright,
 // what pulls is deep – and the trace of blue is the light on the surface, not a colour of its own.
-const POLISHED_LIGHT: readonly [number, number, number, number] = [0.968, 0.895, 0.645, 0.375];
-const POLISHED_CHROMA: readonly [number, number, number, number] = [0.012, 0.018, 0.026, 0.036];
-const POLISHED_HUE = 236;
+const POLISHED_LIGHT: readonly [number, number, number, number] = [0.975, 0.885, 0.6, 0.295];
+const POLISHED_CHROMA: readonly [number, number, number, number] = [0.022, 0.034, 0.05, 0.062];
+const POLISHED_HUE = 243;
 export const CENTRE_MIDI = 65;
 
 export const registerTilt = (midi: number): number => Math.max(-1.2, Math.min(1.2, (midi - CENTRE_MIDI) / 24));

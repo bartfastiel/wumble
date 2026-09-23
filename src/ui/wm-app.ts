@@ -14,7 +14,6 @@ import { WmLibrary, OPEN_EVENT } from './wm-library';
 import { WmListener } from './wm-listener';
 import { CLOSE_EVENT, type WmPanel } from './wm-panel';
 import { WmScan } from './wm-scan';
-import { WmSettings } from './wm-settings';
 import { hasWebAudio, silentEngine } from './silent-engine';
 import { relayOverride } from './test-hook';
 import { applyTheme, pageHue } from './theme';
@@ -67,7 +66,6 @@ export class WmApp extends HTMLElement {
       app.start();
     };
     this.panels.set('library', this.panel(new WmLibrary(), app));
-    this.panels.set('settings', this.panel(new WmSettings(), app));
     this.panels.set('help', this.panel(new WmHelp(), app));
     this.panels.set('scan', this.panel(new WmScan(), app));
     this.panels.set('audience', this.panel(new WmAudience(), app));

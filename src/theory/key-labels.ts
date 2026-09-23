@@ -5,6 +5,9 @@ import { germanName, pcOf } from './pitch';
 
 const spell = (name: string, german: boolean): string => (german ? germanName(name) : name);
 
+// The tonic on its own: "C", "F♯", "B" – what fits on a seat of the circle of fifths
+export const keySign = (key: Key, german = false): string => spell(key.names[key.tonic], german);
+
 export const keyLabel = (key: Key, german = false): string => {
   const tonic = spell(key.names[key.tonic], german);
   const relative = spell(key.names[pcOf(key.tonic + 9)], german);
