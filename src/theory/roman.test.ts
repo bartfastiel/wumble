@@ -68,15 +68,40 @@ describe('functionOf', () => {
     expect(functionOf(roleChord('jazz', 'shortened'), true)).toBe('Đ9');
   });
 
+  // The name on the tile and the symbol under it say the same thing: the Gegenklang is Tg, not Dp
+  it('names the Gegenklang after the tonic, like the map does', () => {
+    expect(functionOf(roleChord('classical', 'counter'), true)).toBe('Tg');
+    expect(functionOf(roleChord('jazz', 'counter'), true)).toBe('Tg7');
+  });
+
+  it('writes a main function small where the chord is minor', () => {
+    expect(functionOf(roleChord('classical', 'minorSubdominant'), true)).toBe('s');
+    expect(functionOf(roleChord('classical', 'subdominant'), true)).toBe('S');
+  });
+
+  // The function follows the distance from the tonic, not the place in the scale: a pentatonic scale has five
+  // notes, so its fourth chord is not its fourth degree
+  it('reads the same in a scale that has no seven notes', () => {
+    expect(functionOf(roleChord('pentatonic', 'dominant'), true)).toBe('D');
+    expect(functionOf(roleChord('pentatonic', 'subdominant'), true)).toBe('S');
+    expect(functionOf(roleChord('pentatonic', 'parallel'), true)).toBe('Tp');
+  });
+
+  it('leaves the numeral where the functions have no name for a chord', () => {
+    expect(functionOf(roleChord('jazz', 'secondDegree'), true)).toBe('II7');
+  });
+
   it('falls back to numerals for non-functional styles', () => {
     const minorTonic = roleChord('techno', 'tonic');
     expect(functionOf(minorTonic, false)).toBe(romanOf(minorTonic));
   });
 
-  it.each(STYLE_IDS)('%s: every chord gets a name', (styleId) => {
+  it.each(STYLE_IDS)('%s: every chord gets a name, and never the word for a missing one', (styleId) => {
     const functional = isFunctional(styleId);
     for (const chord of modelOf(styleId).chords) {
-      expect(functionOf(chord, functional).length).toBeGreaterThan(0);
+      const name = functionOf(chord, functional);
+      expect(name).toMatch(/^([TSDtsd]|Tp|Tg|Sp|Đ|[♭♯]?[IiVv]+)/);
+      expect(name).not.toContain('undefined');
     }
   });
 });
