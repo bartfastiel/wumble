@@ -17,10 +17,12 @@ export interface MusicianLinkOptions {
   readonly id: string; // this device, for as long as the page is open
   readonly onState?: (state: MusicianState) => void;
   readonly onChord?: (chord: number) => void;
+  readonly onSinging?: (possible: boolean) => void; // a song with words is running, or it is not
 }
 
 export class MusicianLink {
   private last: MusicianState | null = null;
+  private words = false;
   private seat: { sound: string; low: boolean } | null = null;
   private readonly held = new Set<number>();
 
@@ -35,8 +37,17 @@ export class MusicianLink {
     return this.seat !== null;
   }
 
+  // Whether the host is playing a song that has words: without one there is nothing to sing along to
+  get singing(): boolean {
+    return this.words;
+  }
+
   receive(message: IncomingMessage): void {
-    if (message.t === 'state') {
+    if (message.t === 'song') {
+      this.sing(message.notes.some((note) => note.text !== undefined && note.text !== ''));
+    } else if (message.t === 'free' || message.t === 'end') {
+      this.sing(false);
+    } else if (message.t === 'state') {
       const taken = Array.isArray(message.taken) ? message.taken.filter((name) => typeof name === 'string') : [];
       this.last = {
         signature: message.k,
@@ -52,6 +63,12 @@ export class MusicianLink {
       this.last = { ...this.last, chord: message.c };
       this.options.onChord?.(message.c);
     }
+  }
+
+  private sing(possible: boolean): void {
+    if (possible === this.words) return;
+    this.words = possible;
+    this.options.onSinging?.(possible);
   }
 
   // Taking a seat, or moving to another one

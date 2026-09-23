@@ -46,6 +46,10 @@ export class PlayerRoom {
     return this.link?.musicians ?? 0;
   }
 
+  get knowsSong(): boolean {
+    return this.link?.hasSong ?? false;
+  }
+
   // Who is playing along, and what they are holding right now
   get guests(): readonly Guest[] {
     return this.link?.guests.list ?? [];

@@ -70,6 +70,11 @@ export class PlayerLink {
     return this.musicianCount;
   }
 
+  // Whether the room has been told about a song at all – a song that started before the room opened has not
+  get hasSong(): boolean {
+    return this.song !== null;
+  }
+
   // From the relay, the singers and the musicians
   receive(message: IncomingMessage): void {
     if (message.t === 'hello' || message.t === 'present') {

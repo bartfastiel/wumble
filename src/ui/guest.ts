@@ -17,6 +17,7 @@ export interface GuestOptions {
   readonly id: string;
   readonly onChord?: (chord: number) => void; // the host moved on
   readonly onTaken?: (taken: readonly string[]) => void; // which sounds are spoken for
+  readonly onSinging?: (possible: boolean) => void; // the host is playing a song with words, or is not
   readonly onStatus?: (connected: boolean) => void;
 }
 
@@ -42,6 +43,9 @@ export class GuestSession {
       },
       onChord: (chord) => {
         options.onChord?.(chord);
+      },
+      onSinging: (possible) => {
+        options.onSinging?.(possible);
       },
     });
     const client = new RelayClient({

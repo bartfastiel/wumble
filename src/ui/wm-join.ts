@@ -24,6 +24,7 @@ export class WmJoin extends HTMLElement {
   private sound: CombiId = 'piano';
   private low = false;
   private taken: readonly string[] = [];
+  private singable = false; // the host is on a song with words
   private readonly card = document.createElement('div');
   private readonly seat = document.createElement('div');
   private sounds: Choice<CombiId> | null = null;
@@ -35,6 +36,14 @@ export class WmJoin extends HTMLElement {
     this.seat.className = 'seat-choice';
     this.hidden = true; // only a guest who scanned the code ever sees this
     this.append(this.card);
+    this.build();
+  }
+
+  // Nothing to sing along to unless the host is playing a song that has words
+  setSinging(possible: boolean): void {
+    if (possible === this.singable) return;
+    this.singable = possible;
+    if (!possible) this.how = 'play';
     this.build();
   }
 
@@ -54,7 +63,7 @@ export class WmJoin extends HTMLElement {
     const title = document.createElement('h2');
     title.textContent = t('join.title');
     const roles = choice<GuestRole>(
-      (['play', 'sing'] as const).map((role): ChoiceItem<GuestRole> => ({
+      (this.singable ? (['play', 'sing'] as const) : (['play'] as const)).map((role): ChoiceItem<GuestRole> => ({
         value: role,
         label: t(`join.role.${role}.name`),
         hint: t(`join.role.${role}.text`),
@@ -78,7 +87,8 @@ export class WmJoin extends HTMLElement {
       this.onPlay?.({ role: this.how, sound: this.sound, low: this.low });
     });
     this.seat.hidden = this.how !== 'play';
-    this.card.replaceChildren(title, roles.element, this.seat, play);
+    // With nothing to sing along to there is no choice of role to make, only a seat to take
+    this.card.replaceChildren(title, ...(this.singable ? [roles.element] : []), this.seat, play);
     requestAnimationFrame(() => {
       play.focus();
     });

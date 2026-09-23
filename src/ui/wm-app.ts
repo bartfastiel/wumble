@@ -133,6 +133,9 @@ export class WmApp extends HTMLElement {
       onTaken: (taken) => {
         this.join.setTaken(taken);
       },
+      onSinging: (possible) => {
+        this.join.setSinging(possible);
+      },
       onChord: (chord) => {
         app.player.chooseChord(chord, false);
       },
