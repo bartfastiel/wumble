@@ -20,9 +20,10 @@ and the syllable count of every part is checked against its notes at load time, 
 played, not sung: the karaoke view shows it as ♪ on a line of its own instead of inventing note names for it.
 
 Every melody is written against an engraving, not from memory, as the earlier decision demands – the Wikipedia
-scores for the German carols, plus an independent ABC transcription for "O Tannenbaum", the Digital Tradition ABC
-for "Jingle Bells". Where a score has a chromatic neighbour note the field has no key for, the melody takes the
-note of the scale instead, and the file says where.
+scores for the German carols, plus an independent ABC transcription for "O Tannenbaum", and for "Jingle Bells" an
+ABC of the 1857 print with the syllables written under the notes, checked against two further transcriptions. Where
+a score has a chromatic neighbour note the field has no key for, the melody takes the note of the scale instead,
+and the file says where.
 
 Licences, each checked one by one: the German carols are 18th and 19th century, the last of their authors (Eduard
 Ebel) died in 1908. "Jingle Bells" is James Lord Pierpont, 1857. The tune of "Happy Birthday to You" is Mildred J.
@@ -37,11 +38,12 @@ Songs are long now: "Lasst uns froh und munter sein" is 121 notes, where the lea
 score and the record still count the whole run, which makes a feast song a much harder record than a nursery rhyme –
 that is fine, they are not competing with each other.
 
-## Rejected
+"Jingle Bells" keeps both verses and the chorus after each. Its verse lies a fourth below the chorus and reaches
+further down the field than anything else in the library. The second verse puts two syllables where the first holds
+one, so those four notes stand split and the first verse carries a melisma there – which is how the 1857 print sets
+them.
 
-_The verse of "Jingle Bells"._ Everybody in a German room sings the chorus and nobody the verse, and the verse
-melody is one we would have been writing from memory – exactly what the earlier decision forbids. The song is the
-chorus, sung through twice with its two endings, which is what it is in practice.
+## Rejected
 
 _Repeating the melody and just showing more text._ It is the same thing for the singer only as long as every verse
 has the same number of syllables, which no real verse has. The melismas belong to the verse, so the verse carries

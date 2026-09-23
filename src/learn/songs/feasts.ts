@@ -5,7 +5,8 @@
 //
 // Every melody here was written against a score, not from memory (see the ADR on songs): the German carols and
 // "Lasst uns froh und munter sein" against the engravings in the German Wikipedia articles, "O Tannenbaum" against
-// that engraving and the ABC transcription at trillian.mit.edu, "Jingle Bells" against the Digital Tradition ABC.
+// that engraving and the ABC transcription at trillian.mit.edu, "Jingle Bells" against the ABC of the 1857 print
+// with its syllables written under the notes (Thornton Rose after MySheetMusic), checked against two more.
 // Where a score has a chromatic neighbour note – the turn in "Alles schläft", the raised fourth in the third line
 // of "Kling, Glöckchen" – the field has no key for it, so the melody takes the note of the scale instead.
 //
@@ -235,39 +236,66 @@ export const FEASTS: readonly SongDefinition[] = [
        kling, Glöck- chen, kling!`,
     ],
   },
-  // James Lord Pierpont (1822–1893), Boston 1857. The chorus is the song here: it is what a room sings, and it goes
-  // twice through, with the two endings the score gives it.
+  // James Lord Pierpont (1822–1893), Boston 1857. The verse lies a fourth under the chorus, which is why it reaches
+  // further down the field than anything else here. The second verse puts two syllables where the first holds one,
+  // so those notes stand split and the first verse carries the melisma – that is how the 1857 song is printed.
   {
     title: 'Jingle Bells',
     k: 0,
     bpm: 132,
     group: 'feasts',
-    intro: 'C4/I:1 E4/I:1 G4/I:1 E4/I:1',
+    intro: 'E4/I:1 C4/I:1 G3/I:2',
     notes: `
-    E4/I:1 E4/I:1 E4/I:2
-    E4/I:1 E4/I:1 E4/I:2
-    E4/I:1 G4/I:1 C4/I:1.5 D4/V:.5
-    E4/I:4
-    F4/IV:1 F4/IV:1 F4/IV:1.5 F4/IV:.5
-    F4/IV:1 E4/I:1 E4/I:1 E4/I:.5 E4/I:.5
-    E4/I:1 D4/V:1 D4/V:1 E4/I:1
-    D4/V:2 G4/V:2
-    E4/I:1 E4/I:1 E4/I:2
-    E4/I:1 E4/I:1 E4/I:2
-    E4/I:1 G4/I:1 C4/I:1.5 D4/V:.5
-    E4/I:4
-    F4/IV:1 F4/IV:1 F4/IV:1.5 F4/IV:.5
-    F4/IV:1 E4/I:1 E4/I:1 E4/I:.5 E4/I:.5
-    G4/V:1 G4/V:1 F4/IV:1 D4/V:1
-    C4/I:4`,
-    text: `Jin- gle bells, jin- gle bells,
-           jin- gle all the way!
-           Oh what fun it is to ride in a
-           one- horse o- pen sleigh, hey!
-           Jin- gle bells, jin- gle bells,
-           jin- gle all the way!
-           Oh what fun it is to ride in a
-           one- horse o- pen sleigh!`,
+    G3/I:.5 E4/I:.5 D4/I:.5 C4/I:.5
+    G3/I:1.5 G3/I:.25 G3/I:.25
+    G3/I:.5 E4/I:.5 D4/I:.5 C4/I:.5
+    A3/IV:2
+    A3/ii:.5 F4/ii:.5 E4/ii:.5 D4/ii:.5
+    B3/V:1 B3/V:1
+    G4/V:.5 G4/V:.5 F4/V:.5 D4/V:.5
+    E4/I:1 E4/I:1
+    G3/I:.5 E4/I:.5 D4/I:.5 C4/I:.5
+    G3/I:1 G3/I:1
+    G3/I:.5 E4/I:.5 D4/I:.5 C4/I:.5
+    A3/IV:1 A3/IV:.5
+    A3/ii:.5
+    A3/ii:.5 F4/ii:.5 E4/ii:.5 D4/ii:.5
+    G4/V:.5 G4/V:.5 G4/V:.5 G4/V:.5
+    A4/V:.5 G4/V:.5 F4/V:.5 D4/V:.5
+    C4/I:2`,
+    chorus: {
+      notes: `
+      E4/I:1 E4/I:1 E4/I:2
+      E4/I:1 E4/I:1 E4/I:2
+      E4/I:1 G4/I:1 C4/I:1.5 D4/V:.5
+      E4/I:4
+      F4/IV:1 F4/IV:1 F4/IV:1.5 F4/IV:.5
+      F4/IV:1 E4/I:1 E4/I:1 E4/I:.5 E4/I:.5
+      E4/I:1 D4/V:1 D4/V:1 E4/I:1
+      D4/V:2 G4/V:2
+      E4/I:1 E4/I:1 E4/I:2
+      E4/I:1 E4/I:1 E4/I:2
+      E4/I:1 G4/I:1 C4/I:1.5 D4/V:.5
+      E4/I:4
+      F4/IV:1 F4/IV:1 F4/IV:1.5 F4/IV:.5
+      F4/IV:1 E4/I:1 E4/I:1 E4/I:.5 E4/I:.5
+      G4/V:1 G4/V:1 F4/IV:1 D4/V:1
+      C4/I:4`,
+      text: `Jin- gle bells, jin- gle bells, jin- gle all the way!
+             Oh, what fun it is to ride in a one horse o- pen sleigh. Hey!
+             Jin- gle bells, jin- gle bells, jin- gle all the way!
+             Oh, what fun it is to ride in a one horse o- pen sleigh.`,
+    },
+    verses: [
+      `Dash- ing through the snow, in a one horse o- pen sleigh.
+       O'er the fields we go, _ laugh- ing all the way. _
+       Bells on bob- tail ring, _ ma- king spir- its bright. _
+       What fun it is to ride and sing a sleigh- ing song to- night.`,
+      `A day or two a- go, I thought I'd take a ride,
+       and soon Miss Fan- ny Bright was seat- ed by my side.
+       The horse was lean and lank, Mis- for- tune seemed his lot.
+       We ran in- to a drift- ed bank and there we got up- sot.`,
+    ],
   },
   // Mildred J. Hill (1859–1916), "Good Morning to All", 1893 – see the licence note at the top of this file.
   // The German line has one syllable more than the English one, so its third phrase carries one note more.
