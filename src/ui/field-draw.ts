@@ -66,11 +66,16 @@ export interface FieldScene {
   readonly now: number;
 }
 
+// The melody as a way through the field: the stripe the hand is on now, and the ones it goes to next
+export interface ThreadPoint {
+  readonly stripe: number;
+  readonly rise: number; // how far up the thread this step sits, in units of the step height
+  readonly beats: number;
+}
+
 export interface LearnScene {
-  readonly groups: readonly { readonly pos: number; readonly rings: readonly { ri: number; ro: number }[] }[];
-  readonly spots: readonly (number | null)[]; // stripe per group position
-  readonly current: number;
-  readonly visibility: number;
+  readonly thread: readonly ThreadPoint[];
+  readonly visibility: number; // how far the current step has faded in (levels with a delay)
   readonly unit: number;
 }
 
@@ -92,6 +97,7 @@ interface Ink {
   readonly onChosenSub: string;
   readonly range: string; // the window and the mark on the range strip
   readonly wave: Oklch; // the rings a held tone sends out
+  readonly thread: Oklch; // the way through a song: the warm counterpart of the field's own light
 }
 
 const WARM: Ink = {
@@ -110,6 +116,7 @@ const WARM: Ink = {
   onChosenSub: 'rgba(52,40,12,.9)',
   range: '255,214,140',
   wave: { l: 0.8, c: 0.08, h: 90 },
+  thread: { l: 0.74, c: 0.16, h: 42 }, // amber against the graphite
 };
 
 const INK: Readonly<Record<Look, Ink>> = {
@@ -131,6 +138,7 @@ const INK: Readonly<Record<Look, Ink>> = {
     onChosenSub: 'rgba(30,48,74,.9)',
     range: '168,210,255',
     wave: { l: 0.88, c: 0.05, h: 236 },
+    thread: { l: 0.78, c: 0.15, h: 52 }, // the opposite side of the circle from the lacquer: warm against cool
   },
 };
 
@@ -555,34 +563,100 @@ const drawSpot = (cx: CanvasRenderingContext2D, scene: FieldScene, spot: MapSpot
   if (name !== undefined && radius > 15) drawSpotName(cx, spot, radius, chosen, name, INK[scene.look]);
 };
 
-// What the schema will play next: a ring that closes as the bar runs out, and a glow that grows with it. The eye
-// learns the twelve-bar blues from it without being told – and knows the change is coming before it happens.
+// The ring around the chord that is coming: it starts at twelve o'clock, runs clockwise, and closes exactly when
+// the chord changes. Drawn as its own path rather than as a dash pattern, because a dash needs the length of the
+// path and Canvas will not tell it – and a ring that is a few pixels short of home says the wrong thing.
+interface Leg {
+  readonly length: number;
+  at(part: number): void; // draw this leg up to `part` of its length, 0…1
+}
+
+// Every leg draws from where the last one ended; the first one moves there first
+const straightRing = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number): readonly Leg[] => {
+  const width = radius * 1.86;
+  const height = radius * 1.34;
+  const corner = Math.max(1, Math.min(5, height * 0.14));
+  const left = spot.x - width / 2;
+  const right = spot.x + width / 2;
+  const top = spot.y - height / 2;
+  const bottom = spot.y + height / 2;
+  const line = (x0: number, y0: number, x1: number, y1: number): Leg => ({
+    length: Math.hypot(x1 - x0, y1 - y0),
+    at: (part) => {
+      cx.lineTo(x0 + (x1 - x0) * part, y0 + (y1 - y0) * part);
+    },
+  });
+  const bend = (cxx: number, cyy: number, from: number): Leg => ({
+    length: (Math.PI * corner) / 2,
+    at: (part) => {
+      cx.arc(cxx, cyy, corner, from, from + (Math.PI / 2) * part);
+    },
+  });
+  return [
+    {
+      length: 0,
+      at: () => {
+        cx.moveTo(spot.x, top); // twelve o'clock
+      },
+    },
+    line(spot.x, top, right - corner, top),
+    bend(right - corner, top + corner, -Math.PI / 2),
+    line(right, top + corner, right, bottom - corner),
+    bend(right - corner, bottom - corner, 0),
+    line(right - corner, bottom, left + corner, bottom),
+    bend(left + corner, bottom - corner, Math.PI / 2),
+    line(left, bottom - corner, left, top + corner),
+    bend(left + corner, top + corner, Math.PI),
+    line(left + corner, top, spot.x, top),
+  ];
+};
+
+const roundRing = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number): readonly Leg[] => [
+  {
+    length: 2 * Math.PI * radius,
+    at: (part) => {
+      cx.arc(spot.x, spot.y, radius, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * part);
+    },
+  },
+];
+
+// Walks the legs until `progress` of the whole way is drawn
+const traceRing = (cx: CanvasRenderingContext2D, legs: readonly Leg[], progress: number): void => {
+  const whole = legs.reduce((sum, leg) => sum + leg.length, 0);
+  let left = whole * Math.max(0, Math.min(1, progress));
+  cx.beginPath();
+  for (const leg of legs) {
+    if (left <= 0) return;
+    leg.at(Math.min(1, left / leg.length));
+    left -= leg.length;
+  }
+};
+
 const drawAhead = (cx: CanvasRenderingContext2D, scene: FieldScene, ahead: AheadScene): void => {
   const { spot, progress } = ahead;
   const ink = INK[scene.look];
   const radius = spot.radius * 1.14;
-  const around = isStraight(scene.look) ? (radius * 1.86 + radius * 1.34) * 2 : 2 * Math.PI * radius;
+  const straight = isStraight(scene.look);
+  const legs = straight ? straightRing(cx, spot, radius) : roundRing(cx, spot, radius);
   cx.save();
 
   // The whole ring, faint: this is the one that is coming, however far away it still is
   cx.strokeStyle = `${ink.seam}0.2)`;
   cx.lineWidth = 1.6;
-  spotPath(cx, spot, radius, scene.look);
+  traceRing(cx, legs, 1);
   cx.stroke();
 
   // The light in it fills as the bars run out, and the last beat before the change is the brightest
-  const close = Math.max(0, (progress - 0.85) / 0.15); // the final breath before it happens
+  const close = Math.max(0, (progress - 0.85) / 0.15);
   cx.shadowColor = `${ink.seam}0.9)`;
   cx.shadowBlur = 5 + progress * 14 + close * 10;
   cx.strokeStyle = `${ink.seam}${String(0.45 + progress * 0.55)})`;
   cx.lineWidth = 2 + progress * 1.8;
-  cx.setLineDash([Math.max(0.001, around * progress), around]);
-  cx.lineDashOffset = around * 0.25; // it closes from the top, where a clock would
-  spotPath(cx, spot, radius, scene.look);
+  cx.lineCap = 'round';
+  traceRing(cx, legs, progress);
   cx.stroke();
 
   // And the face itself takes on a little of that light, so the eye finds it without looking for a ring
-  cx.setLineDash([]);
   cx.globalAlpha = 0.06 + progress * 0.16;
   cx.fillStyle = `${ink.seam}1)`;
   spotPath(cx, spot, spot.radius, scene.look);
@@ -617,38 +691,134 @@ const drawWaves = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   }
 };
 
-// A ring of the learn mode: the one that is due glows, the ones ahead fade with their distance
-const drawLearnRing = (
-  cx: CanvasRenderingContext2D,
-  centre: { readonly x: number; readonly y: number },
-  ring: { readonly ri: number; readonly ro: number },
-  ahead: number,
-  visibility: number,
-  onHeldStripe: boolean,
-): void => {
-  const alpha = (ahead === 0 ? 1 : Math.max(0.12, 0.7 - ahead * 0.16)) * visibility;
-  const rest = onHeldStripe ? '30,28,24' : '244,240,230';
-  cx.fillStyle = ahead === 0 ? `rgba(255,214,102,${String(alpha)})` : `rgba(${rest},${String(alpha)})`;
-  cx.beginPath();
-  cx.arc(centre.x, centre.y, ring.ro, 0, Math.PI * 2);
-  if (ring.ri > 0) cx.arc(centre.x, centre.y, ring.ri, 0, Math.PI * 2, true);
-  cx.fill();
+// The way through the song as a rope, not as a row of dots. It begins where the hand is, at the height a hand
+// plays at, and climbs: every tone a knot, every leg as long as the tone lasts – and as thick. A leap between two
+// far-apart stripes is a steep diagonal, a repeated tone a straight climb; the shape of the melody, before it is
+// played. The far end fades out and fades back in as it comes closer, so nothing appears out of nowhere.
+const THREAD_BASE = 0.72; // where the rope starts, as a part of the field's height
+const THREAD_STEP = 0.075; // one unit of rise, as a part of the field's height
+const TWIST = 15; // pixels per turn of the braid
+const SAMPLES = 14; // how finely a leg is walked
+
+interface Knot {
+  readonly x: number;
+  readonly y: number;
+  readonly thick: number; // how strong the rope is here: the length of the tone
+  readonly fade: number;
+}
+
+const threadKnots = (scene: FieldScene, learn: LearnScene): readonly Knot[] => {
+  const { top, bottom } = scene.field.box;
+  const span = bottom - top;
+  const base = top + span * THREAD_BASE;
+  const knots: Knot[] = [];
+  for (const [i, point] of learn.thread.entries()) {
+    const centre = scene.centre(point.stripe);
+    if (centre === null) continue;
+    // The first knot is the one that is due; everything beyond it thins out with its distance
+    const fade = i === 0 ? learn.visibility : Math.max(0.2, 0.95 - i * 0.11);
+    knots.push({
+      x: centre.x,
+      y: base - point.rise * span * THREAD_STEP,
+      thick: Math.max(7, Math.min(learn.unit * 0.8, 6 + Math.sqrt(point.beats) * 7)),
+      fade,
+    });
+  }
+  return knots;
 };
 
-// The learn mode's dots sit on the stripe of their tone; rings show how often it repeats. Drawn from the back, so
-// the tone that is due lies on top.
+// A point on the leg between two knots, and the direction it runs in
+const onLeg = (from: Knot, to: Knot, k: number): { x: number; y: number; nx: number; ny: number } => {
+  const mid = (from.y + to.y) / 2;
+  const u = 1 - k;
+  // The same cubic the rope is drawn along: straight out of one tone, straight into the next
+  const x = u * u * u * from.x + 3 * u * u * k * from.x + 3 * u * k * k * to.x + k * k * k * to.x;
+  const y = u * u * u * from.y + 3 * u * u * k * mid + 3 * u * k * k * mid + k * k * k * to.y;
+  // The tangent of that cubic: the ends run straight up and down, the middle leans across
+  const dx = 6 * u * k * (to.x - from.x);
+  const dy = 3 * (u * u * (mid - from.y) + k * k * (to.y - mid));
+  const length = Math.hypot(dx, dy) || 1;
+  return { x, y, nx: -dy / length, ny: dx / length };
+};
+
+// One leg of the rope: a body as thick as the tone is long, and two strands winding around it
+const drawLeg = (cx: CanvasRenderingContext2D, from: Knot, to: Knot, tint: string): void => {
+  const thick = (from.thick + to.thick) / 2;
+  const points = Array.from({ length: SAMPLES + 1 }, (_, i) => onLeg(from, to, i / SAMPLES));
+  cx.globalAlpha = to.fade;
+
+  cx.strokeStyle = tint;
+  cx.lineWidth = thick;
+  cx.lineCap = 'round';
+  cx.lineJoin = 'round';
+  cx.beginPath();
+  for (const [i, point] of points.entries()) {
+    if (i === 0) cx.moveTo(point.x, point.y);
+    else cx.lineTo(point.x, point.y);
+  }
+  cx.stroke();
+
+  // The braid: two strands crossing over the body, drawn a shade lighter and a shade darker
+  const run = Math.hypot(to.x - from.x, to.y - from.y) || 1;
+  const turns = (run / TWIST) * Math.PI * 2;
+  for (const [strand, shade] of [
+    [0, 'rgba(255,255,255,0.3)'],
+    [Math.PI, 'rgba(0,0,0,0.22)'],
+  ] as const) {
+    cx.strokeStyle = shade;
+    cx.lineWidth = Math.max(1, thick * 0.26);
+    cx.beginPath();
+    for (const [i, point] of points.entries()) {
+      const swing = Math.sin((i / SAMPLES) * turns + strand) * thick * 0.27;
+      const x = point.x + point.nx * swing;
+      const y = point.y + point.ny * swing;
+      if (i === 0) cx.moveTo(x, y);
+      else cx.lineTo(x, y);
+    }
+    cx.stroke();
+  }
+};
+
 const drawLearn = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   const learn = scene.learn;
   if (learn === null) return;
-  for (const [g, group] of [...learn.groups.entries()].reverse()) {
-    const index = learn.spots[g] ?? null;
-    const centre = index === null ? null : scene.centre(index);
-    if (centre === null) continue;
-    const onHeldStripe = scene.held.some((h) => h.stripe.index === index);
-    for (const [i, ring] of [...group.rings.entries()].reverse()) {
-      drawLearnRing(cx, centre, ring, group.pos - learn.current + i, learn.visibility, onHeldStripe);
-    }
+  const ink = INK[scene.look];
+  const tint = cssOf(ink.thread);
+  const knots = threadKnots(scene, learn);
+  const [now] = knots;
+  if (now === undefined) return;
+
+  // The stripe under the next tone lights up along its whole length: the key to press, not a dot on it
+  const lit = scene.field.stripes[learn.thread[0]?.stripe ?? -1];
+  if (lit !== undefined) {
+    cx.save();
+    cx.globalAlpha = 0.34 * learn.visibility;
+    cx.fillStyle = tint;
+    stripePath(cx, scene.field, scene.field.stripes.indexOf(lit), lit, 3.2, scene.look);
+    cx.fill();
+    cx.restore();
   }
+
+  cx.save();
+  // A halo under the whole rope, so it reads against the brightest stripe as well as against the dark
+  cx.shadowColor = cssOf(shade(ink.thread, -0.1, 1.2));
+  cx.shadowBlur = 20;
+  for (let i = 1; i < knots.length; i++) {
+    const from = knots[i - 1];
+    const to = knots[i];
+    if (from !== undefined && to !== undefined) drawLeg(cx, from, to, tint);
+  }
+  cx.shadowBlur = 0;
+
+  // The knot the hand is on: a bead at the end of the rope
+  cx.globalAlpha = learn.visibility;
+  cx.shadowColor = tint;
+  cx.shadowBlur = 18;
+  cx.fillStyle = cssOf(shade(ink.thread, 0.1, 0.9));
+  cx.beginPath();
+  cx.arc(now.x, now.y, now.thick * 0.72, 0, Math.PI * 2);
+  cx.fill();
+  cx.restore();
 };
 
 // The strip below the field: grab it anywhere and pull the octaves past. The bright band is what is in view,

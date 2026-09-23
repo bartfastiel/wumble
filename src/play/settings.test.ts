@@ -15,12 +15,12 @@ import {
 } from './settings';
 
 describe('DEFAULTS', () => {
-  it('start the app on the twelve-bar blues in C, organ, polished, thinking along, labels off, easy, 100 bpm', () => {
+  it('start the app on the twelve-bar blues in C, organ, polished, two hands, labels off, easy, 100 bpm', () => {
     expect(DEFAULTS).toEqual({
       signature: 0,
       style: 'blues',
       tuning: 'equal',
-      mode: 'autoHarmony',
+      mode: 'twoHands',
       combi: 'organ',
       labels: 'off',
       look: 'polished',

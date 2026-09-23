@@ -119,7 +119,6 @@ export class WmJoin extends HTMLElement {
       },
       undefined,
       this.taken,
-      true,
     );
     this.sounds = sounds;
     const hint = document.createElement('p');

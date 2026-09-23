@@ -44,7 +44,7 @@ test.describe('band', () => {
       window.__wumble.app.looper.layers().map((layer) => ({ bars: layer.bars, tones: layer.events.length })),
     );
     expect(layers).toEqual([{ bars: 1, tones: 2 }]);
-    await page.locator('wm-header button[data-section=tempo]').click();
+    await page.locator('wm-header button[data-section=loop]').click(); // the loop lives with the melody hand now
     await expect(page.locator('.layers .layer .marks i')).toHaveCount(2); // one mark per tone
     await page.locator('.layers .layer button').click();
     await expect(page.locator('.layers .layer')).toHaveCount(0);
@@ -58,11 +58,16 @@ test.describe('band', () => {
       page.evaluate(() => window.__wumble.root.field.upcoming);
     await expect.poll(async () => (await ahead())?.role).toBe('subdominant');
     const early = (await ahead())?.progress ?? 1;
-    // the ring closes as the bars run out, and never past the change itself
+    // the ring closes as the bars run out – once, without starting over at every bar line
     await expect.poll(async () => (await ahead())?.progress ?? 0).toBeGreaterThan(early + 0.1);
-    const later = await ahead();
-    expect(later?.role).toBe('subdominant');
-    expect(later?.progress ?? 0).toBeLessThanOrEqual(1);
+    const seen: number[] = [];
+    for (let i = 0; i < 8; i++) {
+      const at = await ahead();
+      if (at?.role === 'subdominant') seen.push(at.progress);
+      await expect.poll(async () => (await ahead()) !== null).toBe(true);
+    }
+    for (let i = 1; i < seen.length; i++) expect(seen[i]).toBeGreaterThanOrEqual((seen[i - 1] ?? 0) - 0.02);
+    expect(seen.at(-1) ?? 0).toBeLessThanOrEqual(1);
   });
 
   test('a schema chooses on the map, as if a hand had done it', async ({ page }) => {

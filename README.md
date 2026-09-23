@@ -49,8 +49,8 @@ The whole surface comes in three looks (settings): _grown_, with waved edges and
 upright bars, even radii and the map in a grid, or _polished_, the same straight shape in white lacquer under a cool
 lamp, where fitness reads as brightness and the chosen chord glows pale blue. Same meaning, different temperament.
 
-**Above: the bar.** Two plates, each over what it changes: the left one over the map (key, style, band,
-accompaniment, loop), the right one over the field (sound and tunings, look and labels). Behind every icon a picture
+**Above: the bar.** Two plates, each over what it changes: the left one over the map (key, style, band and who
+leads the chords), the right one over the field (radio, loop, sound and tunings, look and labels). Behind every icon a picture
 instead of a list – the key as a circle of fifths, the style as its own scale, the sound as its instrument with the
 shape it makes, the schema as a pattern of bars, the tempo on a dial. Whatever holds right now is lit, and each panel
 says what it is for and what the tile under your finger does.
@@ -59,9 +59,12 @@ says what it is for and what the tile under your finger does.
 out: which chord, and how far off, at a glance.
 
 **And the rest.** The **keyboard** plays along – the two letter rows are fifteen tones around the middle of the field,
-the digits choose a chord. **Band** (🥁) adds drums, bass and chords in the groove of the style; ● records a loop from
-the next bar, the settings offer schemata, tap tempo, echo and radio. **Songs** (♫) show the next tone as a glowing
-dot, with levels that score the hits. **Scan sheet music** photographs a printed melody and lays it on the field.
+the digits choose a chord. **Band** adds drums, bass and chords in the groove of the style, and the accompaniment
+panel asks the one question behind it: who chooses the chords – you, the field thinking along, or a schema like the
+twelve-bar blues. **Songs** lay the way through a melody over the field as a rope: every tone a knot, every leg as
+long – and as thick – as the tone lasts, the stripe that is due lit along its whole length. Levels score the hits,
+and nothing accompanies a song but the hand. **Scan sheet music** photographs a printed melody and lays it on the
+field.
 **Audience** opens a room with a QR code. Whoever scans it is asked once: sing along, or play along? A singer sees the lyrics scroll like karaoke and can applaud; a musician gets the same field in the host's key, style and tuning, on a sound nobody else has taken, and plays the melody on their own device – the host's field shows a small light above every tone a guest is holding. Chords, band and key stay with whoever opened the room.
 The URL fragment carries every setting as a shareable link.
 
@@ -134,7 +137,7 @@ and, programmatically, against the scale and range of its style.
 
 ## Deployment
 
-Every push to `main` puts `dist/` (with the relay) on the server as production. Every pull request gets a preview
+Every push to `main` puts `dist/` (with the relay) on the server as production, served directly under its host. Every pull request gets a preview
 `pr-<nr>/` (link in the PR comment and as an environment) that disappears when the PR is closed. Production and
 previews live under separate paths; the production path stays secret. A tag `v*` creates a GitHub release with the
-single file `wumble.html`.
+single file `wumble.html`. The page is not advertised anywhere, but it is not hidden either.

@@ -36,10 +36,13 @@ export type IconName =
 
 // Paths are drawn in a 24×24 box with a 2-unit margin, so they sit optically level next to each other.
 const PATHS: Readonly<Record<IconName, readonly string[]>> = {
+  // A ball of yarn with a thread running off it: the way through a song, to pick up and follow
   songs: [
-    'M9 18V6l10-2v12',
-    'M9 18a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z',
-    'M19 16a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z',
+    'M11 3.5a8 8 0 1 0 0 16 8 8 0 0 0 0-16Z',
+    'M5.6 7.4c3.5 1.1 7 3.6 9.4 7.4',
+    'M7.6 4.9c2.5 1.7 5.1 4.8 6.5 8.8',
+    'M3.2 11.9c2.9.4 6.1 2.3 8.2 5.4',
+    'M17.6 17.1c1.9 1 2.7 2.4 1.8 3.5-.8.9-2.3.6-2.6-.5',
   ],
   key: [
     'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z',

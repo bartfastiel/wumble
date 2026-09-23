@@ -7,18 +7,18 @@ import { clampTempo, type Settings, styleSettings, TEMPO_MAX, TEMPO_MIN } from '
 import { keySign } from '../theory/key-labels';
 import { keyBySignature } from '../theory/keys';
 import type { App } from './app';
-import { loopTiles, schemaTiles } from './controls/band-controls';
+import { loopTiles } from './controls/band-controls';
+import { leadOf, leadSettings, leadTiles } from './controls/lead-tiles';
 import { keyWheel } from './controls/key-wheel';
 import { soundTiles } from './controls/sound-tiles';
 import { styleTiles } from './controls/style-tiles';
-import { labelTiles, lookTiles, modeTiles, spellingTiles, tuningTiles } from './controls/view-controls';
+import { labelTiles, lookTiles, spellingTiles, tuningTiles } from './controls/view-controls';
 import type { Describe } from './widgets/choice';
 import { scoreText, titleText } from './title';
 import { iconButton, setIcon } from './widgets/button';
 import { dial } from './widgets/dial';
 import { icon, type IconName } from './widgets/icons';
 import { attachPopover } from './widgets/popover';
-import { toggle } from './widgets/toggle';
 
 export const PANEL_EVENT = 'wm-panel';
 export type PanelName = 'library' | 'help';
@@ -37,6 +37,7 @@ export class WmHeader extends HTMLElement {
   private readonly followers: ((settings: Settings) => void)[] = [];
   private readonly says = new Map<BarKey, { says: HTMLParagraphElement; idle: string }>();
   private band = document.createElement('button');
+  private radio = document.createElement('button');
   private loop = document.createElement('button');
 
   connectedCallback(): void {
@@ -51,6 +52,14 @@ export class WmHeader extends HTMLElement {
       extra: 'band',
       onClick: () => {
         app.toggleBand();
+      },
+    });
+    this.radio = iconButton({
+      name: 'radio',
+      label: describedBy('radio'),
+      extra: 'radio',
+      onClick: () => {
+        app.setRadio(!app.radio.on());
       },
     });
     this.loop = iconButton({
@@ -75,11 +84,17 @@ export class WmHeader extends HTMLElement {
       this.section('tempo', 'tempo', (panel) => {
         this.buildBandPanel(app, panel);
       }),
-      this.loop,
     );
-    // Over the field: everything that decides how the tones sound and how the stripes read
+    // Over the field: the melody hand. The radio plays melody phrases, the loop records what this hand just did –
+    // both belong here, not with the chords.
     const melody = zone('melody');
     melody.append(
+      this.radio,
+      this.loop,
+      this.section('loop', 'loop', (panel) => {
+        this.buildLoopPanel(app, panel);
+      }),
+      gap(),
       this.section('sound', 'sound', (panel) => {
         this.buildSound(app, panel);
       }),
@@ -111,6 +126,7 @@ export class WmHeader extends HTMLElement {
     });
     app.on('settings', () => {
       this.updateTitle();
+      this.updateBand(); // the radio may have been switched from a link
       const settings = app.store.get();
       for (const set of this.followers) set(settings);
     });
@@ -225,10 +241,10 @@ export class WmHeader extends HTMLElement {
   // Schema, tempo, loop length, radio – everything that decides what the band plays
   private buildBandPanel(app: App, panel: HTMLDivElement): void {
     const settings = app.store.get();
-    const schemata = schemaTiles(
-      settings.schema,
-      (schema) => {
-        app.store.update({ schema });
+    const lead = leadTiles(
+      leadOf(settings),
+      (value) => {
+        app.store.update(leadSettings(value));
       },
       this.describer('tempo'),
     );
@@ -248,38 +264,30 @@ export class WmHeader extends HTMLElement {
         app.tapTempo();
       },
     });
-    const radio = toggle(t('band.radio'), app.radio.on(), (on) => {
-      app.setRadio(on);
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.append(tempo.element, tap);
+    panel.append(lead.leaders.element, rule(), lead.schemata.element, rule(), row);
+    this.followers.push((next) => {
+      lead.set(leadOf(next));
+      tempo.set(next.tempo);
     });
+  }
+
+  // How long a loop records, and what it holds right now
+  private buildLoopPanel(app: App, panel: HTMLDivElement): void {
     const loops = loopTiles(
-      settings.loopBars,
+      app.store.get().loopBars,
       (loopBars) => {
         app.store.update({ loopBars });
       },
-      this.describer('tempo'),
+      this.describer('loop'),
     );
-    const modes = modeTiles(
-      settings.mode,
-      (mode) => {
-        app.store.update({ mode });
-      },
-      this.describer('tempo'),
-    );
-    const row = document.createElement('div');
-    row.className = 'row';
-    const radioRow = document.createElement('div');
-    radioRow.className = 'row radio';
-    radioRow.append(icon('radio'), radio.element);
-    row.append(tempo.element, tap, radioRow);
     this.loopList.className = 'layers';
-    panel.append(schemata.element, rule(), row, rule(), loops.element, this.loopList, rule(), modes.element);
+    panel.append(loops.element, this.loopList);
     this.listLayers();
     this.followers.push((next) => {
-      schemata.set(next.schema);
-      tempo.set(next.tempo);
       loops.set(next.loopBars);
-      modes.set(next.mode);
-      radio.set(app.radio.on());
     });
   }
 
@@ -374,7 +382,8 @@ export class WmHeader extends HTMLElement {
     const running = this.app?.band.running() === true;
     this.band.classList.toggle('on', running);
     if (!running) this.band.classList.remove('beat');
-    this.loop.hidden = !running;
+    this.loop.hidden = !running; // a loop runs in the band's time; without it there is nothing to record into
+    this.radio.classList.toggle('on', this.app?.radio.on() === true);
   }
 
   private pulse(): void {
@@ -439,7 +448,20 @@ export class WmHeader extends HTMLElement {
 }
 
 // The subjects of the bar, each with a name and a line about what it is for
-type BarKey = 'songs' | 'key' | 'style' | 'sound' | 'band' | 'tempo' | 'record' | 'view' | 'share' | 'help' | 'echo';
+type BarKey =
+  | 'songs'
+  | 'key'
+  | 'style'
+  | 'sound'
+  | 'band'
+  | 'tempo'
+  | 'record'
+  | 'loop'
+  | 'radio'
+  | 'view'
+  | 'share'
+  | 'help'
+  | 'echo';
 
 const describedBy = (key: BarKey): string => {
   const name = t(`bar.${key}.name`);

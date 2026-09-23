@@ -155,7 +155,7 @@ describe('wm-app', () => {
     expect(app.learn.song?.title).toBe('Alle meine Entchen');
     expect(root.openPanel).toBeNull();
     expect(root.querySelector('wm-header h1')?.textContent).toBe('Alle meine Entchen · 1/27');
-    expect(location.hash).toBe('#style=classical&sound=piano&song=alle-meine-entchen');
+    expect(location.hash).toBe('#style=classical&sound=piano&song=alle-meine-entchen&band=0&radio=0');
     for (const placed of app.learn.placed) {
       if (placed.spot === null) throw new Error('note off the field');
       app.player.press(1, placed.spot.tone);

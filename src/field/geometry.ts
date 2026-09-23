@@ -73,13 +73,17 @@ export class Field {
     this.box = box;
     const count = tones.length;
     this.perOctave = Math.max(1, stepsPerOctave);
+    // A change of key leaves the field exactly as it stands: same number of stripes, same widths, nothing to
+    // rebuild. Only a different style – and with it a different count – starts the widths over.
+    const keep = this.stripes.length === count;
+    const widths = this.stripes.map((stripe) => stripe.share);
     this.stripes = tones.map((midi, index) => ({
       index,
       midi,
       step: index % this.perOctave,
       top: box.top,
       bottom: box.bottom,
-      share: 1 / Math.max(1, count),
+      share: (keep ? widths[index] : undefined) ?? 1 / Math.max(1, count),
     }));
     // The focus can only be clamped once the stripes exist
     this.target = this.clamp(focus ?? this.target);
