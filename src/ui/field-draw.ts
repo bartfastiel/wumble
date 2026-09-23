@@ -38,8 +38,15 @@ export interface SliderScene {
   readonly held: boolean;
 }
 
+// Where the schema is heading, and how much of this bar is left before it gets there
+export interface AheadScene {
+  readonly spot: MapSpot;
+  readonly progress: number; // 0 at the start of the bar, 1 when the chord changes
+}
+
 export interface FieldScene {
   readonly look: Look;
+  readonly ahead: AheadScene | null;
   readonly slider: SliderScene;
   readonly field: Field;
   readonly fitness: readonly Fitness[];
@@ -52,6 +59,7 @@ export interface FieldScene {
   readonly names: ReadonlyMap<MapSpot, { readonly role: string; readonly chord: string }>;
   readonly lit: (index: number) => boolean; // a tone that just sounded, from anywhere
   readonly ghosts: readonly number[]; // stripes the radio or the loop is playing
+  readonly guests: readonly number[]; // stripes a guest in the room is holding, on their own device
   readonly learn: LearnScene | null;
   readonly floaters: readonly Floater[];
   readonly centre: (index: number) => { readonly x: number; readonly y: number } | null;
@@ -340,6 +348,31 @@ const drawStripe = (cx: CanvasRenderingContext2D, scene: FieldScene, i: number, 
   if (label !== undefined && label !== '') drawStripeLabel(cx, field, i, stripe, label, colour);
 };
 
+// Someone else is on this tone: a small light above the stripe. The sound is made on their device – this is the
+// only trace of them here, and it must not be mistaken for a tone of one's own.
+const drawGuestMarks = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
+  const ink = INK[scene.look];
+  for (const index of scene.guests) {
+    const stripe = scene.field.stripes[index];
+    if (stripe === undefined) continue;
+    const y = Math.max(scene.field.box.top + 7, stripe.top - 7);
+    const x = (scene.field.edgeAt(index, y) + scene.field.edgeAt(index + 1, y)) / 2;
+    cx.save();
+    cx.shadowColor = `${ink.seam}0.9)`;
+    cx.shadowBlur = 9;
+    cx.fillStyle = `${ink.seam}0.95)`;
+    cx.beginPath();
+    cx.arc(x, y, 3.6, 0, Math.PI * 2);
+    cx.fill();
+    cx.restore();
+    cx.strokeStyle = `${ink.seam}0.35)`;
+    cx.lineWidth = 1.2;
+    cx.beginPath();
+    cx.arc(x, y, 7, 0, Math.PI * 2);
+    cx.stroke();
+  }
+};
+
 const drawStripes = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   scene.field.stripes.forEach((stripe, i) => {
     drawStripe(cx, scene, i, stripe);
@@ -522,8 +555,44 @@ const drawSpot = (cx: CanvasRenderingContext2D, scene: FieldScene, spot: MapSpot
   if (name !== undefined && radius > 15) drawSpotName(cx, spot, radius, chosen, name, INK[scene.look]);
 };
 
+// What the schema will play next: a ring that closes as the bar runs out, and a glow that grows with it. The eye
+// learns the twelve-bar blues from it without being told – and knows the change is coming before it happens.
+const drawAhead = (cx: CanvasRenderingContext2D, scene: FieldScene, ahead: AheadScene): void => {
+  const { spot, progress } = ahead;
+  const ink = INK[scene.look];
+  const radius = spot.radius * 1.14;
+  const around = isStraight(scene.look) ? (radius * 1.86 + radius * 1.34) * 2 : 2 * Math.PI * radius;
+  cx.save();
+
+  // The whole ring, faint: this is the one that is coming, however far away it still is
+  cx.strokeStyle = `${ink.seam}0.2)`;
+  cx.lineWidth = 1.6;
+  spotPath(cx, spot, radius, scene.look);
+  cx.stroke();
+
+  // The light in it fills as the bars run out, and the last beat before the change is the brightest
+  const close = Math.max(0, (progress - 0.85) / 0.15); // the final breath before it happens
+  cx.shadowColor = `${ink.seam}0.9)`;
+  cx.shadowBlur = 5 + progress * 14 + close * 10;
+  cx.strokeStyle = `${ink.seam}${String(0.45 + progress * 0.55)})`;
+  cx.lineWidth = 2 + progress * 1.8;
+  cx.setLineDash([Math.max(0.001, around * progress), around]);
+  cx.lineDashOffset = around * 0.25; // it closes from the top, where a clock would
+  spotPath(cx, spot, radius, scene.look);
+  cx.stroke();
+
+  // And the face itself takes on a little of that light, so the eye finds it without looking for a ring
+  cx.setLineDash([]);
+  cx.globalAlpha = 0.06 + progress * 0.16;
+  cx.fillStyle = `${ink.seam}1)`;
+  spotPath(cx, spot, spot.radius, scene.look);
+  cx.fill();
+  cx.restore();
+};
+
 const drawMap = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   for (const spot of scene.spots) drawSpot(cx, scene, spot);
+  if (scene.ahead !== null) drawAhead(cx, scene, scene.ahead);
 };
 
 // Waves running outwards from a held stripe, faster and stronger the more it wavers
@@ -689,6 +758,7 @@ export const drawField = (cx: CanvasRenderingContext2D, scene: FieldScene, width
   cx.fillStyle = INK[scene.look].back;
   cx.fillRect(0, 0, width, height);
   drawStripes(cx, scene);
+  drawGuestMarks(cx, scene);
   drawSlider(cx, scene);
   drawLearn(cx, scene);
   drawMap(cx, scene);

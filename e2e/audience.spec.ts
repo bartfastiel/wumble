@@ -33,6 +33,9 @@ test.describe('audience', () => {
 
     const listener = await context.newPage();
     await listener.goto(`./${relayQuery()}#room=${code}`);
+    // Every guest is asked first; this one came to sing
+    await listener.locator('wm-join .tile[title^="Singen"]').click();
+    await listener.locator('wm-join button.play').click();
     await expect(listener.locator('body')).toHaveClass(/listening/);
     await expect(listener).toHaveTitle(`Wumble · Raum ${code}`);
     await expect(listener.locator('wm-listener .status')).toHaveText(`Raum ${code} · verbunden`, {

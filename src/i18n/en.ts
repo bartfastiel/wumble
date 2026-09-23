@@ -4,6 +4,7 @@ export const en = {
     version: 'Version {version}',
   },
   theory: {
+    international: 'International note names (B, not H)',
     major: '{tonic} major',
     minor: '{tonic} minor',
     group: { stage: 'Stage', school: 'School', nature: 'Nature' },
@@ -169,6 +170,7 @@ export const en = {
     connected: 'Connected – room open',
     reconnecting: 'Connection lost – reconnecting …',
     unreachable: 'Audience not reachable – is the relay running? Retrying in {seconds} s',
+    musicians: { one: '1 musician', other: '{count} musicians' },
     listeners: { one: '1 listener', other: '{count} listeners' },
     end: 'End',
     publicUrlHint:
@@ -187,6 +189,32 @@ export const en = {
       done: 'Done',
       applause: 'Applause',
     },
+  },
+  bar: {
+    songs: { name: 'Songs', text: 'Songs to play along, sheet music to scan, echo and audience' },
+    key: { name: 'Key', text: 'Which key the field and the map are in' },
+    style: { name: 'Style', text: 'Which scale and which chords lie on the field' },
+    sound: { name: 'Sound', text: 'What the three layers sound like, and how the tones are tuned' },
+    band: { name: 'Band', text: 'Drums, bass and chords play along' },
+    tempo: { name: 'Accompaniment', text: 'The schema, tempo, loop and radio of the band' },
+    record: { name: 'Loop', text: 'Record from the next bar and keep it running as a loop' },
+    view: { name: 'View', text: 'Look, labels, note names and play mode' },
+    share: { name: 'Share the link', text: 'The address with everything you have set, on the clipboard' },
+    help: { name: 'Help', text: 'What the field means and what else plays along' },
+    echo: { name: 'End the echo', text: 'The echo stops, the band plays on' },
+  },
+  join: {
+    title: 'How do you join in?',
+    role: {
+      play: { name: 'Play along', text: 'You play the melody on your device, in the key of the host' },
+      sing: { name: 'Sing', text: 'The words scroll along, you see the next tone and can applaud' },
+    },
+    range: {
+      middle: { name: 'Middle', text: 'The field opens where the melody lies' },
+      low: { name: 'Bass', text: 'The field opens low – for bass lines under the melody' },
+    },
+    seatHint: 'Greyed-out sounds are already taken. Chords, band and key stay with the host.',
+    waiting: 'Waiting for the host …',
   },
   ui: {
     back: 'Back',
@@ -289,6 +317,10 @@ export const en = {
     audience: {
       lead: 'Audience',
       text: ' (👥 at the top of the song list): a room code and a QR code that friends scan with their phone – they see the lyrics scroll in time like karaoke, with a syllable that fills and a dot that jumps to the next one; in free play the tone just played with its chord. They can applaud, and the clapping lands as 👏 on your field. The music comes from your room, the phone stays silent – for this to work the relay must be running (see README).',
+    },
+    guests: {
+      lead: 'Playing along',
+      text: ' (through the same QR code): whoever scans it is asked once – sing, or play along? A musician gets the same field in your key, style and tuning, on a sound nobody else has taken, and their own device makes the sound. A small light appears above every stripe a guest is holding. Chords, band and key stay with you – a guest cannot move anything in your music. Whoever wants to sit lower picks "bass" on the way in and starts two octaves down.',
     },
     radio: {
       lead: 'Radio',

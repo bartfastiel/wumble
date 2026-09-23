@@ -45,6 +45,7 @@ export interface KeyboardOptions {
   readonly ignore?: () => boolean; // a panel is open, a dialog shows, the page is a listener
   readonly onEscape?: () => void;
   readonly onRecord?: () => void; // R: record a loop layer
+  readonly melodyOnly?: () => boolean; // a guest in someone else's room: no chords, no loop
 }
 
 const isTextInput = (target: EventTarget | null): boolean =>
@@ -58,12 +59,13 @@ export const bindKeyboard = (target: Document, player: Player, options: Keyboard
       return;
     }
     if (options.ignore?.() === true || isTextInput(event.target)) return;
+    const melodyOnly = options.melodyOnly?.() === true;
     if (event.code === 'KeyR') {
-      options.onRecord?.();
+      if (!melodyOnly) options.onRecord?.();
       return;
     }
     const chord = keyChord(event.code);
-    if (chord !== null) {
+    if (chord !== null && !melodyOnly) {
       event.preventDefault();
       player.chooseChord(chord === MUTE ? player.chord : Math.min(chord, player.mapSize - 1));
       return;

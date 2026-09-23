@@ -2,7 +2,7 @@
 // have shapes you learn to recognise after seeing them twice – which is the point of showing them instead of naming them.
 import { t } from '../../i18n';
 import { STYLE_IDS, STYLES, type StyleId } from '../../theory/styles';
-import { choice, type Choice, type ChoiceItem } from '../widgets/choice';
+import { choice, type Choice, type ChoiceItem, type Describe } from '../widgets/choice';
 import { pattern } from '../widgets/pattern';
 
 const scaleArt = (id: StyleId): SVGSVGElement => {
@@ -11,11 +11,16 @@ const scaleArt = (id: StyleId): SVGSVGElement => {
   return pattern({ values: Array.from({ length: 12 }, (_, i) => (steps.has(i) ? 1 : 0.12)), width: 58, height: 20 });
 };
 
-export const styleTiles = (current: StyleId, onPick: (id: StyleId) => void): Choice<StyleId> => {
+export const styleTiles = (
+  current: StyleId,
+  onPick: (id: StyleId) => void,
+  describe?: Describe<StyleId>,
+): Choice<StyleId> => {
   const items: ChoiceItem<StyleId>[] = STYLE_IDS.map((id) => ({
     value: id,
     label: t(`theory.style.${id}`),
+    hint: t(`theory.group.${STYLES[id].group}`),
     art: () => scaleArt(id),
   }));
-  return choice(items, current, onPick, 3);
+  return choice(items, current, onPick, 3, describe);
 };

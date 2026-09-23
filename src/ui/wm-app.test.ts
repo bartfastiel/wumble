@@ -12,6 +12,7 @@ import { WmField } from './wm-field';
 import { WmHeader } from './wm-header';
 import { WmHelp } from './wm-help';
 import { WmLibrary } from './wm-library';
+import { WmJoin } from './wm-join';
 import { WmListener } from './wm-listener';
 import { WmScan } from './wm-scan';
 
@@ -62,6 +63,7 @@ beforeAll(() => {
   customElements.define('wm-library', WmLibrary);
   customElements.define('wm-help', WmHelp);
   customElements.define('wm-audience', WmAudience);
+  customElements.define('wm-join', WmJoin);
   customElements.define('wm-listener', WmListener);
   customElements.define('wm-scan', WmScan);
   customElements.define('wm-done', WmDone);
@@ -222,10 +224,18 @@ describe('wm-app', () => {
     expect(root.openPanel).toBeNull();
     relay.sockets.length = 0;
     app.applyLink('#room=k7m3x');
+    // A guest is asked first: sing along, or play along?
+    expect(root.join.hidden).toBe(false);
+    expect(relay.sockets[0]?.url).toBe('ws://127.0.0.1:8765/ws?room=k7m3x&role=musician');
+    const sing = [...document.querySelectorAll<HTMLButtonElement>('wm-join .tile')].find((tile) =>
+      tile.title.startsWith('Singen'),
+    );
+    sing?.click();
+    document.querySelector<HTMLButtonElement>('wm-join button.play')?.click();
     expect(root.listener.isOpen).toBe(true);
     expect(root.listener.room).toBe('k7m3x');
     expect(document.body.classList.contains('listening')).toBe(true);
-    expect(relay.sockets[0]?.url).toBe('ws://127.0.0.1:8765/ws?room=k7m3x&role=listener');
+    expect(relay.sockets.at(-1)?.url).toBe('ws://127.0.0.1:8765/ws?room=k7m3x&role=listener');
     location.hash = '';
     window.dispatchEvent(new Event('hashchange'));
     expect(root.listener.isOpen).toBe(false);
@@ -251,6 +261,38 @@ describe('wm-app', () => {
       ['G', ''], // the accompaniment is muted: the tone stands alone
       ['E', 'C'],
     ]);
+  });
+
+  it('joins a room as a musician: the host key, its own sound, and every tone reported', async () => {
+    const { root, app, relay } = mount();
+    app.applyLink('#room=k7m3x');
+    await new Promise((resolve) => setTimeout(resolve, 1)); // the socket accepts
+    const socket = relay.sockets[0];
+    expect(socket?.url).toContain('role=musician');
+    // The host says what it plays in, and which sounds are spoken for
+    socket?.deliver(
+      JSON.stringify({ t: 'state', k: 3, st: 'classical', tu: 'just', g: true, hue: 355, c: 1, taken: ['organ'] }),
+    );
+    expect(app.store.get()).toMatchObject({ signature: 3, style: 'classical', tuning: 'just', german: true });
+    const organ = [...document.querySelectorAll<HTMLButtonElement>('wm-join .tile')].find(
+      (tile) => tile.title === 'Orgel',
+    );
+    expect(organ?.disabled).toBe(true); // someone else is on it
+    document.querySelector<HTMLButtonElement>('wm-join button.play')?.click();
+    expect(app.guest).not.toBeNull();
+    expect(document.body.classList.contains('guest')).toBe(true);
+    const sent = socket?.sent.map((text) => JSON.parse(text) as { t: string }) ?? [];
+    expect(sent.some((message) => message.t === 'join')).toBe(true);
+    // What it plays travels, what it hears does not change the host
+    const tone = app.player.model.tones.indexOf(64);
+    app.player.press(1, tone);
+    app.player.release(1);
+    const notes = (socket?.sent ?? []).map((text) => JSON.parse(text) as { t: string; midi?: number; on?: boolean });
+    expect(notes.filter((message) => message.t === 'note')).toEqual([
+      expect.objectContaining({ midi: 64, on: true }),
+      expect.objectContaining({ midi: 64, on: false }),
+    ]);
+    expect(root.field.isConnected).toBe(true);
   });
 
   it('lets applause from the room float over the field', async () => {

@@ -12,6 +12,7 @@ import { keyWheel } from './controls/key-wheel';
 import { soundTiles } from './controls/sound-tiles';
 import { styleTiles } from './controls/style-tiles';
 import { labelTiles, lookTiles, modeTiles, spellingTiles, tuningTiles } from './controls/view-controls';
+import type { Describe } from './widgets/choice';
 import { scoreText, titleText } from './title';
 import { iconButton, setIcon } from './widgets/button';
 import { dial } from './widgets/dial';
@@ -34,6 +35,7 @@ export class WmHeader extends HTMLElement {
   private readonly keySign = document.createElement('span');
   private readonly loopList = document.createElement('div');
   private readonly followers: ((settings: Settings) => void)[] = [];
+  private readonly says = new Map<BarKey, { says: HTMLParagraphElement; idle: string }>();
   private band = document.createElement('button');
   private loop = document.createElement('button');
 
@@ -45,7 +47,7 @@ export class WmHeader extends HTMLElement {
     this.score.className = 'score';
     this.band = iconButton({
       name: 'band',
-      label: t('ui.band'),
+      label: describedBy('band'),
       extra: 'band',
       onClick: () => {
         app.toggleBand();
@@ -53,7 +55,7 @@ export class WmHeader extends HTMLElement {
     });
     this.loop = iconButton({
       name: 'record',
-      label: t('band.loop.record'),
+      label: describedBy('record'),
       extra: 'loop',
       onClick: () => {
         app.recordLoop();
@@ -61,38 +63,40 @@ export class WmHeader extends HTMLElement {
     });
     this.loop.hidden = true;
 
-    const header = document.createElement('header');
-    header.append(
-      this.panelButton('library', 'songs', t('ui.library')),
-      this.heading,
-      this.buildEchoEnd(app),
-      this.score,
-      gap(),
+    // Over the map: everything that decides which chords there are and who plays them
+    const chords = zone('chords');
+    chords.append(
       this.keySection(app),
-      this.section('style', t('settings.style'), (panel) => {
+      this.section('style', 'style', (panel) => {
         this.buildStyle(app, panel);
-      }),
-      this.section('sound', t('settings.sound'), (panel) => {
-        this.buildSound(app, panel);
       }),
       gap(),
       this.band,
-      this.section('tempo', t('band.title'), (panel) => {
+      this.section('tempo', 'tempo', (panel) => {
         this.buildBandPanel(app, panel);
       }),
       this.loop,
-      gap(),
-      this.section('view', t('settings.look'), (panel) => {
+    );
+    // Over the field: everything that decides how the tones sound and how the stripes read
+    const melody = zone('melody');
+    melody.append(
+      this.section('sound', 'sound', (panel) => {
+        this.buildSound(app, panel);
+      }),
+      this.section('view', 'view', (panel) => {
         this.buildView(app, panel);
       }),
-      iconButton({
-        name: 'share',
-        label: t('settings.share'),
-        onClick: (button) => {
-          this.share(button);
-        },
-      }),
-      this.panelButton('help', 'help', t('ui.help')),
+    );
+    const header = document.createElement('header');
+    header.append(
+      this.panelButton('library', 'songs', 'songs'),
+      chords,
+      this.heading,
+      this.buildEchoEnd(app),
+      this.score,
+      melody,
+      this.shareButton(),
+      this.panelButton('help', 'help', 'help'),
     );
     this.append(header);
     this.listen(app);
@@ -122,25 +126,51 @@ export class WmHeader extends HTMLElement {
     });
   }
 
-  // A button with a panel of pictures under it, built the first time it opens
-  private section(name: IconName, label: string, build: (panel: HTMLDivElement) => void): HTMLDivElement {
+  // A button with a panel of pictures under it, built the first time it opens. The panel says what it is for,
+  // and while a finger is over a tile it says what that tile does – so nothing needs writing on the pictures.
+  private section(name: IconName, key: BarKey, build: (panel: HTMLDivElement) => void): HTMLDivElement {
     const holder = document.createElement('div');
     holder.className = 'section';
-    const button = iconButton({ name, label });
+    const button = iconButton({ name, label: describedBy(key) });
     button.dataset.section = name;
-    const { panel } = attachPopover(button, build);
+    const { panel } = attachPopover(button, (body) => {
+      const title = document.createElement('h2');
+      title.textContent = t(`bar.${key}.name`);
+      const says = document.createElement('p');
+      says.className = 'says';
+      const idle = t(`bar.${key}.text`);
+      says.textContent = idle;
+      this.says.set(key, { says, idle });
+      const content = document.createElement('div');
+      content.className = 'pop-body';
+      body.append(title, content, says);
+      build(content);
+    });
     holder.append(button, panel);
     return holder;
   }
 
+  // Puts words to whatever the finger is over, and falls back to what the panel is for
+  private describer<V>(key: BarKey): Describe<V> {
+    return (item) => {
+      const line = this.says.get(key);
+      if (line === undefined) return;
+      line.says.textContent =
+        item === null
+          ? line.idle
+          : [item.label, item.hint].filter((part) => part !== undefined && part !== '').join(' – ');
+    };
+  }
+
   // The key carries its own sign in the middle of the icon: whatever else happens, C stays C
   private keySection(app: App): HTMLDivElement {
-    const holder = this.section('key', t('settings.key'), (panel) => {
+    const holder = this.section('key', 'key', (panel) => {
       const settings = app.store.get();
       const ring = keyWheel(settings.signature, settings.german, (signature) => {
         app.store.update({ signature });
       });
       panel.append(ring.element);
+      this.describer('key')(null);
       this.followers.push((next) => {
         ring.set(next.signature);
       });
@@ -156,9 +186,13 @@ export class WmHeader extends HTMLElement {
   }
 
   private buildStyle(app: App, panel: HTMLDivElement): void {
-    const tiles = styleTiles(app.store.get().style, (style) => {
-      app.store.update(styleSettings(style, app.band.running()));
-    });
+    const tiles = styleTiles(
+      app.store.get().style,
+      (style) => {
+        app.store.update(styleSettings(style, app.band.running()));
+      },
+      this.describer('style'),
+    );
     panel.append(tiles.element);
     this.followers.push((settings) => {
       tiles.set(settings.style);
@@ -166,13 +200,21 @@ export class WmHeader extends HTMLElement {
   }
 
   private buildSound(app: App, panel: HTMLDivElement): void {
-    const sounds = soundTiles(app.store.get().combi, (combi) => {
-      app.store.update({ combi });
-      app.engine.ensure(); // a gesture: fetch the samples right away
-    });
-    const tunings = tuningTiles(app.store.get().tuning, (tuning) => {
-      app.store.update({ tuning });
-    });
+    const sounds = soundTiles(
+      app.store.get().combi,
+      (combi) => {
+        app.store.update({ combi });
+        app.engine.ensure(); // a gesture: fetch the samples right away
+      },
+      this.describer('sound'),
+    );
+    const tunings = tuningTiles(
+      app.store.get().tuning,
+      (tuning) => {
+        app.store.update({ tuning });
+      },
+      this.describer('sound'),
+    );
     panel.append(sounds.element, rule(), tunings.element);
     this.followers.push((settings) => {
       sounds.set(settings.combi);
@@ -183,9 +225,13 @@ export class WmHeader extends HTMLElement {
   // Schema, tempo, loop length, radio – everything that decides what the band plays
   private buildBandPanel(app: App, panel: HTMLDivElement): void {
     const settings = app.store.get();
-    const schemata = schemaTiles(settings.schema, (schema) => {
-      app.store.update({ schema });
-    });
+    const schemata = schemaTiles(
+      settings.schema,
+      (schema) => {
+        app.store.update({ schema });
+      },
+      this.describer('tempo'),
+    );
     const tempo = dial({
       label: t('band.tempo'),
       min: TEMPO_MIN,
@@ -205,9 +251,20 @@ export class WmHeader extends HTMLElement {
     const radio = toggle(t('band.radio'), app.radio.on(), (on) => {
       app.setRadio(on);
     });
-    const loops = loopTiles(settings.loopBars, (loopBars) => {
-      app.store.update({ loopBars });
-    });
+    const loops = loopTiles(
+      settings.loopBars,
+      (loopBars) => {
+        app.store.update({ loopBars });
+      },
+      this.describer('tempo'),
+    );
+    const modes = modeTiles(
+      settings.mode,
+      (mode) => {
+        app.store.update({ mode });
+      },
+      this.describer('tempo'),
+    );
     const row = document.createElement('div');
     row.className = 'row';
     const radioRow = document.createElement('div');
@@ -215,36 +272,46 @@ export class WmHeader extends HTMLElement {
     radioRow.append(icon('radio'), radio.element);
     row.append(tempo.element, tap, radioRow);
     this.loopList.className = 'layers';
-    panel.append(schemata.element, rule(), row, rule(), loops.element, this.loopList);
+    panel.append(schemata.element, rule(), row, rule(), loops.element, this.loopList, rule(), modes.element);
     this.listLayers();
     this.followers.push((next) => {
       schemata.set(next.schema);
       tempo.set(next.tempo);
       loops.set(next.loopBars);
+      modes.set(next.mode);
       radio.set(app.radio.on());
     });
   }
 
   private buildView(app: App, panel: HTMLDivElement): void {
     const settings = app.store.get();
-    const looks = lookTiles(settings.look, (look) => {
-      app.store.update({ look });
-    });
-    const labels = labelTiles(settings.labels, settings.german, (value) => {
-      app.store.update({ labels: value });
-    });
-    const spelling = spellingTiles(settings.german, (german) => {
-      app.store.update({ german });
-    });
-    const modes = modeTiles(settings.mode, (mode) => {
-      app.store.update({ mode });
-    });
-    panel.append(looks.element, rule(), labels.element, spelling.element, rule(), modes.element);
+    const looks = lookTiles(
+      settings.look,
+      (look) => {
+        app.store.update({ look });
+      },
+      this.describer('view'),
+    );
+    const labels = labelTiles(
+      settings.labels,
+      settings.german,
+      (value) => {
+        app.store.update({ labels: value });
+      },
+      this.describer('view'),
+    );
+    const spelling = spellingTiles(
+      settings.german,
+      (german) => {
+        app.store.update({ german });
+      },
+      this.describer('view'),
+    );
+    panel.append(looks.element, rule(), labels.element, spelling.element);
     this.followers.push((next) => {
       looks.set(next.look);
       labels.set(next.labels);
       spelling.set(next.german ? 1 : 0);
-      modes.set(next.mode);
     });
   }
 
@@ -252,8 +319,8 @@ export class WmHeader extends HTMLElement {
     this.echoEnd.type = 'button';
     this.echoEnd.className = 'ibtn filled end';
     this.echoEnd.hidden = true;
-    this.echoEnd.title = t('band.echo.end');
-    this.echoEnd.setAttribute('aria-label', t('band.echo.end'));
+    this.echoEnd.title = describedBy('echo');
+    this.echoEnd.setAttribute('aria-label', t('bar.echo.name'));
     this.echoEnd.append(icon('stop'));
     this.echoEnd.addEventListener('click', () => {
       app.stopEcho();
@@ -261,10 +328,22 @@ export class WmHeader extends HTMLElement {
     return this.echoEnd;
   }
 
-  private panelButton(panel: PanelName, name: IconName, label: string): HTMLButtonElement {
+  private shareButton(): HTMLButtonElement {
+    const button = iconButton({
+      name: 'share',
+      label: describedBy('share'),
+      onClick: (made) => {
+        this.share(made);
+      },
+    });
+    button.dataset.action = 'share';
+    return button;
+  }
+
+  private panelButton(panel: PanelName, name: IconName, key: BarKey): HTMLButtonElement {
     const button = iconButton({
       name,
-      label,
+      label: describedBy(key),
       onClick: () => {
         this.dispatchEvent(new CustomEvent<PanelName>(PANEL_EVENT, { bubbles: true, detail: panel }));
       },
@@ -358,6 +437,21 @@ export class WmHeader extends HTMLElement {
     });
   }
 }
+
+// The subjects of the bar, each with a name and a line about what it is for
+type BarKey = 'songs' | 'key' | 'style' | 'sound' | 'band' | 'tempo' | 'record' | 'view' | 'share' | 'help' | 'echo';
+
+const describedBy = (key: BarKey): string => {
+  const name = t(`bar.${key}.name`);
+  const text = t(`bar.${key}.text`);
+  return `${name} – ${text}`;
+};
+
+const zone = (kind: 'chords' | 'melody'): HTMLDivElement => {
+  const holder = document.createElement('div');
+  holder.className = `zone ${kind}`;
+  return holder;
+};
 
 const gap = (): HTMLSpanElement => {
   const span = document.createElement('span');

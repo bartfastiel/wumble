@@ -49,16 +49,20 @@ The whole surface comes in three looks (settings): _grown_, with waved edges and
 upright bars, even radii and the map in a grid, or _polished_, the same straight shape in white lacquer under a cool
 lamp, where fitness reads as brightness and the chosen chord glows pale blue. Same meaning, different temperament.
 
-**Above: the bar.** One icon per subject, and behind every icon a picture instead of a list: the key as a circle of
-fifths, the style as its own scale, the sound as its instrument with the shape it makes, the band with its schema as
-a pattern of bars and the tempo on a dial, the view with the three looks. Whatever holds right now is lit; the words
-live in the tooltips.
+**Above: the bar.** Two plates, each over what it changes: the left one over the map (key, style, band,
+accompaniment, loop), the right one over the field (sound and tunings, look and labels). Behind every icon a picture
+instead of a list – the key as a circle of fifths, the style as its own scale, the sound as its instrument with the
+shape it makes, the schema as a pattern of bars, the tempo on a dial. Whatever holds right now is lit, and each panel
+says what it is for and what the tile under your finger does.
+
+**With a schema running,** the chord that comes next wears a ring on the map, and the ring closes as the bars run
+out: which chord, and how far off, at a glance.
 
 **And the rest.** The **keyboard** plays along – the two letter rows are fifteen tones around the middle of the field,
 the digits choose a chord. **Band** (🥁) adds drums, bass and chords in the groove of the style; ● records a loop from
 the next bar, the settings offer schemata, tap tempo, echo and radio. **Songs** (♫) show the next tone as a glowing
 dot, with levels that score the hits. **Scan sheet music** photographs a printed melody and lays it on the field.
-**Audience** opens a room with a QR code: friends see the lyrics scroll on their phone like karaoke and applaud.
+**Audience** opens a room with a QR code. Whoever scans it is asked once: sing along, or play along? A singer sees the lyrics scroll like karaoke and can applaud; a musician gets the same field in the host's key, style and tuning, on a sound nobody else has taken, and plays the melody on their own device – the host's field shows a small light above every tone a guest is holding. Chords, band and key stay with whoever opened the room.
 The URL fragment carries every setting as a shareable link.
 
 ## Development

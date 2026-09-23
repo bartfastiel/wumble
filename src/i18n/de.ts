@@ -4,6 +4,7 @@ export const de = {
     version: 'Version {version}',
   },
   theory: {
+    international: 'Internationale Notennamen (B statt H)',
     major: '{tonic}-Dur',
     minor: '{tonic}-Moll',
     group: { stage: 'Bühne', school: 'Schule', nature: 'Natur' },
@@ -169,6 +170,7 @@ export const de = {
     connected: 'Verbunden – Raum offen',
     reconnecting: 'Verbindung verloren – verbinde neu …',
     unreachable: 'Publikum nicht erreichbar – läuft das Relay? Neuer Versuch in {seconds} s',
+    musicians: { one: '1 Mitspieler', other: '{count} Mitspieler' },
     listeners: { one: '1 Zuhörer', other: '{count} Zuhörer' },
     end: 'Beenden',
     publicUrlHint:
@@ -187,6 +189,32 @@ export const de = {
       done: 'Geschafft',
       applause: 'Applaus',
     },
+  },
+  bar: {
+    songs: { name: 'Lieder', text: 'Lieder zum Mitspielen, Notenblatt scannen, Echo und Publikum' },
+    key: { name: 'Tonart', text: 'Welche Tonart das Feld und die Karte benutzen' },
+    style: { name: 'Stil', text: 'Welche Tonleiter und welche Akkorde auf dem Feld liegen' },
+    sound: { name: 'Klang', text: 'Womit die drei Ebenen klingen, und wie die Töne gestimmt sind' },
+    band: { name: 'Band', text: 'Schlagzeug, Bass und Akkorde spielen mit' },
+    tempo: { name: 'Begleitung', text: 'Schema, Tempo, Schleife und Radio der Band' },
+    record: { name: 'Schleife', text: 'Ab dem nächsten Takt aufnehmen und als Schleife weiterlaufen lassen' },
+    view: { name: 'Ansicht', text: 'Erscheinungsbild, Beschriftung, Notennamen und Spielweise' },
+    share: { name: 'Link teilen', text: 'Adresse mit allem, was du eingestellt hast, in die Zwischenablage' },
+    help: { name: 'Hilfe', text: 'Was das Feld bedeutet und was alles mitspielt' },
+    echo: { name: 'Echo beenden', text: 'Das Echo hört auf, die Band spielt weiter' },
+  },
+  join: {
+    title: 'Wie machst du mit?',
+    role: {
+      play: { name: 'Mitspielen', text: 'Du spielst die Melodie auf deinem Gerät – in der Tonart des Gastgebers' },
+      sing: { name: 'Singen', text: 'Der Text läuft mit, du siehst den nächsten Ton und kannst klatschen' },
+    },
+    range: {
+      middle: { name: 'Mitte', text: 'Das Feld öffnet dort, wo die Melodie liegt' },
+      low: { name: 'Bass', text: 'Das Feld öffnet tief – für Basslinien unter der Melodie' },
+    },
+    seatHint: 'Ausgegraute Klänge spielt schon jemand. Akkorde, Band und Tonart bleiben beim Gastgeber.',
+    waiting: 'Warte auf den Gastgeber …',
   },
   ui: {
     back: 'Zurück',
@@ -289,6 +317,10 @@ export const de = {
     audience: {
       lead: 'Publikum',
       text: ' (👥 oben in der Lieder-Liste): Ein Raumcode und ein QR-Code, den Freunde mit dem Handy scannen – sie sehen den Liedtext im Takt mitlaufen wie beim Karaoke, mit einer Silbe, die sich füllt, und einem Punkt, der zur nächsten springt; im freien Spiel den gerade gespielten Ton samt Akkord. Sie können applaudieren, und das Klatschen landet als 👏 auf deinem Feld. Die Musik kommt aus deinem Raum, das Handy bleibt stumm – damit es klappt, muss der Relay laufen (siehe README).',
+    },
+    guests: {
+      lead: 'Mitspielen',
+      text: ' (über denselben QR-Code): Wer den Code scannt, wird einmal gefragt – singen oder mitspielen? Wer mitspielt, bekommt dasselbe Feld in deiner Tonart, deinem Stil und deiner Stimmung, auf einem Klang, den noch niemand hat; den Ton macht sein eigenes Gerät. Über jedem Streifen, den ein Gast hält, erscheint bei dir ein kleines Licht. Akkorde, Band und Tonart bleiben bei dir – ein Gast kann nichts an deiner Musik verstellen. Wer tiefer sitzen will, wählt beim Einsteigen „Bass“ und startet zwei Oktaven tiefer.',
     },
     radio: {
       lead: 'Radio',

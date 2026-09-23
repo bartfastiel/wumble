@@ -51,6 +51,14 @@ export const statusText = (status: RoomStatus): string => {
 export const listenersText = (count: number): string =>
   count === 1 ? t('audience.listeners.one') : t('audience.listeners.other', { count });
 
+// "2 Zuhörer · 1 Mitspieler" – the musicians are only named once there are any
+export const roomText = (listeners: number, musicians: number): string => {
+  const singers = listenersText(listeners);
+  if (musicians === 0) return singers;
+  const players = musicians === 1 ? t('audience.musicians.one') : t('audience.musicians.other', { count: musicians });
+  return `${singers} · ${players}`;
+};
+
 const paragraph = (className: string): HTMLParagraphElement => {
   const node = document.createElement('p');
   node.className = className;
@@ -157,7 +165,7 @@ export class WmAudience extends WmPanel {
     this.link.textContent = room.pageLink;
     this.code.textContent = room.code;
     this.status.textContent = statusText(room.status);
-    this.count.textContent = listenersText(room.listeners);
+    this.count.textContent = roomText(room.listeners, room.musicians);
   }
 
   // The online address for the file from disk: new room on the relay of that address

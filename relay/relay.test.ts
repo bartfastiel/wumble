@@ -267,17 +267,31 @@ describe('relay', () => {
 
   it('greets with hallo, tells the room about listeners and about who leaves', async () => {
     const player = await open('K7M3X', 'player');
-    expect(await player.next()).toEqual({ t: 'hello', role: 'player', room: 'k7m3x', s: now, listeners: 0 });
+    expect(await player.next()).toEqual({
+      t: 'hello',
+      role: 'player',
+      room: 'k7m3x',
+      s: now,
+      listeners: 0,
+      musicians: 0,
+    });
     const listener = await open('k7m3x', 'listener');
-    expect(await listener.next()).toEqual({ t: 'hello', role: 'listener', room: 'k7m3x', s: now, listeners: 1 });
-    expect(await player.next()).toEqual({ t: 'present', listeners: 1 });
+    expect(await listener.next()).toEqual({
+      t: 'hello',
+      role: 'listener',
+      room: 'k7m3x',
+      s: now,
+      listeners: 1,
+      musicians: 0,
+    });
+    expect(await player.next()).toEqual({ t: 'present', listeners: 1, musicians: 0 });
     const second = await open('k7m3x', 'whatever'); // unknown roles listen
     expect(await second.next()).toMatchObject({ t: 'hello', role: 'listener', listeners: 2 });
-    expect(await player.next()).toEqual({ t: 'present', listeners: 2 });
-    expect(await listener.next()).toEqual({ t: 'present', listeners: 2 });
+    expect(await player.next()).toEqual({ t: 'present', listeners: 2, musicians: 0 });
+    expect(await listener.next()).toEqual({ t: 'present', listeners: 2, musicians: 0 });
     await second.close();
-    expect(await player.next()).toEqual({ t: 'present', listeners: 1 });
-    expect(await listener.next()).toEqual({ t: 'present', listeners: 1 });
+    expect(await player.next()).toEqual({ t: 'present', listeners: 1, musicians: 0 });
+    expect(await listener.next()).toEqual({ t: 'present', listeners: 1, musicians: 0 });
     await listener.close();
     await player.close();
     await until(() => relay.stats().rooms === 0);
@@ -338,6 +352,29 @@ describe('relay', () => {
     expect(await upgradeStatus(port, '/ws?room=other')).toBe(101);
   });
 
+  it('lets a musician join: the player hears them, the singers do not', async () => {
+    const player = await open('k7m3x', 'player');
+    const singer = await open('k7m3x', 'listener');
+    const musician = await open('k7m3x', 'musician');
+    expect(await musician.next()).toMatchObject({ t: 'hello', role: 'musician', listeners: 1, musicians: 1 });
+    await player.next(); // hello
+    await player.next(); // present: the singer arrived
+    expect(await player.next()).toEqual({ t: 'present', listeners: 1, musicians: 1 });
+    await singer.next(); // hello
+    expect(await singer.next()).toEqual({ t: 'present', listeners: 1, musicians: 1 });
+
+    // A note from the musician reaches the player alone
+    musician.socket.send(JSON.stringify({ t: 'note', id: 'a', midi: 64, on: true }));
+    expect(await player.next()).toMatchObject({ t: 'note', id: 'a', midi: 64, on: true });
+    // and the state from the player reaches everyone
+    player.socket.send(
+      JSON.stringify({ t: 'state', k: 3, st: 'blues', tu: 'equal', g: false, hue: 355, c: 0, taken: ['organ'] }),
+    );
+    expect(await musician.next()).toMatchObject({ t: 'state', st: 'blues' });
+    expect(await singer.next()).toMatchObject({ t: 'state', st: 'blues' });
+    expect(await singer.maybeNext()).toBeNull(); // the note never went there
+  });
+
   it('drops a client that sends more than the message limit', async () => {
     const player = await open('k7m3x', 'player');
     const listener = await open('k7m3x');
@@ -347,13 +384,16 @@ describe('relay', () => {
     expect(await listener.next()).toMatchObject({ t: 'x' });
     player.socket.send('x'.repeat(MAX_MESSAGE + 1));
     await player.closed;
-    expect(await listener.next()).toEqual({ t: 'present', listeners: 1 });
+    expect(await listener.next()).toEqual({ t: 'present', listeners: 1, musicians: 0 });
   });
 
   it('answers ping frames, ignores fragments and binary, and closes on a close frame', async () => {
     const raw = await RawClient.open(port);
     expect(raw.frames()).toEqual([
-      { opcode: 1, text: JSON.stringify({ t: 'hello', role: 'player', room: 'k7m3x', s: now, listeners: 0 }) },
+      {
+        opcode: 1,
+        text: JSON.stringify({ t: 'hello', role: 'player', room: 'k7m3x', s: now, listeners: 0, musicians: 0 }),
+      },
     ]);
     raw.write(RawClient.masked(9, Buffer.from('hi')));
     await raw.waitFor(2);
@@ -401,7 +441,7 @@ describe('relay', () => {
     await raw.closed;
     expect(listener.socket.readyState).toBe(WebSocket.OPEN);
     relay.sweep(); // a destroyed socket that has not closed yet is skipped
-    expect(await listener.next()).toEqual({ t: 'present', listeners: 1 });
+    expect(await listener.next()).toEqual({ t: 'present', listeners: 1, musicians: 0 });
   });
 });
 
