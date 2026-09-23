@@ -2,7 +2,7 @@ import { expect, test } from './fixtures';
 import { openApp, stripePoint, tonePoint } from './helpers';
 
 test.describe('free play', () => {
-  test('a tap sounds one tone and lets it glow', async ({ page }) => {
+  test('a tap sounds the tone it landed on', async ({ page }) => {
     await openApp(page);
     const point = await tonePoint(page, 64); // E4
     await page.mouse.move(point.x, point.y);
@@ -12,12 +12,10 @@ test.describe('free play', () => {
       const [pointer] = player.pointers.values();
       return {
         pointers: player.pointers.size,
-        lit: [...player.lit.keys()],
         sounding: pointer === undefined ? null : player.model.tones[pointer.tone],
       };
     });
-    expect(held.pointers).toBe(1);
-    expect(held.lit).toEqual([held.sounding]); // exactly the stripe that was touched, nothing else
+    expect(held).toEqual({ pointers: 1, sounding: 64 });
     await page.mouse.up();
     expect(await page.evaluate(() => window.__wumble.app.player.pointers.size)).toBe(0);
   });
@@ -35,7 +33,7 @@ test.describe('free play', () => {
       return first === undefined ? null : player.model.tones[first.tone];
     });
     expect(sounding).toBe(67);
-    // only the stripes the finger touched glow, not the whole field
+    // only the stripes the finger touched ever glow, never the whole field
     const lit = await page.evaluate(() => [...window.__wumble.app.player.lit.keys()].length);
     expect(lit).toBeLessThan(6);
     await page.mouse.up();

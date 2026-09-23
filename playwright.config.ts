@@ -10,6 +10,9 @@ export default defineConfig({
   globalTeardown: './e2e/relay-teardown.ts',
   fullyParallel: true,
   forbidOnly: ci,
+  // WebKit on a shared CI runner needs noticeably longer than Chromium for the first paint of the canvas
+  timeout: ci ? 60_000 : 30_000,
+  retries: ci ? 1 : 0,
   reporter: ci ? [['list'], ['html', { open: 'never' }]] : 'list',
   // German is the schema of the user texts; the specs check them in German
   use: { baseURL: url, trace: 'retain-on-failure', locale: 'de-DE' },
