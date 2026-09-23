@@ -8,6 +8,7 @@ import { GROUPS } from '../learn/songs';
 import type { ExtraPanel } from './app';
 import { CLOSE_EVENT, WmPanel } from './wm-panel';
 import { hint, segment } from './settings-groups';
+import { icon, type IconName } from './widgets/icons';
 import { points } from './title';
 
 export const OPEN_EVENT = 'wm-open'; // detail: the extra panel to open (scan, audience)
@@ -34,17 +35,22 @@ export class WmLibrary extends WmPanel {
     this.dispatchEvent(new Event(CLOSE_EVENT, { bubbles: true }));
   }
 
-  private action(label: string, onClick: () => void): HTMLButtonElement {
+  private action(label: string, onClick: () => void, name?: IconName): HTMLButtonElement {
     const button = document.createElement('button');
-    button.textContent = label;
+    if (name !== undefined) button.append(icon(name));
+    button.append(document.createTextNode(label));
     button.addEventListener('click', onClick);
     return button;
   }
 
-  private extra(panel: ExtraPanel, label: string): HTMLButtonElement {
-    return this.action(label, () => {
-      this.dispatchEvent(new CustomEvent<ExtraPanel>(OPEN_EVENT, { bubbles: true, detail: panel }));
-    });
+  private extra(panel: ExtraPanel, label: string, name: IconName): HTMLButtonElement {
+    return this.action(
+      label,
+      () => {
+        this.dispatchEvent(new CustomEvent<ExtraPanel>(OPEN_EVENT, { bubbles: true, detail: panel }));
+      },
+      name,
+    );
   }
 
   private list(): void {
@@ -57,21 +63,29 @@ export class WmLibrary extends WmPanel {
         store.update({ difficulty });
       },
     );
-    const free = this.action(t('learn.freePlay'), () => {
-      app.stopSong();
-      app.stopEcho();
-      this.requestClose();
-    });
-    const echo = this.action(t('ui.echo'), () => {
-      this.requestClose();
-      app.startEcho();
-    });
+    const free = this.action(
+      t('learn.freePlay'),
+      () => {
+        app.stopSong();
+        app.stopEcho();
+        this.requestClose();
+      },
+      'play',
+    );
+    const echo = this.action(
+      t('ui.echo'),
+      () => {
+        this.requestClose();
+        app.startEcho();
+      },
+      'mic',
+    );
     this.body.replaceChildren(
       levels.element,
       hint(t('learn.levelHint')),
-      this.extra('scan', t('ui.scan')),
+      this.extra('scan', t('ui.scan'), 'camera'),
       echo,
-      this.extra('audience', t('ui.audience')),
+      this.extra('audience', t('ui.audience'), 'people'),
       free,
       ...LIBRARY_GROUPS.flatMap((group) => this.groupNodes(group)),
     );

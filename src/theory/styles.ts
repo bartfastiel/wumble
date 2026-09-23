@@ -64,7 +64,7 @@ export const STYLES: Readonly<Record<StyleId, Style>> = {
     group: 'stage',
     combi: 'organ',
     groove: 'blues',
-    tempo: 96,
+    tempo: 100,
     scale: BLUES,
     // Septimal: blue notes lie between the keys – tritone 7/5, seventh 7/4 (−31 cents). The third stays 6/5: the
     // blue third is sung higher than the pure minor third, 7/6 would be lower still.

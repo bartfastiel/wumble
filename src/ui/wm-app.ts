@@ -14,10 +14,9 @@ import { WmLibrary, OPEN_EVENT } from './wm-library';
 import { WmListener } from './wm-listener';
 import { CLOSE_EVENT, type WmPanel } from './wm-panel';
 import { WmScan } from './wm-scan';
-import { WmSettings } from './wm-settings';
 import { hasWebAudio, silentEngine } from './silent-engine';
 import { relayOverride } from './test-hook';
-import { applyTheme } from './theme';
+import { applyTheme, pageHue } from './theme';
 
 export type AnyPanel = PanelName | ExtraPanel;
 
@@ -67,7 +66,6 @@ export class WmApp extends HTMLElement {
       app.start();
     };
     this.panels.set('library', this.panel(new WmLibrary(), app));
-    this.panels.set('settings', this.panel(new WmSettings(), app));
     this.panels.set('help', this.panel(new WmHelp(), app));
     this.panels.set('scan', this.panel(new WmScan(), app));
     this.panels.set('audience', this.panel(new WmAudience(), app));
@@ -79,7 +77,7 @@ export class WmApp extends HTMLElement {
     };
     this.append(this.header, this.field, ...this.panels.values(), this.listener, this.done, this.welcome);
     this.listen(app);
-    applyTheme(app.store.model().hue);
+    applyTheme(pageHue(app.store.model().hue, app.store.get().look));
     app.applyLink(location.hash);
   }
 
@@ -141,7 +139,7 @@ export class WmApp extends HTMLElement {
         this.field.applaud();
       }),
       app.on('settings', () => {
-        applyTheme(app.store.model().hue);
+        applyTheme(pageHue(app.store.model().hue, app.store.get().look));
       }),
       bindKeyboard(document, app.player, {
         ignore: () => this.openPanel !== null || !this.done.hidden || !this.welcome.hidden,

@@ -91,6 +91,7 @@ export const de = {
     look: {
       organic: 'Gewachsen – wellige Kanten, gefächert',
       precise: 'Gebaut – gerade Kanten, ruhig',
+      polished: 'Poliert – weiß, gerade, kühles Licht',
     },
     labels: {
       off: 'Aus',
@@ -126,7 +127,7 @@ export const de = {
       layers: { one: '1 Schicht', other: '{n} Schichten' },
       layer: 'Schicht {i} · {tones} · {bars}',
       tones: { one: '1 Ton', other: '{n} Töne' },
-      empty: 'Noch keine Schicht – ● neben der Band (oder Taste R) nimmt ab dem nächsten Taktanfang auf.',
+      empty: 'Noch keine Schicht – der Punkt neben der Band (oder Taste R) nimmt ab dem nächsten Taktanfang auf.',
       remove: 'Schicht löschen',
       clear: 'Alle löschen',
     },
@@ -183,19 +184,18 @@ export const de = {
       unreachable: 'Raum {code} · nicht erreichbar, neuer Versuch in {seconds} s',
       waiting: 'Wartet auf das nächste Lied …',
       freePlay: 'Freies Spiel',
-      done: '🎉 Geschafft',
+      done: 'Geschafft',
       applause: 'Applaus',
     },
   },
   ui: {
     back: 'Zurück',
     library: 'Lieder',
-    settings: 'Einstellungen',
     help: 'Hilfe',
     band: 'Band',
-    scan: '📷 Notenblatt scannen',
-    echo: '🎤 Echo',
-    audience: '👥 Publikum',
+    scan: 'Notenblatt scannen',
+    echo: 'Echo',
+    audience: 'Publikum',
     done: { title: 'Geschafft!', again: 'Noch einmal' },
   },
   settings: {
@@ -208,7 +208,7 @@ export const de = {
     tuning: 'Stimmung',
     mode: 'Spielmodus',
     sound: 'Klang',
-    share: 'Link zu dieser Einstellung kopieren',
+    share: 'Link teilen',
     copied: 'Kopiert: {link}',
     standard: 'Standard',
   },
@@ -254,6 +254,10 @@ export const de = {
       lead: 'Noch einmal auf denselben Akkord',
       text: ' tippen, und die Begleitung tritt zurück: nur noch die Melodie. Der Akkord bleibt trotzdem gewählt – als Umriss zu sehen –, denn er bestimmt weiter Breiten und Farben der Streifen. Noch einmal tippen, und er klingt wieder.',
     },
+    bar: {
+      lead: 'Die Leiste oben',
+      text: ' hat für jedes Thema einen Knopf, und hinter jedem Knopf ein Bild statt einer Liste: die Tonart als Quintenzirkel, in dem Nachbarn auch musikalisch benachbart sind; der Stil als seine eigene Tonleiter; der Klang als Instrument mit seiner Hüllkurve; die Band mit dem Schema als Taktmuster, dem Tempo am Rad und der Schleife; die Ansicht mit den drei Erscheinungsbildern, der Beschriftung und der Spielweise. Was gerade gilt, leuchtet. Der Tonart-Knopf trägt ihren Buchstaben, und der Link-Knopf kopiert die Adresse mit allem, was du eingestellt hast.',
+    },
     songs: {
       lead: 'Lieder',
       text: ' zeigen dir mit leuchtenden Punkten, welcher Ton als Nächstes dran ist. Ringe um einen Punkt heißen: derselbe Ton kommt mehrmals. Welchen Akkord du dazu wählst, bleibt dir überlassen – gezählt wird der Ton. Die Tonart bestimmt die Farbe der Oberfläche.',
@@ -268,15 +272,15 @@ export const de = {
     },
     autoHarmony: {
       lead: 'Mitdenken',
-      text: ' (Spielmodus in den Einstellungen): Du spielst nur Töne, das Feld sucht die Akkorde dazu – das leuchtende Feld auf der Karte ist seine Wahl. Ein kurz angetippter Ton ist ein Durchgangston und lässt den Akkord stehen; erst wenn dein Finger liegen bleibt, wechselt er. Wählst du selbst auf der Karte, führst du.',
+      text: ' (Spielweise in der Leiste oben): Du spielst nur Töne, das Feld sucht die Akkorde dazu – das leuchtende Feld auf der Karte ist seine Wahl. Ein kurz angetippter Ton ist ein Durchgangston und lässt den Akkord stehen; erst wenn dein Finger liegen bleibt, wechselt er. Wählst du selbst auf der Karte, führst du.',
     },
     band: {
       lead: 'Band',
-      text: ' (🥁 in der Kopfzeile): Ein Knopf, und Schlagzeug, Bass und Akkorde spielen mit – im Groove des Stils, der Blues als Shuffle mit Boogie-Bass, Jazz mit Walking Bass, Techno mit Arpeggio. Du spielst nur noch Melodie; die Band folgt dem Akkord, den du zuletzt gewählt hast, dem Lied oder dem Mitdenken – oder sie spielt in den Einstellungen ein Schema wie den 12-Takt-Blues und zeigt dir mit einem pulsierenden Ring, welcher Akkord gerade dran ist. Das Tempo stellst du am Regler ein oder tippst es einfach viermal mit.',
+      text: ' (Trommel in der Leiste oben): Ein Knopf, und Schlagzeug, Bass und Akkorde spielen mit – im Groove des Stils, der Blues als Shuffle mit Boogie-Bass, Jazz mit Walking Bass, Techno mit Arpeggio. Du spielst nur noch Melodie; die Band folgt dem Akkord, den du zuletzt gewählt hast, dem Lied oder dem Mitdenken – oder sie spielt ein Schema wie den 12-Takt-Blues und zeigt dir mit einem pulsierenden Ring, welcher Akkord gerade dran ist. Das Tempo stellst du am Rad ein oder tippst es einfach viermal mit.',
     },
     loop: {
       lead: 'Schleife',
-      text: ' (● neben der Band, oder Taste R): Tippen, und ab dem nächsten Taktanfang nimmt das Feld zwei Takte lang auf, was du spielst – danach läuft es als Schleife im Takt der Band weiter, und du legst mit dem nächsten Tippen die nächste Schicht darüber. So baust du dir Ton für Ton einen eigenen Song; die Schichten (und die Länge 1, 2 oder 4 Takte) verwaltest du in den Einstellungen bei der Band.',
+      text: ' (Punkt neben der Band, oder Taste R): Tippen, und ab dem nächsten Taktanfang nimmt das Feld zwei Takte lang auf, was du spielst – danach läuft es als Schleife im Takt der Band weiter, und du legst mit dem nächsten Tippen die nächste Schicht darüber. So baust du dir Ton für Ton einen eigenen Song; die Schichten (und die Länge 1, 2 oder 4 Takte) verwaltest du beim Band-Knopf.',
     },
     echo: {
       lead: 'Echo',
@@ -288,7 +292,7 @@ export const de = {
     },
     radio: {
       lead: 'Radio',
-      text: ' (Einstellungen bei der Band): Die Band spielt selbst weiter – Phrase für Phrase, immer passend zum Akkord, mit einer kleinen Pause dazwischen. Sobald du selbst einen Ton spielst, hält sie zwei Takte den Mund und lässt dich einsteigen, dann übernimmt sie wieder.',
+      text: ' (beim Band-Knopf): Die Band spielt selbst weiter – Phrase für Phrase, immer passend zum Akkord, mit einer kleinen Pause dazwischen. Sobald du selbst einen Ton spielst, hält sie zwei Takte den Mund und lässt dich einsteigen, dann übernimmt sie wieder.',
     },
     keyboard: {
       lead: 'Tastatur',
@@ -300,23 +304,23 @@ export const de = {
     },
     look: {
       lead: 'Erscheinungsbild',
-      text: ' (Einstellungen): „Gewachsen“ ist das Feld mit welligen Kanten, gefächert und ein wenig unruhig. „Gebaut“ stellt alles gerade: aufrechte Balken, gleiche Radien, die Karte im Raster, Graphit mit einem warmen Akzent. Die Bedeutung ändert sich nicht – Breite heißt weiter Passung, senkrecht weiter Zug.',
+      text: ' (in der Leiste oben): „Gewachsen“ ist das Feld mit welligen Kanten, gefächert und ein wenig unruhig. „Gebaut“ stellt alles gerade: aufrechte Balken, gleiche Radien, die Karte im Raster, Graphit mit einem warmen Akzent. „Poliert“ ist dieselbe gerade Form in weißem Lack unter kühlem Licht: die Passung liest sich als Helligkeit, der gewählte Akkord leuchtet hellblau. Die Bedeutung ändert sich nicht – Breite heißt weiter Passung, senkrecht weiter Zug.',
     },
     styles: {
       lead: 'Stile',
-      text: ' (Einstellungen) tauschen Tonleiter und Akkordkarte: „Klassisch“ baut Dreiklänge der Dur-Tonleiter, „Blues“ legt Septakkorde auf die Blues-Tonleiter, „Rock“ bleibt in der Moll-Pentatonik, „Techno“ nimmt das natürliche Moll, „Jazz“ Vierklänge (Cmaj7, Dm7, G7). Die Schul-Stile bringen Pentatonik, Kirchentonarten, Harmonisch Moll und Ganzton aus dem Musikunterricht aufs Feld, die „Naturtonreihe“ die Obertöne von Alphorn und Naturtrompete. Lieder schalten ihren Stil selbst ein.',
+      text: ' (in der Leiste oben) tauschen Tonleiter und Akkordkarte: „Klassisch“ baut Dreiklänge der Dur-Tonleiter, „Blues“ legt Septakkorde auf die Blues-Tonleiter, „Rock“ bleibt in der Moll-Pentatonik, „Techno“ nimmt das natürliche Moll, „Jazz“ Vierklänge (Cmaj7, Dm7, G7). Die Schul-Stile bringen Pentatonik, Kirchentonarten, Harmonisch Moll und Ganzton aus dem Musikunterricht aufs Feld, die „Naturtonreihe“ die Obertöne von Alphorn und Naturtrompete. Lieder schalten ihren Stil selbst ein.',
     },
     tunings: {
       lead: 'Stimmungen',
-      text: ' (Einstellungen) legen fest, wie hoch jeder Ton wirklich klingt. „Gleichstufig“ ist der Keyboard-Kompromiss und Standard; „Rein“, „Pythagoreisch“ und „Mitteltönig“ sind historische Stimmungen, bezogen auf die gewählte Tonart. „Adaptiv rein“ stimmt jeden Akkord rein von seinem Grundton aus – das Feld kennt den Akkord, darum geht das. Die Naturtonreihe schaltet von selbst auf „Rein“ und spielt das schwebende Alphorn-Fa (11/8) zwischen den Klaviertasten.',
+      text: ' (in der Leiste oben) legen fest, wie hoch jeder Ton wirklich klingt. „Gleichstufig“ ist der Keyboard-Kompromiss und Standard; „Rein“, „Pythagoreisch“ und „Mitteltönig“ sind historische Stimmungen, bezogen auf die gewählte Tonart. „Adaptiv rein“ stimmt jeden Akkord rein von seinem Grundton aus – das Feld kennt den Akkord, darum geht das. Die Naturtonreihe schaltet von selbst auf „Rein“ und spielt das schwebende Alphorn-Fa (11/8) zwischen den Klaviertasten.',
     },
     sounds: {
       lead: 'Klänge',
-      text: ' (Einstellungen) sind Presets für die drei Ebenen Melodie, Akkord und Bass: „Klavier“ spielt den Salamander-Flügel (Alexander Holm, CC BY 3.0), „Streicher“ Solo-Violine, Violinsektion und Kontrabass, „Kirchenorgel“ die Rode-Orgel mit vier Sekunden Kirchenhall (beide aus der VSCO 2 Community Edition von Versilian Studios, CC0, Orgel von Simon Dalzell/Ivy Audio); „Pop“, „Jazz-Trio“ und „Gitarre“ mischen Synthesizer und Samples, E-Piano, Glocke und Orgel sind reine Synthesizer. Jeder Stil schlägt einen Klang vor, danach lässt sich frei umschalten. Die Samples stecken in der Seite selbst – nichts wird nachgeladen.',
+      text: ' (in der Leiste oben) sind Presets für die drei Ebenen Melodie, Akkord und Bass: „Klavier“ spielt den Salamander-Flügel (Alexander Holm, CC BY 3.0), „Streicher“ Solo-Violine, Violinsektion und Kontrabass, „Kirchenorgel“ die Rode-Orgel mit vier Sekunden Kirchenhall (beide aus der VSCO 2 Community Edition von Versilian Studios, CC0, Orgel von Simon Dalzell/Ivy Audio); „Pop“, „Jazz-Trio“ und „Gitarre“ mischen Synthesizer und Samples, E-Piano, Glocke und Orgel sind reine Synthesizer. Jeder Stil schlägt einen Klang vor, danach lässt sich frei umschalten. Die Samples stecken in der Seite selbst – nichts wird nachgeladen.',
     },
     labels: {
       lead: 'Zeig mir, was du tust',
-      text: ' (Einstellungen) verrät nebenbei, was du da gerade spielst: Notennamen, Solmisationssilben, Stufen oder Funktionen stehen dann auf jedem Streifen, die Felder der Karte heißen wie echte Akkorde (Dm7, V7, Sp), und die Kopfzeile nennt Tonart und Vorzeichen. Die Tonartwahl zeigt immer die Notenzeile mit ihren Vorzeichen – drei Kreuze auf dem Notenblatt? Dann ist es A-Dur.',
+      text: ' (in der Leiste oben) verrät nebenbei, was du da gerade spielst: Notennamen, Solmisationssilben, Stufen oder Funktionen stehen dann auf jedem Streifen, die Felder der Karte heißen wie echte Akkorde (Dm7, V7, Sp), und die Kopfzeile nennt Tonart und Vorzeichen. Die Tonartwahl zeigt immer die Notenzeile mit ihren Vorzeichen – drei Kreuze auf dem Notenblatt? Dann ist es A-Dur.',
     },
   },
 } as const;

@@ -10,14 +10,12 @@ import { WmHelp } from './ui/wm-help';
 import { WmLibrary } from './ui/wm-library';
 import { WmListener } from './ui/wm-listener';
 import { WmScan } from './ui/wm-scan';
-import { WmSettings } from './ui/wm-settings';
 import { exposeForTests } from './ui/test-hook';
 
 document.documentElement.lang = locale();
 customElements.define('wm-header', WmHeader);
 customElements.define('wm-field', WmField);
 customElements.define('wm-library', WmLibrary);
-customElements.define('wm-settings', WmSettings);
 customElements.define('wm-help', WmHelp);
 customElements.define('wm-scan', WmScan);
 customElements.define('wm-audience', WmAudience);

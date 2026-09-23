@@ -1,6 +1,8 @@
 // Base of the overlay pages (songs, settings, help): a fixed overlay with a back button and a scrolling body. The
 // back button (and Escape, handled by the app) fire `wm-close`; the app closes every open panel.
+import { t } from '../i18n';
 import type { App } from './app';
+import { iconButton } from './widgets/button';
 
 export const CLOSE_EVENT = 'wm-close';
 
@@ -13,11 +15,13 @@ export class WmPanel extends HTMLElement {
     if (this.classList.contains('panel')) return; // already built: the element was moved
     this.classList.add('panel');
     const header = document.createElement('header');
-    const back = document.createElement('button');
-    back.className = 'icon back';
-    back.textContent = '‹';
-    back.addEventListener('click', () => {
-      this.dispatchEvent(new Event(CLOSE_EVENT, { bubbles: true }));
+    const back = iconButton({
+      name: 'back',
+      label: t('ui.back'),
+      extra: 'back',
+      onClick: () => {
+        this.dispatchEvent(new Event(CLOSE_EVENT, { bubbles: true }));
+      },
     });
     const spacer = document.createElement('span');
     spacer.className = 'spacer';

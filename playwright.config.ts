@@ -11,10 +11,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: ci,
   // WebKit on a shared CI runner needs noticeably longer than Chromium for the first paint of the canvas
-  timeout: ci ? 60_000 : 30_000,
+  timeout: ci ? 90_000 : 30_000,
   retries: ci ? 2 : 0,
-  // Every spec drives audio and an animated canvas; too many at once starve each other on a shared runner
-  ...(ci ? { workers: 2 } : {}),
+  // One at a time on CI: every spec drives audio and an animated canvas, and two of them starve each other on a
+  // shared runner badly enough that a click waits a minute for a frame.
+  ...(ci ? { workers: 1 } : {}),
   reporter: ci ? [['list'], ['html', { open: 'never' }]] : 'list',
   // German is the schema of the user texts; the specs check them in German
   use: { baseURL: url, trace: 'retain-on-failure', locale: 'de-DE' },

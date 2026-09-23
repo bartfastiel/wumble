@@ -10,7 +10,7 @@ export const PLAY_MODES = ['twoHands', 'autoHarmony'] as const;
 export type PlayMode = (typeof PLAY_MODES)[number];
 
 // How the field is drawn: grown (wavy edges, tilted, organic) or built (straight, even, quiet)
-export const LOOKS = ['organic', 'precise'] as const;
+export const LOOKS = ['organic', 'precise', 'polished'] as const;
 export type LookId = (typeof LOOKS)[number];
 
 // "Show me what you do": off, or one of the theory's label modes
@@ -62,18 +62,20 @@ export interface Settings {
   readonly publicUrl: string; // address listeners open; empty until configured
 }
 
+// Opening on the twelve-bar blues: a groove that carries itself, a chord map that moves on its own, and the look
+// that shows what the field means with the least ornament.
 export const DEFAULTS: Settings = {
   signature: 0,
-  style: 'classical',
+  style: 'blues',
   tuning: 'equal',
   mode: 'autoHarmony',
-  combi: 'epiano',
+  combi: STYLES.blues.combi,
   labels: 'off',
-  look: 'organic',
+  look: 'polished',
   german: false,
   difficulty: 'easy',
-  tempo: STYLES.classical.tempo,
-  schema: 'follow',
+  tempo: STYLES.blues.tempo,
+  schema: 'blues',
   loopBars: 2,
   publicUrl: '',
 };

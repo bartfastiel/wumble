@@ -79,8 +79,8 @@ describe('Band.renderBars', () => {
     const engine = createRecordingEngine();
     setup.band.renderBars(engine, 2, 1.5);
     const kicks = drumTimes(engine.calls, 'kick');
-    expect(kicks).toEqual([1.5, 2.75, 4, 5.25]);
-    for (let i = 1; i < kicks.length; i++) expect((kicks[i] ?? 0) - (kicks[i - 1] ?? 0)).toBe((2 * 60) / 96);
+    for (const [i, want] of [1.5, 2.7, 3.9, 5.1].entries()) expect(kicks[i]).toBeCloseTo(want, 9);
+    for (let i = 1; i < kicks.length; i++) expect((kicks[i] ?? 0) - (kicks[i - 1] ?? 0)).toBeCloseTo((2 * 60) / 100, 9);
   });
 
   it('renders the same thing twice, so a recording is reproducible', () => {
@@ -110,7 +110,7 @@ describe('Band live', () => {
     const kicks = drumTimes(setup.engine.calls, 'kick');
     expect(kicks[0]).toBeCloseTo(10.05, 9);
     expect(kicks.length).toBeGreaterThanOrEqual(4);
-    for (let i = 1; i < kicks.length; i++) expect((kicks[i] ?? 0) - (kicks[i - 1] ?? 0)).toBe((2 * 60) / 96);
+    for (let i = 1; i < kicks.length; i++) expect((kicks[i] ?? 0) - (kicks[i - 1] ?? 0)).toBeCloseTo((2 * 60) / 100, 9);
     expect(setup.band.scheduler.position().bar).toBe(2);
   });
 

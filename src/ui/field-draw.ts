@@ -1,6 +1,6 @@
 // Drawing the field: stripes on the right, the chord map on the left. Nothing here decides anything —
 // every value it needs is computed in the field, map and theory modules.
-import type { Field, Look, Stripe } from '../field/geometry';
+import { type Field, isStraight, type Look, type Stripe } from '../field/geometry';
 import { cssOf, type Oklch, shade, toneColour } from '../field/palette';
 import type { MapSpot } from '../map/geometry';
 import { SHAPE_SUFFIX } from '../theory/chord-maps';
@@ -14,10 +14,12 @@ export interface HeldStripe {
   readonly y: number;
 }
 
+export const CLAP = 'clap'; // a floater that is drawn rather than written
+
 export interface Floater {
   readonly x: number;
   readonly y: number;
-  readonly text: string;
+  readonly text: string; // CLAP, or the text itself
   readonly t0: number;
   readonly up: boolean;
   readonly size: number;
@@ -64,8 +66,65 @@ export interface LearnScene {
   readonly unit: number;
 }
 
-const TONIC_SEAM = 'rgba(128,226,214,'; // the key's own tone keeps a seam of its own
-const SHEEN = 'rgba(255,251,240,';
+// Every look brings its own light. The grown and built ones are warm on graphite; the polished one is white
+// lacquer under a cool lamp, where the shapes are bright and the lines between them are the dark.
+interface Ink {
+  readonly back: string; // the canvas behind everything
+  readonly sheen: string; // the glance running along an edge, as an 'rgba(r,g,b,' prefix
+  readonly seam: string; // the tonic keeps a seam of its own
+  readonly homeRing: string; // the ring around the tonic's chord, which must not look like the chosen one
+  readonly nameFloor: number; // how present a chord's name is at its faintest
+  readonly gloss: readonly [number, number]; // how much brighter the top of a face is, how much deeper its foot
+  readonly rim: number; // a lit edge along the top, as lightness above the face – 0 leaves it flat
+  readonly lift: readonly [string, number, number]; // the shadow a face casts: colour, blur, drop
+  readonly edge: string; // the line around a shape
+  readonly onShape: string; // a chord's name on an unchosen shape, as an 'rgba(r,g,b,' prefix
+  readonly onShapeSub: string; // the chord symbol under it
+  readonly onChosen: string; // the name on the chosen shape, which is bright in every look
+  readonly onChosenSub: string;
+  readonly range: string; // the window and the mark on the range strip
+  readonly wave: Oklch; // the rings a held tone sends out
+}
+
+const WARM: Ink = {
+  back: '#0b0c0d',
+  sheen: 'rgba(255,251,240,',
+  seam: 'rgba(128,226,214,',
+  homeRing: 'rgba(128,226,214,',
+  nameFloor: 0.45,
+  gloss: [0.055, -0.075],
+  rim: 0,
+  lift: ['rgba(0,0,0,0)', 0, 0],
+  edge: '#090a0b',
+  onShape: 'rgba(232,228,218,',
+  onShapeSub: 'rgba(150,152,143,',
+  onChosen: 'rgba(22,20,16,.95)',
+  onChosenSub: 'rgba(52,40,12,.9)',
+  range: '255,214,140',
+  wave: { l: 0.8, c: 0.08, h: 90 },
+};
+
+const INK: Readonly<Record<Look, Ink>> = {
+  organic: WARM,
+  precise: WARM,
+  polished: {
+    back: '#0b0e13',
+    sheen: 'rgba(232,247,255,',
+    seam: 'rgba(56,146,238,',
+    homeRing: 'rgba(246,250,255,',
+    nameFloor: 0.62,
+    gloss: [0.035, -0.185], // lacquer: the light sits on top, the foot falls away
+    rim: 0.08,
+    lift: ['rgba(2,5,12,0.72)', 13, 5],
+    edge: 'rgba(7,10,15,0.8)',
+    onShape: 'rgba(18,24,32,',
+    onShapeSub: 'rgba(64,78,96,',
+    onChosen: 'rgba(12,24,42,.96)',
+    onChosenSub: 'rgba(30,48,74,.9)',
+    range: '168,210,255',
+    wave: { l: 0.88, c: 0.05, h: 236 },
+  },
+};
 
 // The built look: a straight bar with one even radius – no waves, no tilt, nothing to read into it
 const barPath = (cx: CanvasRenderingContext2D, field: Field, i: number, stripe: Stripe, gap: number): void => {
@@ -87,7 +146,7 @@ const stripePath = (
   gap: number,
   look: Look = 'organic',
 ): void => {
-  if (look === 'precise') {
+  if (isStraight(look)) {
     barPath(cx, field, i, stripe, gap);
     return;
   }
@@ -124,6 +183,7 @@ const sheen = (
   strength: number,
   look: Look = 'organic',
 ): void => {
+  const light = INK[look].sheen;
   const top = stripe.top + 14;
   const bottom = stripe.bottom - 14;
   if (bottom <= top) return;
@@ -131,16 +191,16 @@ const sheen = (
   const line = Math.max(1, width * 0.1);
   const offset = Math.max(2, width * 0.2);
   const gradient = cx.createLinearGradient(0, top, 0, bottom);
-  gradient.addColorStop(0, `${SHEEN}0)`);
-  gradient.addColorStop(0.22, `${SHEEN}${String(0.3 * strength)})`);
-  gradient.addColorStop(0.55, `${SHEEN}${String(0.52 * strength)})`);
-  gradient.addColorStop(0.86, `${SHEEN}${String(0.14 * strength)})`);
-  gradient.addColorStop(1, `${SHEEN}0)`);
+  gradient.addColorStop(0, `${light}0)`);
+  gradient.addColorStop(0.22, `${light}${String(0.3 * strength)})`);
+  gradient.addColorStop(0.55, `${light}${String(0.52 * strength)})`);
+  gradient.addColorStop(0.86, `${light}${String(0.14 * strength)})`);
+  gradient.addColorStop(1, `${light}0)`);
   cx.strokeStyle = gradient;
   cx.lineWidth = line;
   cx.lineCap = 'round';
   cx.beginPath();
-  if (look === 'precise') {
+  if (isStraight(look)) {
     const x = field.edgeAt(i, (top + bottom) / 2) + offset;
     cx.moveTo(x, top);
     cx.lineTo(x, bottom);
@@ -155,6 +215,37 @@ const sheen = (
     else cx.lineTo(x, y);
   }
   cx.stroke();
+};
+
+// Lacquer on a face, the same on both sides of the screen: a lit edge along the top, the body of the colour,
+// and a foot that falls away. The rim is what makes it read as a surface rather than a fill.
+const faceGradient = (
+  cx: CanvasRenderingContext2D,
+  colour: Oklch,
+  x: number,
+  top: number,
+  bottom: number,
+  ink: Ink,
+  middle: number,
+): CanvasGradient => {
+  const [up, down] = ink.gloss;
+  const gradient = cx.createLinearGradient(x, top, x, bottom);
+  if (ink.rim > 0) {
+    gradient.addColorStop(0, cssOf(shade(colour, up + ink.rim, 0.6, 6)));
+    gradient.addColorStop(0.035, cssOf(shade(colour, up, 0.92, 4)));
+  } else gradient.addColorStop(0, cssOf(shade(colour, up, 0.92, 4)));
+  gradient.addColorStop(middle, cssOf(colour));
+  gradient.addColorStop(1, cssOf(shade(colour, down, 0.8, -5)));
+  return gradient;
+};
+
+// The shadow a face casts on the ground behind it – what makes the surface sit above the page, not in it
+const castLift = (cx: CanvasRenderingContext2D, ink: Ink): void => {
+  const [colour, blur, drop] = ink.lift;
+  if (blur <= 0) return;
+  cx.shadowColor = colour;
+  cx.shadowBlur = blur;
+  cx.shadowOffsetY = drop;
 };
 
 // A stripe that is held, sounding or played by someone else glows; everything else stands back a little
@@ -188,10 +279,10 @@ const drawTonicSeam = (cx: CanvasRenderingContext2D, field: Field, i: number, st
     [2.6, 3.4, 0.9],
     [6.6, 1.4, 0.35],
   ] as const) {
-    cx.strokeStyle = `${TONIC_SEAM}${String(alpha)})`;
+    cx.strokeStyle = `${INK[look].seam}${String(alpha)})`;
     cx.lineWidth = width;
     cx.beginPath();
-    if (look === 'precise') {
+    if (isStraight(look)) {
       const x = field.edgeAt(i, (from + to) / 2) + offset;
       cx.moveTo(x, from);
       cx.lineTo(x, to);
@@ -224,26 +315,21 @@ const drawStripe = (cx: CanvasRenderingContext2D, scene: FieldScene, i: number, 
   const { grip, glow, base, colour } = stateOf(scene, i, stripe);
   const middle = (stripe.top + stripe.bottom) / 2;
   const x = (field.edgeAt(i, middle) + field.edgeAt(i + 1, middle)) / 2;
-  const gradient = cx.createLinearGradient(x, stripe.top, x, stripe.bottom);
-  gradient.addColorStop(0, cssOf(shade(colour, 0.055, 0.92, 4)));
-  gradient.addColorStop(0.58, cssOf(colour));
-  gradient.addColorStop(1, cssOf(shade(colour, -0.075, 0.8, -5)));
+  const gradient = faceGradient(cx, colour, x, stripe.top, stripe.bottom, INK[scene.look], 0.58);
 
   cx.globalAlpha = base || glow ? 1 : 0.78;
+  cx.save();
   if (glow) {
-    cx.save();
     cx.shadowColor = cssOf(shade(colour, 0.2, 1.4));
     cx.shadowBlur = grip === undefined ? 12 : 16 + grip.brightness * 28 + grip.vibrato * 18;
-  }
+  } else castLift(cx, INK[scene.look]);
   stripePath(cx, field, i, stripe, grip === undefined ? 3.2 : 2, scene.look);
   cx.fillStyle = gradient;
   cx.fill();
-  if (glow) {
-    cx.fill(); // a second pass deepens the glow
-    cx.restore();
-  }
+  if (glow) cx.fill(); // a second pass deepens the glow
+  cx.restore();
   cx.lineWidth = grip === undefined ? 1.2 : 2.4;
-  cx.strokeStyle = grip === undefined ? '#090a0b' : cssOf(shade(colour, -0.36, 0.5));
+  cx.strokeStyle = grip === undefined ? INK[scene.look].edge : cssOf(shade(colour, -0.36, 0.5));
   cx.stroke();
   const held = grip === undefined ? 0 : 0.25;
   sheen(cx, field, i, stripe, base ? 0.62 : 0.17 + held, scene.look);
@@ -265,11 +351,11 @@ const spotBarPath = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number
   const width = radius * 1.86;
   const height = radius * 1.34;
   cx.beginPath();
-  cx.roundRect(spot.x - width / 2, spot.y - height / 2, width, height, Math.min(6, height * 0.22));
+  cx.roundRect(spot.x - width / 2, spot.y - height / 2, width, height, Math.max(1, Math.min(5, height * 0.14)));
 };
 
 const spotPath = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number, look: Look): void => {
-  if (look === 'precise') spotBarPath(cx, spot, radius);
+  if (isStraight(look)) spotBarPath(cx, spot, radius);
   else blobPath(cx, spot, radius);
 };
 
@@ -295,6 +381,8 @@ const blobPath = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number): 
 
 const CHOSEN: Oklch = { l: 0.72, c: 0.14, h: 78 };
 const PRECISE_CHOSEN: Oklch = { l: 0.7, c: 0.115, h: 72 };
+const POLISHED_CHOSEN: Oklch = { l: 0.87, c: 0.082, h: 238 };
+const POLISHED_SPOT_HUE = 243; // the same blue the stripes are lacquered in
 
 // How far a chord has grown towards its limit: the stronger the pull, the brighter it stands
 const pullOf = (spot: MapSpot): number => Math.max(0, Math.min(1, spot.radius / Math.max(1, spot.limit) - 0.5));
@@ -306,8 +394,23 @@ const hueOfSpot = (step: number, precise: boolean): number => {
   return precise ? 232 : 120;
 };
 
+// Polished: every chord is white and stays white. How likely it is reads as brightness alone – where it leads is
+// already said by its place on the map, so the hue has nothing left to add.
+const polishedSpot = (spot: MapSpot, chosen: boolean): Oklch => {
+  if (chosen) return POLISHED_CHOSEN;
+  const pull = pullOf(spot);
+  const atHome = spot.chord.step === 0 && spot.chord.side === 0;
+  return {
+    l: (atHome ? 0.815 : 0.695) + pull * (atHome ? 0.15 : 0.245),
+    c: 0.03 + pull * 0.034,
+    h: POLISHED_SPOT_HUE,
+  };
+};
+
 // Cool towards home, warm away from it; the chosen chord is the one warm light
+
 const colourOfSpot = (spot: MapSpot, chosen: boolean, look: Look): Oklch => {
+  if (look === 'polished') return polishedSpot(spot, chosen);
   const precise = look === 'precise';
   if (chosen) return precise ? PRECISE_CHOSEN : CHOSEN;
   const pull = pullOf(spot);
@@ -333,14 +436,15 @@ const drawSpotGlance = (
 ): void => {
   cx.save();
   cx.clip();
+  const light = INK[look].sheen;
   const glance = cx.createLinearGradient(spot.x - radius, spot.y - radius, spot.x - radius * 0.1, spot.y + radius);
-  glance.addColorStop(0, `${SHEEN}0)`);
-  glance.addColorStop(0.42, `${SHEEN}${String(chosen ? 0.5 : 0.26)})`);
-  glance.addColorStop(1, `${SHEEN}0)`);
+  glance.addColorStop(0, `${light}0)`);
+  glance.addColorStop(0.42, `${light}${String(chosen ? 0.5 : 0.26)})`);
+  glance.addColorStop(1, `${light}0)`);
   cx.strokeStyle = glance;
-  cx.lineWidth = Math.max(2, radius * (look === 'precise' ? 0.1 : 0.17));
+  cx.lineWidth = Math.max(2, radius * (isStraight(look) ? 0.1 : 0.17));
   cx.beginPath();
-  if (look === 'precise') {
+  if (isStraight(look)) {
     const x = spot.x - radius * 0.78;
     cx.moveTo(x, spot.y - radius * 0.5);
     cx.lineTo(x, spot.y + radius * 0.5);
@@ -359,6 +463,7 @@ const drawSpotName = (
   radius: number,
   chosen: boolean,
   name: { readonly role: string; readonly chord: string },
+  ink: Ink,
 ): void => {
   const pull = pullOf(spot);
   cx.textAlign = 'center';
@@ -366,7 +471,8 @@ const drawSpotName = (
   const words = name.role.split(' ');
   const longest = Math.max(...words.map((w) => w.length));
   const size = Math.max(8, Math.min(radius * 0.34, (radius * 1.7) / (longest * 0.58)));
-  cx.fillStyle = chosen ? 'rgba(22,20,16,.95)' : `rgba(232,228,218,${String(0.45 + pull * 0.5)})`;
+  const floor = ink.nameFloor;
+  cx.fillStyle = chosen ? ink.onChosen : `${ink.onShape}${String(floor + pull * (0.95 - floor))})`;
   cx.font = `600 ${String(size)}px system-ui, sans-serif`;
   const twoLines = words.length > 1 && name.role.length > 12 && radius > 30;
   if (twoLines) {
@@ -375,7 +481,7 @@ const drawSpotName = (
     cx.fillText(words.slice(half).join(' '), spot.x, spot.y + size * 0.5);
   } else cx.fillText(name.role, spot.x, spot.y - (radius > 26 ? 2 : 0));
   if (radius > 26 && name.chord !== '') {
-    cx.fillStyle = chosen ? 'rgba(52,40,12,.9)' : `rgba(150,152,143,${String(0.4 + pull * 0.45)})`;
+    cx.fillStyle = chosen ? ink.onChosenSub : `${ink.onShapeSub}${String(floor - 0.05 + pull * (0.9 - floor))})`;
     cx.font = `${String(size - 2)}px system-ui, sans-serif`;
     cx.fillText(name.chord, spot.x, spot.y + size * (twoLines ? 1.6 : 1.3));
   }
@@ -389,34 +495,31 @@ const drawSpot = (cx: CanvasRenderingContext2D, scene: FieldScene, spot: MapSpot
   const radius = spot.radius;
 
   spotPath(cx, spot, radius, scene.look);
-  const gradient = cx.createLinearGradient(spot.x, spot.y - radius, spot.x, spot.y + radius);
-  gradient.addColorStop(0, cssOf(shade(colour, 0.06, 0.9, 4)));
-  gradient.addColorStop(0.6, cssOf(colour));
-  gradient.addColorStop(1, cssOf(shade(colour, -0.08, 0.8, -5)));
+  const gradient = faceGradient(cx, colour, spot.x, spot.y - radius, spot.y + radius, INK[scene.look], 0.6);
+  cx.save();
   if (chosen && !muted) {
-    cx.save();
     cx.shadowColor = cssOf(shade(colour, 0.12, 1.1));
     cx.shadowBlur = 26;
-  }
+  } else if (!muted) castLift(cx, INK[scene.look]);
   cx.globalAlpha = muted ? 0.16 : 1;
   cx.fillStyle = gradient;
   cx.fill();
+  cx.restore();
   cx.globalAlpha = 1;
-  if (chosen && !muted) cx.restore();
   cx.lineWidth = muted ? 2.6 : 1.4;
-  cx.strokeStyle = muted ? cssOf(shade(colour, 0.05, 1)) : '#090a0b';
+  cx.strokeStyle = muted ? cssOf(shade(colour, 0.05, 1)) : INK[scene.look].edge;
   cx.stroke();
   if (!muted) drawSpotGlance(cx, spot, radius, chosen, scene.look);
 
   if (spot.chord.step === 0 && spot.chord.side === 0) {
-    cx.strokeStyle = `${TONIC_SEAM}0.85)`;
+    cx.strokeStyle = `${INK[scene.look].homeRing}0.85)`;
     cx.lineWidth = 2.6;
     spotPath(cx, spot, radius * 1.1, scene.look);
     cx.stroke();
   }
 
   const name = scene.names.get(spot);
-  if (name !== undefined && radius > 15) drawSpotName(cx, spot, radius, chosen, name);
+  if (name !== undefined && radius > 15) drawSpotName(cx, spot, radius, chosen, name, INK[scene.look]);
 };
 
 const drawMap = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
@@ -435,7 +538,7 @@ const drawWaves = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
     for (let k = 0; k < 2; k++) {
       const phase = (t * speed + k / 2) % 1;
       cx.globalAlpha = (1 - phase) * (0.12 + grip.vibrato * 0.45 + grip.brightness * 0.12);
-      cx.strokeStyle = cssOf({ l: 0.8, c: 0.08, h: 90 });
+      cx.strokeStyle = cssOf(INK[scene.look].wave);
       cx.lineWidth = 2.4 * (1 - phase * 0.5);
       cx.beginPath();
       cx.ellipse(middle, grip.y, Math.abs(half) * (0.5 + phase * 0.8), 18 + phase * 30, 0, 0, Math.PI * 2);
@@ -485,8 +588,8 @@ const drawSlider = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   const { left, right, top, bottom, focus, settling, count, perOctave, held } = scene.slider;
   const width = Math.max(1, right - left);
   const height = bottom - top;
-  const precise = scene.look === 'precise';
-  const round = precise ? 4 : height / 2;
+  const round = isStraight(scene.look) ? 4 : height / 2;
+  const { range } = INK[scene.look];
 
   cx.beginPath();
   cx.roundRect(left, top, width, height, round);
@@ -516,9 +619,9 @@ const drawSlider = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   const window = { from: Math.max(left + 1, centre - half), to: Math.min(right - 1, centre + half) };
   const glow = cx.createLinearGradient(window.from, 0, window.to, 0);
   const alpha = held ? 0.3 : 0.2;
-  glow.addColorStop(0, 'rgba(255,214,140,0)');
-  glow.addColorStop(0.5, `rgba(255,214,140,${String(alpha)})`);
-  glow.addColorStop(1, 'rgba(255,214,140,0)');
+  glow.addColorStop(0, `rgba(${range},0)`);
+  glow.addColorStop(0.5, `rgba(${range},${String(alpha)})`);
+  glow.addColorStop(1, `rgba(${range},0)`);
   cx.fillStyle = glow;
   cx.beginPath();
   cx.roundRect(window.from, top + 3, Math.max(2, window.to - window.from), height - 6, round);
@@ -526,7 +629,7 @@ const drawSlider = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
 
   // Where it will come to rest
   const mark = left + (settling + 0.5) * perStep;
-  cx.strokeStyle = `rgba(255,214,140,${String(held ? 0.9 : 0.55)})`;
+  cx.strokeStyle = `rgba(${range},${String(held ? 0.9 : 0.55)})`;
   cx.lineWidth = 2;
   cx.beginPath();
   cx.moveTo(mark, top + 5);
@@ -536,6 +639,31 @@ const drawSlider = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
 
 const FLOATER_MS = 900;
 
+// Two hands meeting, with a few sparks: the applause of a listener, drawn so it needs no font
+const drawClap = (cx: CanvasRenderingContext2D, x: number, y: number, size: number): void => {
+  const r = 9 * size;
+  cx.lineWidth = Math.max(1.4, r * 0.22);
+  cx.lineCap = 'round';
+  cx.beginPath();
+  cx.moveTo(x - r, y + r * 0.7);
+  cx.lineTo(x, y - r * 0.2);
+  cx.lineTo(x - r * 0.35, y + r);
+  cx.moveTo(x + r, y - r * 0.7);
+  cx.lineTo(x, y + r * 0.2);
+  cx.lineTo(x + r * 0.35, y - r);
+  cx.stroke();
+  for (const [dx, dy] of [
+    [-1.35, -0.95],
+    [1.35, 0.95],
+    [0, -1.5],
+  ] as const) {
+    cx.beginPath();
+    cx.moveTo(x + dx * r, y + dy * r);
+    cx.lineTo(x + dx * r * 1.3, y + dy * r * 1.3);
+    cx.stroke();
+  }
+};
+
 const drawFloaters = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   cx.textAlign = 'center';
   cx.textBaseline = 'middle';
@@ -543,15 +671,22 @@ const drawFloaters = (cx: CanvasRenderingContext2D, scene: FieldScene): void => 
     const k = (scene.now - floater.t0) / FLOATER_MS;
     if (k >= 1) continue;
     cx.globalAlpha = 1 - k * k;
+    const ink = floater.up ? 'rgba(246,242,232,.96)' : 'rgba(255,150,110,.96)';
+    const y = floater.y + (floater.up ? -40 * k : 30 * k * k);
+    if (floater.text === CLAP) {
+      cx.strokeStyle = ink;
+      drawClap(cx, floater.x, y, floater.size);
+      continue;
+    }
     cx.font = `700 ${String(18 * floater.size)}px system-ui, sans-serif`;
-    cx.fillStyle = floater.up ? 'rgba(246,242,232,.96)' : 'rgba(255,150,110,.96)';
-    cx.fillText(floater.text, floater.x, floater.y + (floater.up ? -40 * k : 30 * k * k));
+    cx.fillStyle = ink;
+    cx.fillText(floater.text, floater.x, y);
   }
   cx.globalAlpha = 1;
 };
 
 export const drawField = (cx: CanvasRenderingContext2D, scene: FieldScene, width: number, height: number): void => {
-  cx.fillStyle = '#0b0c0d';
+  cx.fillStyle = INK[scene.look].back;
   cx.fillRect(0, 0, width, height);
   drawStripes(cx, scene);
   drawSlider(cx, scene);

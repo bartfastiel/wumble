@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Fitness } from '../theory/fitness';
 import { keyBySignature } from '../theory/keys';
 import { buildModel } from '../theory/model';
-import { Field, FITNESS_WEIGHT, FOCUS_STEPS, focusReach, focusWeight, noise } from './geometry';
+import { Field, FITNESS_WEIGHT, FOCUS_STEPS, focusReach, focusWeight, isStraight, noise } from './geometry';
 
 const BOX = { left: 0, right: 900, top: 0, bottom: 600 };
 const model = buildModel(keyBySignature(0), 'classical');
@@ -28,6 +28,14 @@ describe('noise', () => {
       expect(noise(seed)).toBeLessThan(1);
     }
     expect(noise(1)).not.toBe(noise(2));
+  });
+});
+
+describe('isStraight', () => {
+  it('holds for every look but the grown one, which alone waves and tilts', () => {
+    expect(isStraight('organic')).toBe(false);
+    expect(isStraight('precise')).toBe(true);
+    expect(isStraight('polished')).toBe(true);
   });
 });
 

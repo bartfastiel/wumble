@@ -18,7 +18,7 @@ test.describe('band', () => {
   });
 
   test('records a loop layer from the next bar start', async ({ page }) => {
-    await openApp(page, '#tempo=100');
+    await openApp(page, '#style=classical&tempo=100'); // the major field, where 64 and 65 are next to each other
     await page.evaluate(() => {
       window.__wumble.app.store.update({ loopBars: 1 });
     });
@@ -39,16 +39,16 @@ test.describe('band', () => {
       player.release(2);
     });
     await expect(page.locator('wm-header button.loop')).toHaveClass(/rec/);
-    await expect(page.locator('wm-header button.loop')).toHaveText('●1', { timeout: barMs + 3000 });
+    await expect(page.locator('wm-header button.loop')).toHaveAttribute('data-layers', '1', { timeout: barMs + 3000 });
     const layers = await page.evaluate(() =>
       window.__wumble.app.looper.layers().map((layer) => ({ bars: layer.bars, tones: layer.events.length })),
     );
     expect(layers).toEqual([{ bars: 1, tones: 2 }]);
-    await page.locator('wm-header button[data-panel=settings]').click();
-    await expect(page.locator('wm-settings .loops div span')).toHaveText('Schicht 1 · 2 Töne · 1 Takt');
-    await page.locator('wm-settings .loops div button').click();
-    await expect(page.locator('wm-settings .loops p.hint')).toBeVisible();
-    await expect(page.locator('wm-header button.loop')).toHaveText('●');
+    await page.locator('wm-header button[data-section=tempo]').click();
+    await expect(page.locator('.layers .layer .marks i')).toHaveCount(2); // one mark per tone
+    await page.locator('.layers .layer button').click();
+    await expect(page.locator('.layers .layer')).toHaveCount(0);
+    await expect(page.locator('wm-header button.loop')).toHaveAttribute('data-layers', '');
   });
 
   test('a schema chooses on the map, as if a hand had done it', async ({ page }) => {

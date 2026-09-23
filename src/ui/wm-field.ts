@@ -10,7 +10,7 @@ import { fitnessOf } from '../theory/fitness';
 import { fieldLabels } from '../theory/labels';
 import { pcOf } from '../theory/pitch';
 import type { App } from './app';
-import { drawField, type Floater, type HeldStripe, type LearnScene } from './field-draw';
+import { CLAP, drawField, type Floater, type HeldStripe, type LearnScene } from './field-draw';
 import { t } from '../i18n';
 
 const DWELL_MS = 95; // resting chooses a chord, sweeping passes over it
@@ -112,7 +112,7 @@ export class WmField extends HTMLElement {
 
   applaud(): void {
     const { width, height } = this.canvas.getBoundingClientRect();
-    this.float('👏', width * (0.4 + 0.5 * random()), height * (0.2 + 0.6 * random()), APPLAUSE_SIZE);
+    this.float(CLAP, width * (0.4 + 0.5 * random()), height * (0.2 + 0.6 * random()), APPLAUSE_SIZE);
   }
 
   // Centre of a chord on the map – the end-to-end tests aim at it

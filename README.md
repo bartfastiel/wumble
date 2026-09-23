@@ -25,7 +25,8 @@ stripe tells you how well it fits.
 Open the link, or download `wumble.html` from a [release](https://github.com/bartfastiel/wumble/releases) and
 double-click it – everything, samples included, is in that one file.
 
-Every visit opens on a welcome page. Its button says **Play** – that click starts the band, the radio and the
+It opens on the twelve-bar blues in C at 100 bpm, polished, with the band and the radio playing – press Play and
+there is music. Every visit opens on a welcome page. Its button says **Play** – that click starts the band, the radio and the
 accompaniment, and brings the sound up from silence over a few seconds.
 
 **Left hand: the chord map.** One spot per chord of the style. Vertical is pull: what lies above leads home, what lies
@@ -44,15 +45,21 @@ screen the map steps aside and the focus draws in: fewer tones lie wide, and tho
 **Below: the range.** A strip across the width of the field. Grab it anywhere and pull – the octaves travel with the
 finger, the middle grows wide, the edges narrow. Let go and it settles into the nearest octave.
 
-The whole surface comes in two looks (settings): _grown_, with waved edges and a fanned-out tilt, or _built_, with
-upright bars, even radii and the map in a grid. Same meaning, different temperament.
+The whole surface comes in three looks (settings): _grown_, with waved edges and a fanned-out tilt, _built_, with
+upright bars, even radii and the map in a grid, or _polished_, the same straight shape in white lacquer under a cool
+lamp, where fitness reads as brightness and the chosen chord glows pale blue. Same meaning, different temperament.
+
+**Above: the bar.** One icon per subject, and behind every icon a picture instead of a list: the key as a circle of
+fifths, the style as its own scale, the sound as its instrument with the shape it makes, the band with its schema as
+a pattern of bars and the tempo on a dial, the view with the three looks. Whatever holds right now is lit; the words
+live in the tooltips.
 
 **And the rest.** The **keyboard** plays along – the two letter rows are fifteen tones around the middle of the field,
 the digits choose a chord. **Band** (🥁) adds drums, bass and chords in the groove of the style; ● records a loop from
 the next bar, the settings offer schemata, tap tempo, echo and radio. **Songs** (♫) show the next tone as a glowing
 dot, with levels that score the hits. **Scan sheet music** photographs a printed melody and lays it on the field.
 **Audience** opens a room with a QR code: friends see the lyrics scroll on their phone like karaoke and applaud.
-Settings switch key, style, tuning, sound and labels; the URL fragment carries them as a shareable link.
+The URL fragment carries every setting as a shareable link.
 
 ## Development
 
@@ -80,7 +87,8 @@ production it runs next to the site behind `/ws`.
 
 ```mermaid
 flowchart LR
-  ui[ui · Web Components, Canvas] --> play[play · state, input, auto-harmony]
+  ui[ui · Web Components, Canvas] --> widgets[widgets · buttons, popovers, tiles, dial, wheel]
+  ui --> play[play · state, input, auto-harmony]
   ui --> field[field · stripes, colour]
   ui --> map[map · chord map, pull]
   play --> theory[theory · keys, styles, chord maps, tuning]

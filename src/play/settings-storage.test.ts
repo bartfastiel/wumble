@@ -92,8 +92,8 @@ describe('settingsFrom', () => {
   });
 
   it('takes the style tempo when the stored tempo is missing or out of range', () => {
-    expect(settingsFrom({ style: 'blues' }).tempo).toBe(96);
-    expect(settingsFrom({ style: 'blues', tempo: 300 }).tempo).toBe(96);
+    expect(settingsFrom({ style: 'blues' }).tempo).toBe(100);
+    expect(settingsFrom({ style: 'blues', tempo: 300 }).tempo).toBe(100);
     expect(settingsFrom({ tempo: 120.4 }).tempo).toBe(120);
   });
 });

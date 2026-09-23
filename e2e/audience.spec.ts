@@ -17,7 +17,7 @@ const hit = (page: Page, index: number): Promise<void> =>
 
 test.describe('audience', () => {
   test('a listener follows the song of the player and applauds', async ({ page, context }) => {
-    await openApp(page, '', { query: relayQuery() });
+    await openApp(page, '', { query: relayQuery(), quiet: true });
     await page.locator('wm-header button[data-panel=library]').click();
     await page.locator('wm-library button', { hasText: 'Publikum' }).click();
     await expect(page.locator('wm-audience')).toHaveClass(/open/);
@@ -61,11 +61,11 @@ test.describe('audience', () => {
     await listener.locator('wm-listener button.applause').click();
     await expect
       .poll(() => page.evaluate(() => window.__wumble.root.field.floating.map((floater) => floater.text)))
-      .toContain('👏');
+      .toContain('clap');
 
     for (let i = 2; i < 27; i++) await hit(page, i);
     await expect(page.locator('wm-done')).toBeVisible();
-    await expect(listener.locator('wm-listener .big')).toHaveText('🎉 Geschafft');
+    await expect(listener.locator('wm-listener .big')).toHaveText('Geschafft');
     await page.locator('wm-done button.secondary').click();
     await expect(listener.locator('wm-listener .title')).toHaveText('Freies Spiel');
     await page.evaluate(() => {

@@ -25,7 +25,7 @@ const radioSetup = (seed = 1): { setup: Setup; radio: Radio; muted: { value: boo
 describe('Radio', () => {
   it('plays the recorded phrases over four rendered bars', () => {
     const recorded = RECORDED.radio;
-    const setup = createSetup(recorded.style as 'blues', recorded.schema as 'blues');
+    const setup = createSetup(recorded.style as 'blues', recorded.schema as 'blues', recorded.tempo);
     const radio = createRadio({
       band: setup.band,
       player: setup.player,

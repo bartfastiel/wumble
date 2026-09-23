@@ -14,7 +14,8 @@ const setup = (
   const engine = new FakeEngine();
   const clock = new FakeClock();
   // Two hands unless a test asks for the field to think along
-  const store = createStore({ ...DEFAULTS, mode: 'twoHands', ...patch });
+  // Two hands on the classical map: this suite is about the player, not about the style of the day
+  const store = createStore({ ...DEFAULTS, mode: 'twoHands', style: 'classical', ...patch });
   return { player: new Player({ engine, store, clock }), engine, clock, store };
 };
 const cMajor = buildModel(keyBySignature(0), 'classical');

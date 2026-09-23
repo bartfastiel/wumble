@@ -15,6 +15,7 @@ import {
 } from '../audience/karaoke-model';
 import { RelayClient, type SocketFactory } from '../audience/relay-client';
 import { t } from '../i18n';
+import { icon } from './widgets/icons';
 import type { App } from './app';
 import { applyTheme } from './theme';
 
@@ -95,7 +96,7 @@ export class WmListener extends HTMLElement {
     middle.append(this.lines, this.ball, this.free, this.waiting, this.done);
     this.applause.className = 'applause';
     this.applause.title = t('audience.listener.applause');
-    this.applause.textContent = '👏';
+    this.applause.append(icon('clap'));
     this.applause.addEventListener('click', () => {
       this.clap();
     });

@@ -1,5 +1,5 @@
 // Layout of the chord map: pull runs vertically, substitutes stand beside their chord, and nothing overlaps.
-import type { Look } from '../field/geometry';
+import { isStraight, type Look } from '../field/geometry';
 import { noise } from '../field/geometry';
 import type { MapChord } from '../theory/chord-maps';
 
@@ -32,7 +32,7 @@ const gridColumns = (box: MapBox): Readonly<Record<number, number>> => {
 };
 
 export const layoutMap = (chords: readonly MapChord[], box: MapBox, look: Look = 'organic'): MapSpot[] => {
-  const precise = look === 'precise';
+  const precise = isStraight(look);
   const steps = chords.map((c) => c.step);
   const lowest = Math.min(...steps, 0);
   const highest = Math.max(...steps, 0);

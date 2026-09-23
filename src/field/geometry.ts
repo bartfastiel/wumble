@@ -4,7 +4,9 @@
 import type { Fitness } from '../theory/fitness';
 
 // Two ways to draw the same field: grown, or built (see the ADR on the two looks)
-export type Look = 'organic' | 'precise';
+export type Look = 'organic' | 'precise' | 'polished';
+// Everything but the grown look stands straight: no waves, no tilt, no noise – only the colours tell them apart.
+export const isStraight = (look: Look): boolean => look !== 'organic';
 
 export interface Stripe {
   readonly index: number;
@@ -161,7 +163,7 @@ export class Field {
     const { left, right, top, bottom } = this.box;
     const span = Math.max(1, bottom - top);
     const middle = (top + bottom) / 2;
-    const precise = this.look === 'precise';
+    const precise = isStraight(this.look);
 
     this.stripes.forEach((stripe, i) => {
       const away = (i - this.focus) / Math.max(1, this.stripes.length / 2);

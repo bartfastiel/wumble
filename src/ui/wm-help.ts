@@ -8,6 +8,7 @@ export const HELP_TOPICS = [
   'map',
   'silence',
   'slide',
+  'bar',
   'songs',
   'scan',
   'levels',

@@ -14,15 +14,20 @@ export const collectErrors = (page: Page): string[] => {
 export interface OpenOptions {
   readonly keepWelcome?: boolean; // the welcome page stays open, so a test can look at it
   readonly query?: string; // e.g. the relay of the audience tests
+  readonly quiet?: boolean; // band and radio off: for the long tests, which are about something else
 }
+
+// The band and the radio play from the first click. A test that is not about them asks for quiet, because a runner
+// that renders drums, bass, chords and phrases while it is asked to click has no hands free.
+const hushed = (hash: string): string => (hash === '' ? '#band=0&radio=0' : `${hash}&band=0&radio=0`);
 
 // Opens the app and presses Play, which is what starts the sound – unless `keepWelcome`
 export const openApp = async (
   page: Page,
   hash = '',
-  { keepWelcome = false, query = '' }: OpenOptions = {},
+  { keepWelcome = false, query = '', quiet = false }: OpenOptions = {},
 ): Promise<void> => {
-  await page.goto(`./${query}${hash}`);
+  await page.goto(`./${query}${quiet ? hushed(hash) : hash}`);
   await expect(page.locator('wm-header h1')).not.toBeEmpty();
   await page.waitForFunction(() => '__wumble' in window);
   if (keepWelcome) return;
