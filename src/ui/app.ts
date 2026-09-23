@@ -25,6 +25,8 @@ import { chordLabel, toneLabel } from '../theory/labels';
 import { pcOf } from '../theory/pitch';
 import { melodyFrequency } from '../theory/tuning';
 
+const FADE_IN_SECONDS = 3.5; // the speakers may still be turned up from whatever ran before
+
 export type ExtraPanel = 'scan' | 'audience'; // opened from the library or by a link
 
 export interface AppEvents {
@@ -70,6 +72,7 @@ export interface App {
   recordLoop(): void;
   ghosts(): readonly Ghost[];
   applyLink(hash: string): void;
+  start(): void; // the welcome page hands over: sound on, band in, radio playing
   shareHash(): string;
   updateUrl(): void;
 }
@@ -155,7 +158,10 @@ export const createApp = (options: AppOptions): App => {
     onBeat: () => {
       emit('beat');
     },
-    onChord: () => {
+    // A schema leads: the chord it moves to is chosen on the map, so the field breathes with the band and the
+    // player sees what is sounding – exactly as if a hand had chosen it.
+    onChord: (chord) => {
+      if (chord !== null) player.chooseChord(chord, false);
       emit('draw');
     },
   });
@@ -189,11 +195,16 @@ export const createApp = (options: AppOptions): App => {
     muted: () => echo.active(),
   });
 
+  // Band and radio are on by default: the point is to hear music the moment the welcome page closes. Until then
+  // they are only wanted, not running – a browser needs the gesture first.
+  const wanted = { band: true, radio: true };
+  let started = false;
+
   const shareHash = (): string =>
     formatHash(store.get(), {
       ...(learn.song === null ? {} : { song: learn.song.title }),
-      band: band.running(),
-      radio: radio.on(),
+      band: started ? band.running() : wanted.band,
+      radio: started ? radio.on() : wanted.radio,
     });
   // The URL carries the state so it can be shared – only deviations from the defaults
   const updateUrl = (): void => {
@@ -230,6 +241,7 @@ export const createApp = (options: AppOptions): App => {
     updateUrl();
   };
   const startBand = (): void => {
+    started = true;
     if (band.running()) return;
     band.start();
     // The band takes over chord and bass of the chord that is sounding
@@ -248,14 +260,22 @@ export const createApp = (options: AppOptions): App => {
     const model = store.model();
     const labeling = { mode: 'names', german: store.get().german } as const;
     const semitone = pcOf((model.tones[tone] ?? model.key.tonic) - model.key.tonic);
-    const sounding = model.chords[chord];
+    // Only what is actually heard: a muted accompaniment is the player's business, not the room's
+    const sounding = player.accompanying ? model.chords[chord] : undefined;
     room.tone(
       toneLabel(model.key, model.style, semitone, labeling),
       sounding === undefined ? '' : chordLabel(sounding, false, labeling),
     );
   };
 
+  // The hand takes over: the radio hushes for two bars, and a schema stops choosing for the same while
+  const humanLeads = (): void => {
+    radio.pause();
+    band.yield();
+  };
+
   player.subscribe({
+    lead: humanLeads,
     press: ({ id, tone, chord, at }) => {
       if (learn.song !== null) {
         // Only the tone counts: which chord lies under it is the other hand's free choice
@@ -298,7 +318,8 @@ export const createApp = (options: AppOptions): App => {
   const songs = (): Song[] => [...scanned, ...SONGS];
   const findSong = (songSlug: string): Song | undefined => songs().find((song) => slug(song.title) === songSlug);
 
-  // Deep link: a song brings its own key and style, a style its suggestions
+  // Deep link: a song brings its own key and style, a style its suggestions. Band and radio are not started here –
+  // that needs a gesture, and the welcome page provides it.
   const applyLink = (hash: string): void => {
     const link = parseHash(hash, (songSlug) => findSong(songSlug)?.title);
     if (link.room !== undefined) {
@@ -309,10 +330,28 @@ export const createApp = (options: AppOptions): App => {
     const linkSong = song === undefined ? undefined : { signature: song.k, style: song.style };
     store.update(settingsFromLink(store.get(), link, linkSong, band.running()));
     if (song !== undefined) startSong(song);
-    if (link.radio !== undefined) radio.setOn(link.radio);
-    if (link.band === true) startBand();
-    if (link.band === false) band.stop();
+    if (link.radio !== undefined) wanted.radio = link.radio;
+    if (link.band !== undefined) wanted.band = link.band;
+    if (started) {
+      radio.setOn(wanted.radio);
+      if (wanted.band) startBand();
+      else band.stop();
+    }
     if (link.scan === true) emit('open', 'scan');
+    updateUrl();
+  };
+
+  // The first gesture of the session: the audio context may run now. Everything that was asked for in the link (or,
+  // without a link, the defaults) starts here – and the sound comes up over a few seconds instead of at once.
+  const start = (): void => {
+    started = true;
+    engine.ensure();
+    engine.fadeIn(FADE_IN_SECONDS);
+    if (wanted.radio) radio.setOn(true);
+    if (wanted.band) startBand();
+    // The chord that was chosen all along is struck now, so the field sounds from the first moment
+    player.chooseChord(player.chord, false);
+    emit('draw');
     updateUrl();
   };
 
@@ -348,6 +387,7 @@ export const createApp = (options: AppOptions): App => {
     stopSong,
     startBand,
     stopBand: () => {
+      started = true;
       band.stop();
     },
     toggleBand: () => {
@@ -364,6 +404,7 @@ export const createApp = (options: AppOptions): App => {
       emit('title');
     },
     setRadio: (on) => {
+      started = true;
       radio.setOn(on);
       updateUrl();
     },
@@ -372,6 +413,7 @@ export const createApp = (options: AppOptions): App => {
     },
     ghosts: () => bandPlayer.ghosts(),
     applyLink,
+    start,
     shareHash,
     updateUrl,
   };

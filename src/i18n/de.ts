@@ -88,6 +88,10 @@ export const de = {
       twoHands: 'Zwei Hände – links der Akkord, rechts die Melodie',
       autoHarmony: 'Mitdenken – du spielst Töne, das Feld wählt die Akkorde',
     },
+    look: {
+      organic: 'Gewachsen – wellige Kanten, gefächert',
+      precise: 'Gebaut – gerade Kanten, ruhig',
+    },
     labels: {
       off: 'Aus',
       names: 'Notennamen (C, D, E …)',
@@ -197,6 +201,7 @@ export const de = {
   settings: {
     labels: 'Zeig mir, was du tust',
     german: 'Deutsche Notennamen (H statt B)',
+    look: 'Erscheinungsbild',
     key: 'Tonart',
     keyHint: 'Kreuze oder Bs auf dem Notenblatt zählen und die Zeile mit derselben Anzahl wählen.',
     style: 'Stil',
@@ -207,13 +212,29 @@ export const de = {
     copied: 'Kopiert: {link}',
     standard: 'Standard',
   },
+  welcome: {
+    title: 'Wumble',
+    intro: 'Ein Spielfeld, auf dem nichts falsch klingt. Zwei Hände, keine Regeln.',
+    map: {
+      lead: 'Links die Akkorde',
+      text: ' – tippen, und der Akkord bleibt liegen. Was oben steht, zieht nach Hause.',
+    },
+    field: {
+      lead: 'Rechts die Töne',
+      text: ' – breit heißt: trägt. Schmal heißt: will weiter. Wischen ergibt ein Glissando.',
+    },
+    slide: {
+      lead: 'Unten die Lage',
+      text: ' – anfassen und die Oktaven vorbeiziehen. Beim Loslassen rastet sie ein.',
+    },
+    play: 'Spielen',
+  },
   credits: {
     title: 'Klänge und Lizenzen',
     intro: 'Wumble spielt mit frei lizenzierten Aufnahmen:',
     piano: 'Klavier',
     vsco: 'Solo-Violine, Violinsektion, Kontrabass und Kirchenorgel „Rode“ (aufgenommen von Simon Dalzell / Ivy Audio)',
     code: 'Wumble selbst ist freie Software unter der MIT-Lizenz.',
-    close: 'Weiter',
   },
   help: {
     title: 'So funktioniert es',
@@ -226,12 +247,12 @@ export const de = {
       text: ': Zum klingenden Akkord wird jeder Streifen so breit, wie der Ton trägt. Breit und warm heißt Grundton oder Quinte, etwas schmaler die Terz, schmal und kühl ein Ton, der weiterziehen will. Gesperrt ist nichts – du kannst jeden Ton spielen, du triffst nur leichter die, die tragen.',
     },
     map: {
-      lead: 'Links liegt die Akkordkarte',
+      lead: 'Links die Akkordkarte',
       text: ': ein Feld je Akkord. Senkrecht ist der Zug – was oben liegt, zieht nach Hause, was unten liegt, führt von ihm weg; nebeneinander stehen Vertreter, die dieselbe Aufgabe anders färben. Ein Feld wächst, je wahrscheinlicher es als Nächstes dran ist. Antippen wählt, und der Akkord bleibt liegen, bis du einen anderen wählst – du musst nichts festhalten. Beim Darüberziehen zählt nur, wo du kurz verweilst.',
     },
     silence: {
-      lead: 'Das große graue Feld',
-      text: ' unten auf der Karte ist die Stille: einstimmig, ohne Begleitung. Von dort aus fängt jedes Stück an, und dorthin kehrst du zurück, wenn dir die Harmonie im Weg steht.',
+      lead: 'Noch einmal auf denselben Akkord',
+      text: ' tippen, und die Begleitung tritt zurück: nur noch die Melodie. Der Akkord bleibt trotzdem gewählt – als Umriss zu sehen –, denn er bestimmt weiter Breiten und Farben der Streifen. Noch einmal tippen, und er klingt wieder.',
     },
     songs: {
       lead: 'Lieder',
@@ -272,6 +293,14 @@ export const de = {
     keyboard: {
       lead: 'Tastatur',
       text: ': Auch der Laptop spielt mit – die untere Buchstabenreihe (Y X C V B N M) und die mittlere (A S D F G H J K) liegen als fünfzehn Töne um die Mitte des Feldes, eine Oktave auseinander. Die Ziffern 1 bis 9 wählen einen Akkord der Karte, die 0 die Stille.',
+    },
+    slide: {
+      lead: 'Unten die Lage',
+      text: ': eine Leiste über die ganze Breite. An beliebiger Stelle anfassen und ziehen – die Oktaven wandern mit dem Finger, die Mitte wird breit, die Ränder schmal. Beim Loslassen rastet sie in die nächste Oktave ein, damit der Grundton immer an derselben Stelle liegt.',
+    },
+    look: {
+      lead: 'Erscheinungsbild',
+      text: ' (Einstellungen): „Gewachsen“ ist das Feld mit welligen Kanten, gefächert und ein wenig unruhig. „Gebaut“ stellt alles gerade: aufrechte Balken, gleiche Radien, die Karte im Raster, Graphit mit einem warmen Akzent. Die Bedeutung ändert sich nicht – Breite heißt weiter Passung, senkrecht weiter Zug.',
     },
     styles: {
       lead: 'Stile',

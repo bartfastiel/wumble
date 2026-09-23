@@ -2,7 +2,7 @@ import './ui/styles.css';
 import { locale } from './i18n';
 import { WmApp } from './ui/wm-app';
 import { WmAudience } from './ui/wm-audience';
-import { WmCredits } from './ui/wm-credits';
+import { WmWelcome } from './ui/wm-welcome';
 import { WmDone } from './ui/wm-done';
 import { WmField } from './ui/wm-field';
 import { WmHeader } from './ui/wm-header';
@@ -23,7 +23,7 @@ customElements.define('wm-scan', WmScan);
 customElements.define('wm-audience', WmAudience);
 customElements.define('wm-listener', WmListener);
 customElements.define('wm-done', WmDone);
-customElements.define('wm-credits', WmCredits);
+customElements.define('wm-welcome', WmWelcome);
 customElements.define('wm-app', WmApp);
 
 const root = document.querySelector('wm-app');

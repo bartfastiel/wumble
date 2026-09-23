@@ -25,16 +25,27 @@ stripe tells you how well it fits.
 Open the link, or download `wumble.html` from a [release](https://github.com/bartfastiel/wumble/releases) and
 double-click it – everything, samples included, is in that one file.
 
+Every visit opens on a welcome page. Its button says **Play** – that click starts the band, the radio and the
+accompaniment, and brings the sound up from silence over a few seconds.
+
 **Left hand: the chord map.** One spot per chord of the style. Vertical is pull: what lies above leads home, what lies
 below leads away from it; side by side stand substitutes that colour the same job differently. A spot grows the more
 likely it is to come next. A tap chooses, and the chord keeps sounding until another one is chosen – nothing needs
-holding. The large grey spot is silence: melody without accompaniment.
+holding. Tapping the chord that already sounds mutes the accompaniment and leaves the melody alone; it stays chosen,
+drawn as an outline, because it still decides the width and colour of every stripe.
 
 **Right hand: the field of stripes.** One stripe per tone of the key, low at the bottom left, high at the top right,
 across eight octaves. Against the chord that sounds, every stripe grows as wide as its tone carries: wide and warm for
 the root and the fifth, narrower for the third, narrow and cool for a tone that wants to move on. Nothing is ever
 blocked – you can play any tone, you just hit the carrying ones more easily. Sliding gives a glissando, several fingers
-play several voices, and holding a tone shapes it: further in brightens, a small circle makes it waver.
+play several voices, and holding a tone shapes it: further in brightens, a small circle makes it waver. On a narrow
+screen the map steps aside and the focus draws in: fewer tones lie wide, and those stay big enough for a finger.
+
+**Below: the range.** A strip across the width of the field. Grab it anywhere and pull – the octaves travel with the
+finger, the middle grows wide, the edges narrow. Let go and it settles into the nearest octave.
+
+The whole surface comes in two looks (settings): _grown_, with waved edges and a fanned-out tilt, or _built_, with
+upright bars, even radii and the map in a grid. Same meaning, different temperament.
 
 **And the rest.** The **keyboard** plays along – the two letter rows are fifteen tones around the middle of the field,
 the digits choose a chord. **Band** (🥁) adds drums, bass and chords in the groove of the style; ● records a loop from

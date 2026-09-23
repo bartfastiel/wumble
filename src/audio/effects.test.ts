@@ -29,9 +29,9 @@ describe('impulse', () => {
 });
 
 describe('createMixer', () => {
-  it('puts a compressor with the recorded settings before the destination', () => {
+  it('puts a compressor with the recorded settings before the master, and that before the destination', () => {
     const context = new FakeAudioContext();
-    createMixer(context.asContext());
+    const mixer = createMixer(context.asContext());
     const compressor = context.single(FakeCompressor);
     expect([
       compressor.threshold.value,
@@ -40,7 +40,9 @@ describe('createMixer', () => {
       compressor.attack.value,
       compressor.release.value,
     ]).toEqual([-14, 12, 4, 0.004, 0.2]);
-    expect(compressor.targets).toEqual([context.destination]);
+    expect(compressor.targets).toEqual([mixer.master]);
+    expect(mixer.master.gain.value).toBe(1); // wide open until someone fades it
+    expect((mixer.master as unknown as { targets: unknown[] }).targets).toEqual([context.destination]);
   });
 
   it('creates the room reverb at start: 1.8 s impulse, return 0.25 into the compressor', () => {

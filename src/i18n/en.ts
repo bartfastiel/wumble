@@ -88,6 +88,10 @@ export const en = {
       twoHands: 'Two hands – the chord on the left, the melody on the right',
       autoHarmony: 'Auto-harmony – you play tones, the field picks the chords',
     },
+    look: {
+      organic: 'Grown – wavy edges, fanned out',
+      precise: 'Built – straight edges, quiet',
+    },
     labels: {
       off: 'Off',
       names: 'Note names (C, D, E …)',
@@ -197,6 +201,7 @@ export const en = {
   settings: {
     labels: 'Show me what I play',
     german: 'German note names (H instead of B)',
+    look: 'Look',
     key: 'Key',
     keyHint: 'Count the sharps or flats on the sheet and pick the row with the same number.',
     style: 'Style',
@@ -207,13 +212,29 @@ export const en = {
     copied: 'Copied: {link}',
     standard: 'default',
   },
+  welcome: {
+    title: 'Wumble',
+    intro: 'A playing field where nothing sounds wrong. Two hands, no rules.',
+    map: {
+      lead: 'Chords on the left',
+      text: ' – tap one and it keeps sounding. What sits above leads home.',
+    },
+    field: {
+      lead: 'Tones on the right',
+      text: ' – wide means it carries, narrow means it wants to move on. Slide for a glissando.',
+    },
+    slide: {
+      lead: 'The range below',
+      text: ' – grab it and pull the octaves past. It settles on one when you let go.',
+    },
+    play: 'Play',
+  },
   credits: {
     title: 'Sounds and licenses',
     intro: 'Wumble plays freely licensed recordings:',
     piano: 'piano',
     vsco: 'solo violin, violin section, double bass and the church organ “Rode” (sampled by Simon Dalzell / Ivy Audio)',
     code: 'Wumble itself is free software under the MIT license.',
-    close: 'Continue',
   },
   help: {
     title: 'How it works',
@@ -230,8 +251,8 @@ export const en = {
       text: ': one spot per chord. Vertical is pull – what lies above leads home, what lies below leads away from it; side by side stand substitutes that colour the same job differently. A spot grows the more likely it is to come next. A tap chooses, and the chord keeps sounding until you choose another one – you need not hold anything. While you slide across, only where you rest for a moment counts.',
     },
     silence: {
-      lead: 'The large grey spot',
-      text: ' at the bottom of the map is silence: melody alone, without accompaniment. Every piece starts there, and you go back whenever the harmony is in your way.',
+      lead: 'Tap the same chord again',
+      text: ' and the accompaniment steps back: melody alone. The chord stays chosen all the same – drawn as an outline – because it still decides the width and the colour of every stripe. Tap once more and it sounds again.',
     },
     songs: {
       lead: 'Songs',
@@ -272,6 +293,14 @@ export const en = {
     keyboard: {
       lead: 'Keyboard',
       text: ': the laptop plays along too – the bottom letter row (Z X C V B N M) and the home row (A S D F G H J K) sit as fifteen tones around the middle of the field, an octave apart. The digits 1 to 9 choose a chord of the map, 0 chooses silence.',
+    },
+    slide: {
+      lead: 'The range below',
+      text: ': a strip across the whole width. Grab it anywhere and pull – the octaves travel with your finger, the middle grows wide, the edges narrow. Let go and it settles into the nearest octave, so the tonic is always in the same place.',
+    },
+    look: {
+      lead: 'Look',
+      text: ' (settings): "grown" is the field with waved edges, fanned out and a little restless. "Built" makes everything straight: upright bars, even radii, the map in a grid, graphite with one warm accent. What it means does not change – width is still fitness, vertical is still pull.',
     },
     styles: {
       lead: 'Styles',

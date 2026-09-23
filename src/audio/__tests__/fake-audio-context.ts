@@ -1,10 +1,14 @@
 // A hand-written stand-in for the Web Audio API: nodes record their connections, params record scheduled values,
 // sources record start/stop times. Enough to assert graphs and envelopes in a node test without a browser.
 export type ParamMethod =
-  'setValueAtTime' | 'linearRampToValueAtTime' | 'exponentialRampToValueAtTime' | 'setTargetAtTime';
+  | 'setValueAtTime'
+  | 'linearRampToValueAtTime'
+  | 'exponentialRampToValueAtTime'
+  | 'setTargetAtTime'
+  | 'cancelScheduledValues';
 export interface ParamEvent {
   readonly method: ParamMethod;
-  readonly value: number;
+  readonly value: number | undefined; // cancelScheduledValues carries none
   readonly time: number;
   readonly timeConstant?: number;
 }
@@ -26,6 +30,10 @@ export class FakeParam {
   }
   setTargetAtTime(value: number, time: number, timeConstant: number): this {
     this.events.push({ method: 'setTargetAtTime', value, time, timeConstant });
+    return this;
+  }
+  cancelScheduledValues(time: number): this {
+    this.events.push({ method: 'cancelScheduledValues', value: undefined, time });
     return this;
   }
 }

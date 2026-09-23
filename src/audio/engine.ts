@@ -21,6 +21,7 @@ export interface VoiceHandle {
 
 export interface AudioEngine {
   ensure(): number; // create/resume on a user gesture, returns currentTime
+  fadeIn(seconds: number): void; // from silence up to full, so nobody is startled by a loud speaker
   now(): number;
   melody(freq: number, at: number, gain?: number): VoiceHandle;
   chord(freqs: readonly number[], at: number, gain?: number): VoiceHandle;
@@ -141,6 +142,14 @@ export function createAudioEngine(context?: AudioContext, sampleBase?: string): 
       unlock();
       void load(combi);
       return audioContext.currentTime;
+    },
+    // Up from silence over `seconds`, so the first chord does not hit a speaker that is still turned up
+    fadeIn: (seconds) => {
+      const { context: audioContext, mixer } = wire();
+      const at = audioContext.currentTime;
+      mixer.master.gain.cancelScheduledValues(at);
+      mixer.master.gain.setValueAtTime(0, at);
+      mixer.master.gain.linearRampToValueAtTime(1, at + Math.max(0.01, seconds));
     },
     now,
     melody: (freq, at, gain = 1) => voice('melody', [freq], at, gain),

@@ -317,7 +317,7 @@ describe('Harmony', () => {
     harmony.melody('b', b, 11, 0); // B after a gap: the dominant wins
     pointers.set('b', b);
     expect(chordAt(cMajor, harmony.current ?? -1).offset).toBe(7);
-    harmony.lead(subdominant, 0);
+    harmony.lead(subdominant);
     expect(harmony.current).toBe(subdominant);
     const e = pointerAt(2);
     harmony.melody('c', e, 4, 0); // E does not fit F: the field waits instead of overruling the hand

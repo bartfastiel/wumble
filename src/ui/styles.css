@@ -756,7 +756,7 @@ wm-listener .applause:active {
   }
 }
 
-/* End of a song, and the credits on the first start */
+/* End of a song, and the welcome page */
 .modal {
   position: fixed;
   inset: 0;
@@ -810,29 +810,82 @@ wm-listener .applause:active {
   color: inherit;
 }
 
-.card.credits {
+.card.welcome {
   text-align: left;
+  max-width: 460px;
 }
 
-.card.credits h2 {
-  font-size: 20px;
+.card.welcome h2 {
+  font-size: 30px;
+  letter-spacing: 0.04em;
+  margin: 0 0 6px;
 }
 
-.card.credits p {
-  margin: 0 0 10px;
+.card.welcome .intro {
+  margin: 0 0 22px;
   font-size: 15px;
+  opacity: 0.78;
 }
 
-.card.credits ul {
-  margin: 0 0 16px;
-  padding-left: 20px;
+/* One line per area, with a small picture of it built from the same shapes the field uses */
+.card.welcome .where {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 14px;
   font-size: 15px;
+  line-height: 1.35;
 }
 
-.card.credits li {
-  margin: 6px 0;
+.card.welcome .where b {
+  font-weight: 600;
 }
 
-.card.credits a {
+.card.welcome .glyph {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 46px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.card.welcome .glyph i {
+  display: block;
+  width: 5px;
+  height: calc(6px + var(--size) * 20px);
+  border-radius: 3px;
+  background: hsl(var(--hue, 85) 45% 62% / calc(0.35 + var(--size) * 0.5));
+}
+
+.card.welcome .glyph.map i {
+  width: calc(8px + var(--size) * 6px);
+  height: calc(8px + var(--size) * 6px);
+  border-radius: 50%;
+}
+
+.card.welcome .glyph.slide i {
+  width: 32px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.card.welcome .credits-line {
+  margin: 20px 0 18px;
+  font-size: 12px;
+  opacity: 0.55;
+  line-height: 1.5;
+}
+
+.card.welcome a {
   color: inherit;
+}
+
+.card.welcome button.play {
+  width: 100%;
+  font-size: 17px;
+  padding: 13px 18px;
 }

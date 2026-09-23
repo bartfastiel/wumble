@@ -9,19 +9,21 @@ import {
   DIFFICULTIES,
   isTempo,
   LABEL_SETTINGS,
+  LOOKS,
   PLAY_MODES,
   styleSettings,
 } from './settings';
 
 describe('DEFAULTS', () => {
-  it('start the app in C major, classical, equal, two hands, e-piano, labels off, easy, 100 bpm', () => {
+  it('start the app in C major, classical, equal, thinking along, e-piano, labels off, easy, 100 bpm', () => {
     expect(DEFAULTS).toEqual({
       signature: 0,
       style: 'classical',
       tuning: 'equal',
-      mode: 'twoHands',
+      mode: 'autoHarmony',
       combi: 'epiano',
       labels: 'off',
+      look: 'organic',
       german: false,
       difficulty: 'easy',
       tempo: 100,
@@ -76,10 +78,11 @@ describe('styleSettings', () => {
 });
 
 describe('names', () => {
-  it('exist for every mode, label setting and level in both locales', () => {
+  it('exist for every mode, look, label setting and level in both locales', () => {
     for (const locale of ['de', 'en'] as const) {
       setLocale(locale);
       for (const mode of PLAY_MODES) expect(t(`play.mode.${mode}`)).not.toBe(`play.mode.${mode}`);
+      for (const look of LOOKS) expect(t(`play.look.${look}`)).not.toBe(`play.look.${look}`);
       for (const labels of LABEL_SETTINGS) expect(t(`play.labels.${labels}`)).not.toBe(`play.labels.${labels}`);
       for (const level of DIFFICULTIES) expect(t(`play.level.${level}`)).not.toBe(`play.level.${level}`);
     }

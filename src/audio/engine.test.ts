@@ -69,12 +69,28 @@ describe('ensure', () => {
     context.currentTime = 1.5;
     expect(engine.ensure()).toBe(1.5);
     expect(context.state).toBe('running');
-    expect(context.single(FakeCompressor).targets).toEqual([context.destination]);
+    // compressor → master → speakers
+    const compressor = context.single(FakeCompressor);
+    const master = compressor.targets[0] as FakeGain;
+    expect(master.targets).toEqual([context.destination]);
     expect(audioElements).toBe(1);
     engine.ensure();
     expect(context.resumes).toBe(1);
     expect(context.all(FakeCompressor)).toHaveLength(1);
     expect(engine.now()).toBe(1.5);
+  });
+
+  it('fades in from silence, so a loud speaker never startles anyone', () => {
+    const { context, engine } = setup();
+    context.currentTime = 2;
+    engine.ensure();
+    const master = context.single(FakeCompressor).targets[0] as FakeGain;
+    engine.fadeIn(3);
+    expect(master.gain.events).toEqual([
+      { method: 'cancelScheduledValues', value: undefined, time: 2 },
+      { method: 'setValueAtTime', value: 0, time: 2 },
+      { method: 'linearRampToValueAtTime', value: 1, time: 5 },
+    ]);
   });
 });
 

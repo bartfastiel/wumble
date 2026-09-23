@@ -1,11 +1,11 @@
-// The app root: header, field, the panels, the listener view, the done modal and the credits splash. It owns the app
+// The app root: header, field, the panels, the listener view, the done modal and the welcome page. It owns the app
 // (the wiring of the modules), opens and closes panels, binds the keyboard and applies deep links and the theme.
 import { roomCodeFromHash } from '../audience/room';
 import { bindKeyboard } from '../play/keyboard-bindings';
 import { type App, createApp, type ExtraPanel } from './app';
-import type { CreditsStorage } from './credits';
 import { WmAudience } from './wm-audience';
-import { WmCredits } from './wm-credits';
+import type { SettingsStorage } from '../play/settings-storage';
+import { WmWelcome } from './wm-welcome';
 import { WmDone } from './wm-done';
 import { WmField } from './wm-field';
 import { WmHeader, PANEL_EVENT, type PanelName } from './wm-header';
@@ -29,7 +29,7 @@ const browserStorage = (): Storage | null => {
   }
 };
 
-const memoryStorage = (): CreditsStorage => {
+const memoryStorage = (): SettingsStorage => {
   const items = new Map<string, string>();
   return {
     getItem: (key) => items.get(key) ?? null,
@@ -41,11 +41,11 @@ const memoryStorage = (): CreditsStorage => {
 
 export class WmApp extends HTMLElement {
   app: App | null = null; // created here unless a test injects one
-  storage: CreditsStorage | null = null;
+  storage: SettingsStorage | null = null;
   readonly field = new WmField();
   readonly header = new WmHeader();
   readonly done = new WmDone();
-  readonly credits = new WmCredits();
+  readonly welcome = new WmWelcome();
   readonly listener = new WmListener();
   private readonly panels = new Map<AnyPanel, WmPanel>();
   private readonly cleanups: (() => void)[] = [];
@@ -63,7 +63,9 @@ export class WmApp extends HTMLElement {
     this.header.app = app;
     this.field.app = app;
     this.listener.app = app;
-    this.credits.storage = storage;
+    this.welcome.onPlay = () => {
+      app.start();
+    };
     this.panels.set('library', this.panel(new WmLibrary(), app));
     this.panels.set('settings', this.panel(new WmSettings(), app));
     this.panels.set('help', this.panel(new WmHelp(), app));
@@ -75,7 +77,7 @@ export class WmApp extends HTMLElement {
     this.done.onFreePlay = () => {
       app.stopSong();
     };
-    this.append(this.header, this.field, ...this.panels.values(), this.listener, this.done, this.credits);
+    this.append(this.header, this.field, ...this.panels.values(), this.listener, this.done, this.welcome);
     this.listen(app);
     applyTheme(app.store.model().hue);
     app.applyLink(location.hash);
@@ -142,7 +144,7 @@ export class WmApp extends HTMLElement {
         applyTheme(app.store.model().hue);
       }),
       bindKeyboard(document, app.player, {
-        ignore: () => this.openPanel !== null || !this.done.hidden || !this.credits.hidden,
+        ignore: () => this.openPanel !== null || !this.done.hidden || !this.welcome.hidden,
         onEscape: () => {
           this.closePanels();
         },

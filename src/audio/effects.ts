@@ -22,18 +22,21 @@ export const impulse = (context: BaseAudioContext, seconds: number, decay: numbe
 
 export interface Mixer {
   readonly compressor: DynamicsCompressorNode;
+  readonly master: GainNode; // the last stop before the speakers: the whole field fades in through it
   reverb(id: ReverbId): ConvolverNode;
   output(sound: Sound): GainNode;
 }
 
 export const createMixer = (context: BaseAudioContext): Mixer => {
+  const master = context.createGain();
+  master.connect(context.destination);
   const compressor = context.createDynamicsCompressor();
   compressor.threshold.value = -14;
   compressor.knee.value = 12;
   compressor.ratio.value = 4;
   compressor.attack.value = 0.004;
   compressor.release.value = 0.2;
-  compressor.connect(context.destination);
+  compressor.connect(master);
 
   const reverbs = new Map<ReverbId, ConvolverNode>();
   // 'room' 1.8 s with return 0.25; 'church' 4 s, darker, with return 0.35
@@ -77,5 +80,5 @@ export const createMixer = (context: BaseAudioContext): Mixer => {
     return dry;
   };
 
-  return { compressor, reverb, output };
+  return { compressor, master, reverb, output };
 };

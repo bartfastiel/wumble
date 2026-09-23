@@ -2,17 +2,19 @@ import { expect, test } from './fixtures';
 import { openApp } from './helpers';
 
 test.describe('band', () => {
-  test('starts from the header and shows the loop button', async ({ page }) => {
-    await openApp(page);
-    await page.locator('wm-header button.band').click();
+  test('plays from the start and stops from the header', async ({ page }) => {
+    await openApp(page); // Play starts the band
     expect(await page.evaluate(() => window.__wumble.app.band.running())).toBe(true);
     expect(await page.evaluate(() => window.__wumble.app.player.bandRunning)).toBe(true);
     await expect(page.locator('wm-header button.band')).toHaveClass(/on/);
     await expect(page.locator('wm-header button.loop')).toBeVisible();
-    expect(await page.evaluate(() => location.hash)).toBe('#band=1');
+    expect(await page.evaluate(() => location.hash)).toBe('');
     await page.locator('wm-header button.band').click();
     expect(await page.evaluate(() => window.__wumble.app.band.running())).toBe(false);
+    expect(await page.evaluate(() => location.hash)).toBe('#band=0');
     await expect(page.locator('wm-header button.loop')).toBeHidden();
+    await page.locator('wm-header button.band').click();
+    expect(await page.evaluate(() => window.__wumble.app.band.running())).toBe(true);
   });
 
   test('records a loop layer from the next bar start', async ({ page }) => {
@@ -20,7 +22,6 @@ test.describe('band', () => {
     await page.evaluate(() => {
       window.__wumble.app.store.update({ loopBars: 1 });
     });
-    await page.locator('wm-header button.band').click(); // a gesture: the audio clock runs from here
     await page.locator('wm-header button.loop').click();
     await expect(page.locator('wm-header button.loop')).toHaveClass(/armed/);
     // The recording starts with the next bar – one bar of 2.4 s at 100 bpm at most, plus a margin for a slow
@@ -50,6 +51,30 @@ test.describe('band', () => {
     await expect(page.locator('wm-header button.loop')).toHaveText('●');
   });
 
+  test('a schema chooses on the map, as if a hand had done it', async ({ page }) => {
+    // Twelve-bar blues at 160 bpm: bar 1 is I, bar 5 is IV – 1.5 s per bar
+    await openApp(page, '#band=1&schema=blues&tempo=160');
+    await expect
+      .poll(() => page.evaluate(() => window.__wumble.app.player.chord), { timeout: 5000 })
+      .toBeGreaterThanOrEqual(0);
+    const home = await page.evaluate(() => {
+      const { player } = window.__wumble.app;
+      return player.model.chords[player.chord]?.offset;
+    });
+    expect(home).toBe(0);
+    // by bar 5 the band has moved to the subdominant, and the map says so
+    await expect
+      .poll(
+        () =>
+          page.evaluate(() => {
+            const { player } = window.__wumble.app;
+            return player.model.chords[player.chord]?.offset;
+          }),
+        { timeout: 15_000 },
+      )
+      .toBe(5);
+  });
+
   test('the echo takes the title', async ({ page }) => {
     await openApp(page);
     await page.locator('wm-header button[data-panel=library]').click();
@@ -59,6 +84,7 @@ test.describe('band', () => {
     expect(await page.evaluate(() => window.__wumble.app.band.running())).toBe(true);
     await page.locator('wm-header button.end').click();
     await expect(page.locator('wm-header h1')).toHaveText('Freies Spiel');
-    expect(await page.evaluate(() => window.__wumble.app.band.running())).toBe(false);
+    // the band keeps playing: it was already running before the echo asked for it
+    expect(await page.evaluate(() => window.__wumble.app.band.running())).toBe(true);
   });
 });

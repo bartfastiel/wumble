@@ -1,4 +1,4 @@
-// Shared steps of the end-to-end tests: open the app (with a hash), dismiss the credits, aim at the canvas.
+// Shared steps of the end-to-end tests: open the app (with a hash), get past the welcome page, aim at the canvas.
 import { expect, type Page } from '@playwright/test';
 import type {} from '../src/ui/test-hook'; // window.__wumble
 
@@ -12,22 +12,22 @@ export const collectErrors = (page: Page): string[] => {
 };
 
 export interface OpenOptions {
-  readonly keepCredits?: boolean; // the credits splash of the first start stays open
+  readonly keepWelcome?: boolean; // the welcome page stays open, so a test can look at it
   readonly query?: string; // e.g. the relay of the audience tests
 }
 
-// Opens the app; the credits splash of the first start is closed unless `keepCredits`
+// Opens the app and presses Play, which is what starts the sound – unless `keepWelcome`
 export const openApp = async (
   page: Page,
   hash = '',
-  { keepCredits = false, query = '' }: OpenOptions = {},
+  { keepWelcome = false, query = '' }: OpenOptions = {},
 ): Promise<void> => {
   await page.goto(`./${query}${hash}`);
   await expect(page.locator('wm-header h1')).not.toBeEmpty();
   await page.waitForFunction(() => '__wumble' in window);
-  if (keepCredits) return;
-  const close = page.locator('wm-credits button');
-  if (await close.isVisible()) await close.click();
+  if (keepWelcome) return;
+  const play = page.locator('wm-welcome button');
+  if (await play.isVisible()) await play.click();
 };
 
 // The relay of relay-setup.ts, as the app's `?relay=` override

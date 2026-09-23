@@ -1,6 +1,6 @@
 // Drawing the field: stripes on the right, the chord map on the left. Nothing here decides anything —
 // every value it needs is computed in the field, map and theory modules.
-import type { Field, Stripe } from '../field/geometry';
+import type { Field, Look, Stripe } from '../field/geometry';
 import { cssOf, type Oklch, shade, toneColour } from '../field/palette';
 import type { MapSpot } from '../map/geometry';
 import { SHAPE_SUFFIX } from '../theory/chord-maps';
@@ -23,7 +23,22 @@ export interface Floater {
   readonly size: number;
 }
 
+// The strip below the field: a map of the whole range, with the octave it settles on marked
+export interface SliderScene {
+  readonly left: number;
+  readonly right: number;
+  readonly top: number;
+  readonly bottom: number;
+  readonly focus: number; // the stripe in the middle right now
+  readonly settling: number; // where it will come to rest
+  readonly count: number;
+  readonly perOctave: number;
+  readonly held: boolean;
+}
+
 export interface FieldScene {
+  readonly look: Look;
+  readonly slider: SliderScene;
   readonly field: Field;
   readonly fitness: readonly Fitness[];
   readonly tonicStep: number; // stripes on this degree are the tonic of the key
@@ -31,7 +46,7 @@ export interface FieldScene {
   readonly held: readonly HeldStripe[];
   readonly spots: readonly MapSpot[];
   readonly chosen: MapSpot | null;
-  readonly band: MapSpot | null; // the chord the band is playing right now
+  readonly accompanying: boolean; // false: the chosen chord is only the reference, it is not heard
   readonly names: ReadonlyMap<MapSpot, { readonly role: string; readonly chord: string }>;
   readonly lit: (index: number) => boolean; // a tone that just sounded, from anywhere
   readonly ghosts: readonly number[]; // stripes the radio or the loop is playing
@@ -52,7 +67,30 @@ export interface LearnScene {
 const TONIC_SEAM = 'rgba(128,226,214,'; // the key's own tone keeps a seam of its own
 const SHEEN = 'rgba(255,251,240,';
 
-const stripePath = (cx: CanvasRenderingContext2D, field: Field, i: number, stripe: Stripe, gap: number): void => {
+// The built look: a straight bar with one even radius – no waves, no tilt, nothing to read into it
+const barPath = (cx: CanvasRenderingContext2D, field: Field, i: number, stripe: Stripe, gap: number): void => {
+  const middle = (stripe.top + stripe.bottom) / 2;
+  const width = field.edgeAt(i + 1, middle) - field.edgeAt(i, middle);
+  const inset = Math.min(gap, Math.max(0.6, width * 0.13));
+  const left = field.edgeAt(i, middle) + inset;
+  const right = field.edgeAt(i + 1, middle) - inset;
+  const round = Math.max(1, Math.min(5, (right - left) * 0.3));
+  cx.beginPath();
+  cx.roundRect(left, stripe.top, Math.max(0.5, right - left), Math.max(1, stripe.bottom - stripe.top), round);
+};
+
+const stripePath = (
+  cx: CanvasRenderingContext2D,
+  field: Field,
+  i: number,
+  stripe: Stripe,
+  gap: number,
+  look: Look = 'organic',
+): void => {
+  if (look === 'precise') {
+    barPath(cx, field, i, stripe, gap);
+    return;
+  }
   const width =
     field.edgeAt(i + 1, (stripe.top + stripe.bottom) / 2) - field.edgeAt(i, (stripe.top + stripe.bottom) / 2);
   const inset = Math.min(gap, Math.max(0.8, width * 0.15));
@@ -77,8 +115,15 @@ const stripePath = (cx: CanvasRenderingContext2D, field: Field, i: number, strip
   cx.closePath();
 };
 
-// A glance of light along the edge, close to it but with a drift of its own
-const sheen = (cx: CanvasRenderingContext2D, field: Field, i: number, stripe: Stripe, strength: number): void => {
+// A glance of light along the edge, close to it but with a drift of its own; dead straight in the built look
+const sheen = (
+  cx: CanvasRenderingContext2D,
+  field: Field,
+  i: number,
+  stripe: Stripe,
+  strength: number,
+  look: Look = 'organic',
+): void => {
   const top = stripe.top + 14;
   const bottom = stripe.bottom - 14;
   if (bottom <= top) return;
@@ -95,6 +140,13 @@ const sheen = (cx: CanvasRenderingContext2D, field: Field, i: number, stripe: St
   cx.lineWidth = line;
   cx.lineCap = 'round';
   cx.beginPath();
+  if (look === 'precise') {
+    const x = field.edgeAt(i, (top + bottom) / 2) + offset;
+    cx.moveTo(x, top);
+    cx.lineTo(x, bottom);
+    cx.stroke();
+    return;
+  }
   const step = Math.max(10, (bottom - top) / 26);
   for (let y = top, first = true; y <= bottom; y += step, first = false) {
     const drift = Math.sin((y - top) * 0.009 + i * 0.7) * line * 0.8;
@@ -122,12 +174,16 @@ const stateOf = (scene: FieldScene, i: number, stripe: Stripe): StripeState => {
   const glow = grip !== undefined || sounding || ghost;
   const lift = (grip === undefined ? 0 : 0.07 + grip.brightness * 0.08) + (sounding ? 0.1 : 0) + (ghost ? 0.06 : 0);
   const fit = scene.fitness[i] ?? 2;
-  return { fit, grip, glow, base, colour: toneColour(fit, pcOf(stripe.midi), stripe.midi, { held: glow, lift, base }) };
+  const colour = toneColour(fit, pcOf(stripe.midi), stripe.midi, { held: glow, lift, base, look: scene.look });
+  return { fit, grip, glow, base, colour };
 };
 
 // Two seams running along the tonic stripe, so the eye finds home without reading a label
-const drawTonicSeam = (cx: CanvasRenderingContext2D, field: Field, i: number, stripe: Stripe): void => {
+const drawTonicSeam = (cx: CanvasRenderingContext2D, field: Field, i: number, stripe: Stripe, look: Look): void => {
   const step = Math.max(12, (stripe.bottom - stripe.top) / 26);
+  const from = stripe.top + 13;
+  const to = stripe.bottom - 13;
+  if (to <= from) return;
   for (const [offset, width, alpha] of [
     [2.6, 3.4, 0.9],
     [6.6, 1.4, 0.35],
@@ -135,8 +191,14 @@ const drawTonicSeam = (cx: CanvasRenderingContext2D, field: Field, i: number, st
     cx.strokeStyle = `${TONIC_SEAM}${String(alpha)})`;
     cx.lineWidth = width;
     cx.beginPath();
-    cx.moveTo(field.edgeAt(i, stripe.top + 13) + offset, stripe.top + 13);
-    for (let y = stripe.top + 13; y <= stripe.bottom - 13; y += step) cx.lineTo(field.edgeAt(i, y) + offset, y);
+    if (look === 'precise') {
+      const x = field.edgeAt(i, (from + to) / 2) + offset;
+      cx.moveTo(x, from);
+      cx.lineTo(x, to);
+    } else {
+      cx.moveTo(field.edgeAt(i, from) + offset, from);
+      for (let y = from; y <= to; y += step) cx.lineTo(field.edgeAt(i, y) + offset, y);
+    }
     cx.stroke();
   }
 };
@@ -173,7 +235,7 @@ const drawStripe = (cx: CanvasRenderingContext2D, scene: FieldScene, i: number, 
     cx.shadowColor = cssOf(shade(colour, 0.2, 1.4));
     cx.shadowBlur = grip === undefined ? 12 : 16 + grip.brightness * 28 + grip.vibrato * 18;
   }
-  stripePath(cx, field, i, stripe, grip === undefined ? 3.2 : 2);
+  stripePath(cx, field, i, stripe, grip === undefined ? 3.2 : 2, scene.look);
   cx.fillStyle = gradient;
   cx.fill();
   if (glow) {
@@ -184,8 +246,8 @@ const drawStripe = (cx: CanvasRenderingContext2D, scene: FieldScene, i: number, 
   cx.strokeStyle = grip === undefined ? '#090a0b' : cssOf(shade(colour, -0.36, 0.5));
   cx.stroke();
   const held = grip === undefined ? 0 : 0.25;
-  sheen(cx, field, i, stripe, base ? 0.62 : 0.17 + held);
-  if (base) drawTonicSeam(cx, field, i, stripe);
+  sheen(cx, field, i, stripe, base ? 0.62 : 0.17 + held, scene.look);
+  if (base) drawTonicSeam(cx, field, i, stripe, scene.look);
   cx.globalAlpha = 1;
 
   const label = labels?.[i];
@@ -196,6 +258,19 @@ const drawStripes = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   scene.field.stripes.forEach((stripe, i) => {
     drawStripe(cx, scene, i, stripe);
   });
+};
+
+// The built look: the same bar as on the right, upright and evenly rounded
+const spotBarPath = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number): void => {
+  const width = radius * 1.86;
+  const height = radius * 1.34;
+  cx.beginPath();
+  cx.roundRect(spot.x - width / 2, spot.y - height / 2, width, height, Math.min(6, height * 0.22));
+};
+
+const spotPath = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number, look: Look): void => {
+  if (look === 'precise') spotBarPath(cx, spot, radius);
+  else blobPath(cx, spot, radius);
 };
 
 const blobPath = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number): void => {
@@ -218,26 +293,44 @@ const blobPath = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number): 
   cx.closePath();
 };
 
-const SILENCE: Oklch = { l: 0.36, c: 0.004, h: 100 };
 const CHOSEN: Oklch = { l: 0.72, c: 0.14, h: 78 };
+const PRECISE_CHOSEN: Oklch = { l: 0.7, c: 0.115, h: 72 };
 
 // How far a chord has grown towards its limit: the stronger the pull, the brighter it stands
 const pullOf = (spot: MapSpot): number => Math.max(0, Math.min(1, spot.radius / Math.max(1, spot.limit) - 0.5));
 
-// Cool towards home, warm away from it; the silence stays grey and the chosen chord is the one warm light
-const colourOfSpot = (spot: MapSpot, chosen: boolean): Oklch => {
-  if (spot.chord === null) return chosen ? { ...SILENCE, l: 0.62 } : SILENCE;
-  if (chosen) return CHOSEN;
+// Away from home is warm, towards it is cool, home itself has a hue of its own
+const hueOfSpot = (step: number, precise: boolean): number => {
+  if (step < 0) return precise ? 244 : 252;
+  if (step > 0) return precise ? 60 : 44;
+  return precise ? 232 : 120;
+};
+
+// Cool towards home, warm away from it; the chosen chord is the one warm light
+const colourOfSpot = (spot: MapSpot, chosen: boolean, look: Look): Oklch => {
+  const precise = look === 'precise';
+  if (chosen) return precise ? PRECISE_CHOSEN : CHOSEN;
   const pull = pullOf(spot);
-  if (spot.chord.step === 0 && spot.chord.side === 0) return { l: 0.5 + pull * 0.3, c: 0.075 + pull * 0.1, h: 196 };
-  let hue = 120;
-  if (spot.chord.step < 0) hue = 252;
-  else if (spot.chord.step > 0) hue = 44;
-  return { l: 0.42 + pull * 0.36, c: 0.025 + pull * 0.12, h: hue };
+  const home = spot.chord.step === 0 && spot.chord.side === 0;
+  if (home) {
+    return precise
+      ? { l: 0.46 + pull * 0.22, c: 0.03 + pull * 0.03, h: 214 }
+      : { l: 0.5 + pull * 0.3, c: 0.075 + pull * 0.1, h: 196 };
+  }
+  const hue = hueOfSpot(spot.chord.step, precise);
+  return precise
+    ? { l: 0.38 + pull * 0.26, c: 0.008 + pull * 0.035, h: hue }
+    : { l: 0.42 + pull * 0.36, c: 0.025 + pull * 0.12, h: hue };
 };
 
 // A light running down the left flank, as if the chord were a pebble in the sun
-const drawSpotGlance = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: number, chosen: boolean): void => {
+const drawSpotGlance = (
+  cx: CanvasRenderingContext2D,
+  spot: MapSpot,
+  radius: number,
+  chosen: boolean,
+  look: Look,
+): void => {
   cx.save();
   cx.clip();
   const glance = cx.createLinearGradient(spot.x - radius, spot.y - radius, spot.x - radius * 0.1, spot.y + radius);
@@ -245,10 +338,16 @@ const drawSpotGlance = (cx: CanvasRenderingContext2D, spot: MapSpot, radius: num
   glance.addColorStop(0.42, `${SHEEN}${String(chosen ? 0.5 : 0.26)})`);
   glance.addColorStop(1, `${SHEEN}0)`);
   cx.strokeStyle = glance;
-  cx.lineWidth = Math.max(2, radius * 0.17);
+  cx.lineWidth = Math.max(2, radius * (look === 'precise' ? 0.1 : 0.17));
   cx.beginPath();
-  cx.moveTo(spot.x - radius * 0.62, spot.y - radius * 0.5);
-  cx.quadraticCurveTo(spot.x - radius * 0.92, spot.y, spot.x - radius * 0.5, spot.y + radius * 0.58);
+  if (look === 'precise') {
+    const x = spot.x - radius * 0.78;
+    cx.moveTo(x, spot.y - radius * 0.5);
+    cx.lineTo(x, spot.y + radius * 0.5);
+  } else {
+    cx.moveTo(spot.x - radius * 0.62, spot.y - radius * 0.5);
+    cx.quadraticCurveTo(spot.x - radius * 0.92, spot.y, spot.x - radius * 0.5, spot.y + radius * 0.58);
+  }
   cx.stroke();
   cx.restore();
 };
@@ -284,39 +383,35 @@ const drawSpotName = (
 
 const drawSpot = (cx: CanvasRenderingContext2D, scene: FieldScene, spot: MapSpot): void => {
   const chosen = spot === scene.chosen;
-  const colour = colourOfSpot(spot, chosen);
+  // The chosen chord with the accompaniment muted: drawn as an outline, so it is clearly still the one in charge
+  const muted = chosen && !scene.accompanying;
+  const colour = colourOfSpot(spot, chosen, scene.look);
   const radius = spot.radius;
 
-  blobPath(cx, spot, radius);
+  spotPath(cx, spot, radius, scene.look);
   const gradient = cx.createLinearGradient(spot.x, spot.y - radius, spot.x, spot.y + radius);
   gradient.addColorStop(0, cssOf(shade(colour, 0.06, 0.9, 4)));
   gradient.addColorStop(0.6, cssOf(colour));
   gradient.addColorStop(1, cssOf(shade(colour, -0.08, 0.8, -5)));
-  if (chosen) {
+  if (chosen && !muted) {
     cx.save();
     cx.shadowColor = cssOf(shade(colour, 0.12, 1.1));
     cx.shadowBlur = 26;
   }
+  cx.globalAlpha = muted ? 0.16 : 1;
   cx.fillStyle = gradient;
   cx.fill();
-  if (chosen) cx.restore();
-  cx.lineWidth = 1.4;
-  cx.strokeStyle = '#090a0b';
+  cx.globalAlpha = 1;
+  if (chosen && !muted) cx.restore();
+  cx.lineWidth = muted ? 2.6 : 1.4;
+  cx.strokeStyle = muted ? cssOf(shade(colour, 0.05, 1)) : '#090a0b';
   cx.stroke();
-  drawSpotGlance(cx, spot, radius, chosen);
+  if (!muted) drawSpotGlance(cx, spot, radius, chosen, scene.look);
 
-  if (spot.chord?.step === 0 && spot.chord.side === 0) {
+  if (spot.chord.step === 0 && spot.chord.side === 0) {
     cx.strokeStyle = `${TONIC_SEAM}0.85)`;
     cx.lineWidth = 2.6;
-    blobPath(cx, spot, radius * 1.1);
-    cx.stroke();
-  }
-  if (spot === scene.band) {
-    // The band is on this chord: a ring that breathes with the bar
-    const pulse = 0.5 + 0.5 * Math.sin(scene.now / 260);
-    cx.strokeStyle = `rgba(255,206,120,${String(0.45 + pulse * 0.4)})`;
-    cx.lineWidth = 3;
-    blobPath(cx, spot, radius * (1.16 + pulse * 0.06));
+    spotPath(cx, spot, radius * 1.1, scene.look);
     cx.stroke();
   }
 
@@ -384,6 +479,61 @@ const drawLearn = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
   }
 };
 
+// The strip below the field: grab it anywhere and pull the octaves past. The bright band is what is in view,
+// the ticks are the octaves, and the field settles on the one the band is centred on.
+const drawSlider = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
+  const { left, right, top, bottom, focus, settling, count, perOctave, held } = scene.slider;
+  const width = Math.max(1, right - left);
+  const height = bottom - top;
+  const precise = scene.look === 'precise';
+  const round = precise ? 4 : height / 2;
+
+  cx.beginPath();
+  cx.roundRect(left, top, width, height, round);
+  cx.fillStyle = held ? 'rgba(255,255,255,.075)' : 'rgba(255,255,255,.045)';
+  cx.fill();
+  cx.strokeStyle = 'rgba(255,255,255,.07)';
+  cx.lineWidth = 1;
+  cx.stroke();
+
+  // Every octave a tick, the tonic ones taller
+  const perStep = width / Math.max(1, count);
+  for (let i = 0; i < count; i += perOctave) {
+    const x = left + (i + 0.5) * perStep;
+    const tall = i % (perOctave * 2) === 0;
+    cx.strokeStyle = `rgba(232,228,218,${String(tall ? 0.26 : 0.14)})`;
+    cx.lineWidth = 1;
+    cx.beginPath();
+    cx.moveTo(x, bottom - (tall ? height * 0.52 : height * 0.34));
+    cx.lineTo(x, bottom - height * 0.16);
+    cx.stroke();
+  }
+
+  // The window that is in view: as wide as the focus reaches
+  const span = Math.min(count, perOctave * 2.4);
+  const centre = left + (focus + 0.5) * perStep;
+  const half = (span * perStep) / 2;
+  const window = { from: Math.max(left + 1, centre - half), to: Math.min(right - 1, centre + half) };
+  const glow = cx.createLinearGradient(window.from, 0, window.to, 0);
+  const alpha = held ? 0.3 : 0.2;
+  glow.addColorStop(0, 'rgba(255,214,140,0)');
+  glow.addColorStop(0.5, `rgba(255,214,140,${String(alpha)})`);
+  glow.addColorStop(1, 'rgba(255,214,140,0)');
+  cx.fillStyle = glow;
+  cx.beginPath();
+  cx.roundRect(window.from, top + 3, Math.max(2, window.to - window.from), height - 6, round);
+  cx.fill();
+
+  // Where it will come to rest
+  const mark = left + (settling + 0.5) * perStep;
+  cx.strokeStyle = `rgba(255,214,140,${String(held ? 0.9 : 0.55)})`;
+  cx.lineWidth = 2;
+  cx.beginPath();
+  cx.moveTo(mark, top + 5);
+  cx.lineTo(mark, bottom - 5);
+  cx.stroke();
+};
+
 const FLOATER_MS = 900;
 
 const drawFloaters = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
@@ -404,6 +554,7 @@ export const drawField = (cx: CanvasRenderingContext2D, scene: FieldScene, width
   cx.fillStyle = '#0b0c0d';
   cx.fillRect(0, 0, width, height);
   drawStripes(cx, scene);
+  drawSlider(cx, scene);
   drawLearn(cx, scene);
   drawMap(cx, scene);
   drawWaves(cx, scene);
@@ -411,4 +562,4 @@ export const drawField = (cx: CanvasRenderingContext2D, scene: FieldScene, width
 };
 
 export const chordCaption = (spot: MapSpot, role: string, tonic: number): string =>
-  spot.chord === null ? role : `${role} · ${String(tonic)}${SHAPE_SUFFIX[spot.chord.shape]}`;
+  `${role} · ${String(tonic)}${SHAPE_SUFFIX[spot.chord.shape]}`;

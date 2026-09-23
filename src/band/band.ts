@@ -13,6 +13,7 @@ import { type SchemaId, SCHEMATA, schemaChord } from './schemata';
 import { createTapTempo } from './tap-tempo';
 
 const START_DELAY = 0.05; // seconds between the button and the first beat
+const LEAD_BARS = 2; // how long a schema waits after a hand chose a chord of its own
 const ARP_INDEX: Readonly<Record<Exclude<ArpDegree, '8'>, number>> = { '1': 0, '3': 1, '5': 2, '7': 3 };
 
 export interface BandOptions {
@@ -37,6 +38,7 @@ export interface Band {
   tap(): void;
   schema(): SchemaId;
   setSchema(id: SchemaId): void;
+  yield(): void; // a hand chose a chord: the schema steps back for two bars and follows instead
   groove(): Groove;
   currentChord(): number; // the chord the band plays now
   chordForBar(bar: number): number; // what the band will play in bar `bar` – known in a schema, else the current one
@@ -108,8 +110,13 @@ export const createBand = (options: BandOptions): Band => {
     onRestart: release, // tones planned on the fallback clock lie in the audio future: let them go
   });
 
-  const schemaChordAhead = (bars: number): number | null =>
-    schemaChord(model(), SCHEMATA[schemaId], scheduler.position().bar + bars);
+  // While the human leads, the schema keeps quiet: chordForBar then answers with whatever the play says
+  let leadUntilBar = -1;
+  const schemaChordAhead = (bars: number): number | null => {
+    const bar = scheduler.position().bar + bars;
+    if (bar < leadUntilBar) return null;
+    return schemaChord(model(), SCHEMATA[schemaId], bar);
+  };
   const currentChord = (): number => schemaChordAhead(0) ?? chordSource();
   // A fractional bar (radio phrases start mid-bar every other time) means the bar that contains it
   const chordForBar = (bar: number): number =>
@@ -210,6 +217,10 @@ export const createBand = (options: BandOptions): Band => {
     tap() {
       const bpm = tapTempo.tap();
       if (bpm !== null) scheduler.setTempo(bpm);
+    },
+    yield: () => {
+      leadUntilBar = scheduler.position().bar + LEAD_BARS;
+      showChord(null);
     },
     schema: () => schemaId,
     setSchema(id) {

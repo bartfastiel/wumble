@@ -1,7 +1,6 @@
 // The laptop keyboard as an instrument: physical keys via event.code, layout independent.
 // Bottom letter row Z X C V B N M and home row A S D F G H J K play fifteen tones around the middle of the field;
-// the digits 1–9 choose from the chord map, 0 is silence. Every key is its own pointer 'k' + code.
-import { SILENT } from './chord-voice';
+// the digits 1–9 choose from the chord map, 0 mutes the accompaniment. Every key is its own pointer 'k' + code.
 import type { Player } from './player';
 
 export const KEY_STEPS: Readonly<Record<string, number>> = {
@@ -30,11 +29,14 @@ export const keyTone = (code: string, tones: number, perOctave: number): number 
   return Math.max(0, Math.min(tones - 1, middle - perOctave + step));
 };
 
+// 0 means "the chord that is already chosen", which mutes or unmutes it
+export const MUTE = -1;
+
 export const keyChord = (code: string): number | null => {
   const digit = /^Digit(\d)$/.exec(code);
   if (digit === null) return null;
   const value = Number(digit[1]);
-  return value === 0 ? SILENT : value - 1;
+  return value === 0 ? MUTE : value - 1;
 };
 
 export const pointerIdOf = (code: string): string => `k${code}`;
@@ -63,7 +65,7 @@ export const bindKeyboard = (target: Document, player: Player, options: Keyboard
     const chord = keyChord(event.code);
     if (chord !== null) {
       event.preventDefault();
-      player.chooseChord(chord === SILENT ? SILENT : Math.min(chord, player.mapSize - 1));
+      player.chooseChord(chord === MUTE ? player.chord : Math.min(chord, player.mapSize - 1));
       return;
     }
     const model = player.model;

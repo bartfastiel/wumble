@@ -4,7 +4,7 @@ import type { AudioEngine } from '../audio/engine';
 import { chordAt, type Model, toneOf } from '../theory/model';
 import { pcOf, type PitchClass } from '../theory/pitch';
 import { chordFrequencies, melodyFrequency } from '../theory/tuning';
-import { ChordVoice, SILENT } from './chord-voice';
+import { ChordVoice } from './chord-voice';
 import { type Clock, systemClock } from './clock';
 import { Harmony } from './harmony';
 import type { Pointer, PointerId } from './pointer';
@@ -28,6 +28,7 @@ export interface ReleaseEvent {
 export interface PlayerListener {
   press?(event: PressEvent): void;
   release?(event: ReleaseEvent): void;
+  lead?(chord: number): void; // a hand chose a chord on the map – whatever runs by itself steps back
   change?(): void;
 }
 
@@ -70,7 +71,7 @@ export class Player {
           this.startMelody(pointer, at);
         },
         holdChord: (chord, at) => {
-          this.chordVoice.choose(chord, at);
+          this.chordVoice.follow(chord, at);
         },
         audioNow: () => engine.now(),
         changed: () => {
@@ -79,11 +80,14 @@ export class Player {
       },
       clock,
     );
+    // A new key or style is a new map: the chord goes home, and the accompaniment keeps whatever it was
     store.subscribe((settings, previous) => {
       if (settings.signature === previous.signature && settings.style === previous.style) return;
       this.harmony.reset();
-      this.chordVoice.choose(SILENT, engine.now());
+      this.chordVoice.current = store.model().home;
+      this.chordVoice.refresh(engine.now());
     });
+    this.chordVoice.current = store.model().home;
   }
 
   get chord(): number {
@@ -98,12 +102,21 @@ export class Player {
     return this.store.model().map.length;
   }
 
-  // A chord from the map, or SILENT for melody without accompaniment
-  chooseChord(index: number): void {
+  // A chord of the map. Choosing the one that already sounds mutes the accompaniment; choosing it again brings it
+  // back – the chord stays the one the field measures its tones against either way.
+  chooseChord(index: number, byHand = true): void {
     const at = this.engine.ensure();
-    this.chordVoice.choose(index, at);
-    if (index !== SILENT) this.harmony.lead(index, at);
+    if (!byHand) this.chordVoice.follow(index, at);
+    else if (index === this.chordVoice.current && this.chordVoice.struck) this.chordVoice.toggle(at);
+    else this.chordVoice.choose(index, at);
+    this.harmony.lead(index);
+    if (byHand) for (const listener of this.listeners) listener.lead?.(index);
     this.changed();
+  }
+
+  // Whether the chosen chord is heard at all
+  get accompanying(): boolean {
+    return this.chordVoice.accompanying;
   }
 
   press(id: PointerId, tone: number): void {
