@@ -1,7 +1,8 @@
 // The player's room: a fresh code, the connection to the relay as player, the link the
 // audience opens, and what the listeners get from the learn session and the free play (player-link.ts). It outlives
 // the audience panel, which only shows it.
-import { type Link, PlayerLink, type PlayerSong } from './player-link';
+import type { Guest } from './guests';
+import { type Link, PlayerLink, type PlayerSong, type SharedState } from './player-link';
 import { type LinkStatus, RelayClient, type SocketFactory, type Timers } from './relay-client';
 import { generateRoomCode, isLocalPage, type PageLocation, relayUrl, roomLink } from './room';
 
@@ -16,6 +17,7 @@ export interface PlayerRoomOptions {
   readonly random?: () => number;
   readonly onChange?: () => void; // code, status or listener count changed
   readonly onApplause?: () => void;
+  readonly onGuests?: () => void; // a musician joined, left or pressed a tone
 }
 
 const CLOSED: RoomStatus = { kind: 'closed' };
@@ -38,6 +40,20 @@ export class PlayerRoom {
 
   get listeners(): number {
     return this.link?.listeners ?? 0;
+  }
+
+  get musicians(): number {
+    return this.link?.musicians ?? 0;
+  }
+
+  // Who is playing along, and what they are holding right now
+  get guests(): readonly Guest[] {
+    return this.link?.guests.list ?? [];
+  }
+
+  // Every tone under a guest's finger, once
+  get guestTones(): readonly number[] {
+    return this.link?.guests.sounding() ?? [];
   }
 
   get isOpen(): boolean {
@@ -77,6 +93,10 @@ export class PlayerRoom {
         this.options.onApplause?.();
       },
       onListeners: () => {
+        this.changed();
+      },
+      onGuests: () => {
+        this.options.onGuests?.();
         this.changed();
       },
     });
@@ -135,6 +155,15 @@ export class PlayerRoom {
 
   tone(name: string, chord: string): void {
     this.link?.tone(name, chord);
+  }
+
+  // Key, style, tuning and the sounds in use – whatever a musician needs to draw the same field
+  setState(state: SharedState): void {
+    this.link?.setState(state);
+  }
+
+  setChord(chord: number): void {
+    this.link?.setChord(chord);
   }
 
   private changed(): void {

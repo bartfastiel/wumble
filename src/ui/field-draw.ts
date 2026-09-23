@@ -59,6 +59,7 @@ export interface FieldScene {
   readonly names: ReadonlyMap<MapSpot, { readonly role: string; readonly chord: string }>;
   readonly lit: (index: number) => boolean; // a tone that just sounded, from anywhere
   readonly ghosts: readonly number[]; // stripes the radio or the loop is playing
+  readonly guests: readonly number[]; // stripes a guest in the room is holding, on their own device
   readonly learn: LearnScene | null;
   readonly floaters: readonly Floater[];
   readonly centre: (index: number) => { readonly x: number; readonly y: number } | null;
@@ -345,6 +346,31 @@ const drawStripe = (cx: CanvasRenderingContext2D, scene: FieldScene, i: number, 
 
   const label = labels?.[i];
   if (label !== undefined && label !== '') drawStripeLabel(cx, field, i, stripe, label, colour);
+};
+
+// Someone else is on this tone: a small light above the stripe. The sound is made on their device – this is the
+// only trace of them here, and it must not be mistaken for a tone of one's own.
+const drawGuestMarks = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
+  const ink = INK[scene.look];
+  for (const index of scene.guests) {
+    const stripe = scene.field.stripes[index];
+    if (stripe === undefined) continue;
+    const y = Math.max(scene.field.box.top + 7, stripe.top - 7);
+    const x = (scene.field.edgeAt(index, y) + scene.field.edgeAt(index + 1, y)) / 2;
+    cx.save();
+    cx.shadowColor = `${ink.seam}0.9)`;
+    cx.shadowBlur = 9;
+    cx.fillStyle = `${ink.seam}0.95)`;
+    cx.beginPath();
+    cx.arc(x, y, 3.6, 0, Math.PI * 2);
+    cx.fill();
+    cx.restore();
+    cx.strokeStyle = `${ink.seam}0.35)`;
+    cx.lineWidth = 1.2;
+    cx.beginPath();
+    cx.arc(x, y, 7, 0, Math.PI * 2);
+    cx.stroke();
+  }
 };
 
 const drawStripes = (cx: CanvasRenderingContext2D, scene: FieldScene): void => {
@@ -732,6 +758,7 @@ export const drawField = (cx: CanvasRenderingContext2D, scene: FieldScene, width
   cx.fillStyle = INK[scene.look].back;
   cx.fillRect(0, 0, width, height);
   drawStripes(cx, scene);
+  drawGuestMarks(cx, scene);
   drawSlider(cx, scene);
   drawLearn(cx, scene);
   drawMap(cx, scene);

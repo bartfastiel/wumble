@@ -2,6 +2,7 @@
 // player, learn session, band with loop, echo and radio, the audience room, deep links. Components bind to this and
 // draw; the logic stays in the modules. A small typed event bus tells the components what changed.
 import { PlayerRoom } from '../audience/player-room';
+import type { GuestSession } from './guest';
 import type { SocketFactory } from '../audience/relay-client';
 import type { PageLocation } from '../audience/room';
 import { type AudioEngine, createAudioEngine } from '../audio/engine';
@@ -56,6 +57,8 @@ export interface App {
   readonly echo: Echo;
   readonly radio: Radio;
   readonly room: PlayerRoom;
+  guest: GuestSession | null; // set when this device joined someone else's room to play along
+  readonly guestTones: () => readonly number[]; // midi notes under a guest's finger, for the host's field
   readonly songs: readonly Song[]; // scanned songs of this session first, then the library
   on<E extends AppEvent>(event: E, listener: AppEvents[E]): () => void;
   addScannedSong(song: Song): void; // at the top of the library, not persisted
@@ -119,10 +122,14 @@ export const createApp = (options: AppOptions): App => {
     socket: options.socket ?? ((url) => new WebSocket(url)),
     ...(options.relayUrl === undefined ? {} : { relayUrl: options.relayUrl }),
     onChange: () => {
+      shareState(); // a room that just opened, or a guest that just arrived, needs the key to play in
       emit('room');
     },
     onApplause: () => {
       emit('applause');
+    },
+    onGuests: () => {
+      emit('draw'); // a guest pressed or released a tone: the field shows it
     },
   });
 
@@ -268,6 +275,24 @@ export const createApp = (options: AppOptions): App => {
     );
   };
 
+  let guest: GuestSession | null = null;
+
+  // What a musician in the room needs to draw the same field: key, style, tuning, note names, the chord and the
+  // sound the host is on, so nobody picks it twice
+  const shareState = (): void => {
+    if (!room.isOpen) return;
+    const settings = store.get();
+    room.setState({
+      signature: settings.signature,
+      style: settings.style,
+      tuning: settings.tuning,
+      german: settings.german,
+      hue: store.model().hue,
+      chord: player.chord,
+      sound: settings.combi,
+    });
+  };
+
   // The hand takes over: the radio hushes for two bars, and a schema stops choosing for the same while
   const humanLeads = (): void => {
     radio.pause();
@@ -277,6 +302,7 @@ export const createApp = (options: AppOptions): App => {
   player.subscribe({
     lead: humanLeads,
     press: ({ id, tone, chord, at }) => {
+      guest?.note(store.model().tones[tone] ?? 0, true);
       if (learn.song !== null) {
         // Only the tone counts: which chord lies under it is the other hand's free choice
         learn.press(id, { chord, tone }, now(), true);
@@ -288,12 +314,14 @@ export const createApp = (options: AppOptions): App => {
         radio.pause();
       }
     },
-    release: ({ id, at }) => {
+    release: ({ id, pointer, at }) => {
+      guest?.note(store.model().tones[pointer.tone] ?? 0, false);
       if (learn.song !== null) learn.release(id, now());
       looper.up(id, at);
     },
     change: () => {
       emit('draw');
+      room.setChord(player.chord);
     },
   });
 
@@ -310,6 +338,7 @@ export const createApp = (options: AppOptions): App => {
     emit('settings', settings, previous);
     emit('title');
     emit('draw');
+    shareState(); // the musicians in the room play in the same key, style and tuning
     updateUrl();
     // A level applies from the song start: a running song begins again (points and records belong to the level)
     if (settings.difficulty !== previous.difficulty && learn.song !== null) startSong(learn.song);
@@ -356,6 +385,13 @@ export const createApp = (options: AppOptions): App => {
   };
 
   return {
+    get guest() {
+      return guest;
+    },
+    set guest(session: GuestSession | null) {
+      guest = session;
+    },
+    guestTones: () => room.guestTones,
     store,
     engine,
     player,

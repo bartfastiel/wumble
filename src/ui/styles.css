@@ -374,6 +374,12 @@ header .gap {
   stroke: var(--lit);
 }
 
+/* Already spoken for: another player is on this sound */
+.tile.spoken-for {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
 /* A sound: what it is, and under it how it speaks */
 .sound-art {
   display: grid;
@@ -1363,4 +1369,69 @@ wm-listener .applause:active {
   width: 100%;
   font-size: 17px;
   padding: 13px 18px;
+}
+
+/* The caption under a tile, where a choice is made for the first time */
+.tile .cap {
+  font-size: 11px;
+  line-height: 1.2;
+  opacity: 0.85;
+}
+
+/* A guest who came to play along: the chords, the band and the songs belong to whoever opened the room, so their
+   side of the bar is not there at all. What is left is the sound to play on and how the field looks. */
+body.guest .zone.chords,
+body.guest header button[data-panel='library'],
+body.guest header button[data-action='share'] {
+  display: none;
+}
+
+/* The page a guest lands on: sing along, or play along – and on what */
+.card.join {
+  text-align: left;
+  min-width: min(420px, calc(100vw - 32px));
+}
+
+.card.join h2 {
+  margin: 0 0 14px;
+  font-size: 19px;
+}
+
+.card.join .tiles {
+  margin-bottom: 12px;
+}
+
+.card.join .tile {
+  background: hsl(var(--hue) 20% 88%);
+  border-color: hsl(var(--hue) 20% 74%);
+  color: hsl(var(--hue) 40% 20%);
+}
+
+.card.join .tile.on {
+  border-color: hsl(212 70% 46%);
+  background: hsl(212 70% 84%);
+}
+
+.card.join .tile .icon-art,
+.card.join .tile .envelope {
+  stroke: currentcolor;
+}
+
+.card.join .tile .pattern rect {
+  fill: currentcolor;
+}
+
+.card.join .seat-choice[hidden] {
+  display: none;
+}
+
+.card.join .says {
+  margin: 0 0 16px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: hsl(var(--hue) 20% 38%);
+}
+
+.card.join button.play {
+  width: 100%;
 }

@@ -48,12 +48,16 @@ export const soundTiles = (
   current: CombiId,
   onPick: (id: CombiId) => void,
   describe?: Describe<CombiId>,
+  taken: readonly string[] = [], // sounds someone else is already playing on
+  named = false, // with the name under the picture, where a first choice has to be made
 ): Choice<CombiId> => {
   const items: ChoiceItem<CombiId>[] = COMBI_IDS.map((id) => ({
     value: id,
     label: t(COMBIS[id].name),
     hint: t(COMBIS[id].hint),
     art: () => soundArt(id),
+    ...(named ? { caption: t(COMBIS[id].name) } : {}),
+    ...(taken.includes(id) ? { disabled: true } : {}),
   }));
   return choice(items, current, onPick, 3, describe);
 };

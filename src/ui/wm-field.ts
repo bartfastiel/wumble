@@ -23,10 +23,11 @@ const HEAD = 52;
 const APPLAUSE_SIZE = 2.2;
 const SLIDER_HEIGHT = 46; // the strip below the field: grab it anywhere and pull the octaves past
 const OPEN_ON = 65; // the field opens on the octave around F4, where most playing happens
+const OPEN_LOW = 41; // a guest who came to play bass opens two octaves down
 const LOOK_AHEAD_BARS = 8; // how far the map promises the schema's next chord
 
 interface Grip {
-  readonly area: 'map' | 'field' | 'slider';
+  readonly area: 'map' | 'field' | 'slider' | 'none'; // 'none': the map, on a device that may not use it
   stripe: number | null;
   startY: number;
   y: number;
@@ -70,6 +71,7 @@ export class WmField extends HTMLElement {
   private readonly cleanups: (() => void)[] = [];
   private readonly bar = new BarClock(); // how far this bar has run, for what the schema will do next
   private lastAhead: AheadScene | null = null;
+  private opensOn = OPEN_ON;
 
   connectedCallback(): void {
     if (this.app === null) throw new Error('wm-field needs the app');
@@ -179,6 +181,13 @@ export class WmField extends HTMLElement {
     this.relayout();
   }
 
+  // A guest who took the bass seat starts at the low end of the field
+  openLow(low: boolean): void {
+    this.opensOn = low ? OPEN_LOW : OPEN_ON;
+    this.field.settling = this.field.octaveOf(this.opensOn);
+    this.requestDraw();
+  }
+
   private relayout(): void {
     const app = this.app;
     if (app === null) return;
@@ -195,7 +204,7 @@ export class WmField extends HTMLElement {
       model.tones,
       model.style.scale.length,
     );
-    if (fresh || this.field.settling > model.tones.length - 1) this.field.settling = this.field.octaveOf(OPEN_ON);
+    if (fresh || this.field.settling > model.tones.length - 1) this.field.settling = this.field.octaveOf(this.opensOn);
     this.spots = layoutMap(model.map, { width: split, height, top: HEAD }, this.field.look);
     this.requestDraw();
   }
@@ -209,7 +218,8 @@ export class WmField extends HTMLElement {
       const { x, y } = this.local(event);
       const slider = this.slider;
       let area: Grip['area'] = 'field';
-      if (x < this.split) area = 'map';
+      // A guest plays the melody and nothing else: the chords belong to whoever opened the room
+      if (x < this.split) area = app.guest === null ? 'map' : 'none';
       else if (y >= slider.top) area = 'slider';
       const grip: Grip = {
         area,
@@ -336,6 +346,15 @@ export class WmField extends HTMLElement {
     if (spot === undefined) return null;
     const left = bars - this.bar.progress(now); // bars still to run, the current one counted from where it is
     return { spot, progress: Math.max(0, Math.min(1, 1 - left / bars)) };
+  }
+
+  // The tones guests are holding, as stripes of this field – they play the same key, so the tones line up
+  private guestStripes(tones: readonly number[]): readonly number[] {
+    const app = this.app;
+    if (app === null) return [];
+    const held = app.guestTones();
+    if (held.length === 0) return [];
+    return held.map((midi) => tones.indexOf(midi)).filter((index) => index >= 0);
   }
 
   private chosenSpot(): MapSpot | null {
@@ -484,6 +503,7 @@ export class WmField extends HTMLElement {
           chord === undefined ? 2 : fitnessOf(pcOf(midi), chord, model.key.tonic, model.style),
         ),
         tonicStep: 0,
+        guests: this.guestStripes(model.tones),
         labels,
         held,
         spots: this.spots,

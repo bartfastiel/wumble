@@ -62,7 +62,7 @@ out: which chord, and how far off, at a glance.
 the digits choose a chord. **Band** (🥁) adds drums, bass and chords in the groove of the style; ● records a loop from
 the next bar, the settings offer schemata, tap tempo, echo and radio. **Songs** (♫) show the next tone as a glowing
 dot, with levels that score the hits. **Scan sheet music** photographs a printed melody and lays it on the field.
-**Audience** opens a room with a QR code: friends see the lyrics scroll on their phone like karaoke and applaud.
+**Audience** opens a room with a QR code. Whoever scans it is asked once: sing along, or play along? A singer sees the lyrics scroll like karaoke and can applaud; a musician gets the same field in the host's key, style and tuning, on a sound nobody else has taken, and plays the melody on their own device – the host's field shows a small light above every tone a guest is holding. Chords, band and key stay with whoever opened the room.
 The URL fragment carries every setting as a shareable link.
 
 ## Development

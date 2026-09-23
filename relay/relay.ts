@@ -5,10 +5,10 @@
 //
 //   node relay.js             # listens on PORT (default 8765)
 //   GET /health               # { ok, rooms, clients }
-//   GET /ws?room=<code>&role=player|listener   → WebSocket
+//   GET /ws?room=<code>&role=player|listener|musician   → WebSocket
 //
-// Messages are JSON text: { t: 'ping', c } → { t: 'pong', c, s }; everything else is forwarded within the room to the
-// other role (player → listeners, listeners → player), with { s: server time } added when missing.
+// Messages are JSON text: { t: 'ping', c } → { t: 'pong', c, s }; everything else is forwarded within the room –
+// the player to everyone, everyone else to the player – with { s: server time } added when missing.
 import { createHash } from 'node:crypto';
 import { createServer, type IncomingMessage, type Server } from 'node:http';
 import { Socket } from 'node:net';
@@ -23,7 +23,7 @@ export const SWEEP_INTERVAL = 30_000;
 const ROOM_PATTERN = /^[a-z0-9]{3,12}$/i;
 const WEBSOCKET_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 
-type Role = 'player' | 'listener';
+type Role = 'player' | 'listener' | 'musician';
 interface Client {
   readonly socket: Socket;
   readonly room: string;
@@ -120,7 +120,10 @@ export interface Relay {
   close(): Promise<void>;
 }
 
-const roleOf = (value: string | null): Role => (value === 'player' ? 'player' : 'listener');
+const roleOf = (value: string | null): Role => {
+  if (value === 'player') return 'player';
+  return value === 'musician' ? 'musician' : 'listener';
+};
 
 export const createRelay = (options: RelayOptions = {}): Relay => {
   const now = options.now ?? Date.now;
@@ -132,15 +135,22 @@ export const createRelay = (options: RelayOptions = {}): Relay => {
     for (const room of rooms.values()) clients += room.size;
     return { rooms: rooms.size, clients };
   };
-  const listeners = (room: Set<Client>): number => [...room].filter((client) => client.role === 'listener').length;
+  const count = (room: Set<Client>, role: Role): number => [...room].filter((client) => client.role === role).length;
+  const present = (room: Set<Client>): { listeners: number; musicians: number } => ({
+    listeners: count(room, 'listener'),
+    musicians: count(room, 'musician'),
+  });
 
   const send = (client: Client, message: object): void => {
     if (!client.socket.destroyed) client.socket.write(frame(OPCODE_TEXT, Buffer.from(JSON.stringify(message))));
   };
-  // To the other role in the room (player ↔ listeners); `all` = to everyone but the sender
+  // The player speaks to the whole room, everyone else speaks to the player; `all` = to everyone but the sender.
+  // That keeps a musician's notes from reaching the singers, who have no use for them.
   const broadcast = (from: Client, message: object, all = false): void => {
+    const toPlayer = from.role !== 'player';
     for (const client of from.members) {
-      if (client !== from && (all || client.role !== from.role)) send(client, message);
+      if (client === from) continue;
+      if (all || (toPlayer ? client.role === 'player' : client.role !== 'player')) send(client, message);
     }
   };
 
@@ -148,7 +158,7 @@ export const createRelay = (options: RelayOptions = {}): Relay => {
   const leave = (client: Client): void => {
     if (!client.members.delete(client)) return;
     if (client.members.size === 0) rooms.delete(client.room);
-    else broadcast(client, { t: 'present', listeners: listeners(client.members) }, true);
+    else broadcast(client, { t: 'present', ...present(client.members) }, true);
   };
 
   const onText = (client: Client, payload: Buffer): void => {
@@ -249,8 +259,8 @@ export const createRelay = (options: RelayOptions = {}): Relay => {
     socket.on('error', () => {
       leave(client);
     });
-    send(client, { t: 'hello', role: client.role, room: roomCode, s: now(), listeners: listeners(room) });
-    broadcast(client, { t: 'present', listeners: listeners(room) }, true);
+    send(client, { t: 'hello', role: client.role, room: roomCode, s: now(), ...present(room) });
+    broadcast(client, { t: 'present', ...present(room) }, true);
     if (head.length > 0) onData(client, head);
   };
 

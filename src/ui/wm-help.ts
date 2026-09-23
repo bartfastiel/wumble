@@ -17,6 +17,7 @@ export const HELP_TOPICS = [
   'loop',
   'echo',
   'audience',
+  'guests',
   'radio',
   'keyboard',
   'look',

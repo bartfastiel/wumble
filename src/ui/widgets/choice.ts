@@ -5,6 +5,7 @@ export interface ChoiceItem<V> {
   readonly label: string;
   readonly art: () => Node; // the picture on the tile
   readonly hint?: string; // one line about what it does, shown by whoever hosts the tiles
+  readonly disabled?: boolean; // shown, but not to be had – someone else has it
   readonly caption?: string; // a symbol or two under the picture, never a sentence
 }
 
@@ -43,6 +44,10 @@ export const choice = <V extends string | number>(
       caption.className = 'cap';
       caption.textContent = item.caption;
       tile.append(caption);
+    }
+    if (item.disabled === true) {
+      tile.disabled = true;
+      tile.classList.add('spoken-for');
     }
     tile.addEventListener('click', () => {
       onPick(item.value);
