@@ -38,7 +38,8 @@ drawn as an outline, because it still decides the width and colour of every stri
 across eight octaves. Against the chord that sounds, every stripe grows as wide as its tone carries: wide and warm for
 the root and the fifth, narrower for the third, narrow and cool for a tone that wants to move on. Nothing is ever
 blocked – you can play any tone, you just hit the carrying ones more easily. Sliding gives a glissando, several fingers
-play several voices, and holding a tone shapes it: further in brightens, a small circle makes it waver.
+play several voices, and holding a tone shapes it: further in brightens, a small circle makes it waver. On a narrow
+screen the map steps aside and the focus draws in: fewer tones lie wide, and those stay big enough for a finger.
 
 **Below: the range.** A strip across the width of the field. Grab it anywhere and pull – the octaves travel with the
 finger, the middle grows wide, the edges narrow. Let go and it settles into the nearest octave.

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Fitness } from '../theory/fitness';
 import { keyBySignature } from '../theory/keys';
 import { buildModel } from '../theory/model';
-import { Field, FITNESS_WEIGHT, FOCUS_STEPS, focusWeight, noise } from './geometry';
+import { Field, FITNESS_WEIGHT, FOCUS_STEPS, focusReach, focusWeight, noise } from './geometry';
 
 const BOX = { left: 0, right: 900, top: 0, bottom: 600 };
 const model = buildModel(keyBySignature(0), 'classical');
@@ -39,6 +39,27 @@ describe('focusWeight', () => {
     expect(focusWeight(-40)).toBeGreaterThan(0.2);
     // Symmetrical: the same distance below and above weighs the same
     expect(focusWeight(-7)).toBeCloseTo(focusWeight(7), 10);
+  });
+});
+
+describe('focusReach', () => {
+  it('opens fully on a wide field and narrows on a phone, so the focused tones stay big enough to hit', () => {
+    expect(focusReach(2000)).toBe(FOCUS_STEPS);
+    expect(focusReach(900)).toBe(FOCUS_STEPS);
+    const narrow = focusReach(250);
+    expect(narrow).toBeLessThan(FOCUS_STEPS);
+    expect(narrow).toBeGreaterThanOrEqual(4);
+    expect(focusReach(40)).toBe(4); // never so tight that only one tone is left
+    expect(focusReach(400)).toBeGreaterThan(focusReach(250));
+  });
+
+  it('makes the tone in focus take a bigger share when there is less width', () => {
+    const share = (width: number): number => {
+      const field = new Field();
+      field.layout({ ...BOX, right: width }, model.tones, perOctave, 20);
+      return settled(field).stripes[20]?.share ?? 0;
+    };
+    expect(share(250)).toBeGreaterThan(share(900));
   });
 });
 
@@ -190,6 +211,22 @@ describe('Field.edgeAt', () => {
     const field = fieldOf(model.tones, 28);
     const lean = (i: number): number => field.edgeAt(i, BOX.bottom) - field.edgeAt(i, BOX.top);
     expect(lean(1)).toBeLessThan(lean(field.edges.length - 2));
+  });
+
+  it('ties the tilt to the room beside it: the narrower the stripes, the more upright they stand', () => {
+    const drifts = [900, 250].map((right) => {
+      const field = new Field();
+      field.layout({ ...BOX, right }, model.tones, perOctave, 20);
+      settled(field);
+      const span = BOX.bottom - BOX.top;
+      for (const [j, edge] of field.edges.entries()) {
+        const before = edge.x - (field.edges[j - 1]?.x ?? Number.NEGATIVE_INFINITY);
+        const after = (field.edges[j + 1]?.x ?? Number.POSITIVE_INFINITY) - edge.x;
+        expect(Math.abs(edge.lean) * span).toBeLessThanOrEqual(Math.min(before, after) + 0.001);
+      }
+      return Math.max(...field.edges.map((edge) => Math.abs(edge.lean))) * span;
+    });
+    expect(drifts[1] ?? 0).toBeLessThan(drifts[0] ?? 0);
   });
 
   it('answers outside the field with its left border', () => {

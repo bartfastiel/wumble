@@ -48,6 +48,26 @@ test.describe('free play', () => {
     expect(await page.evaluate(() => window.__wumble.app.player.pointers.size)).toBe(0);
   });
 
+  test('on a phone held upright the map gives way and the focused tones stay hittable', async ({ page }) => {
+    await page.setViewportSize({ width: 412, height: 839 });
+    await openApp(page);
+    const box = await page.locator('wm-field canvas').boundingBox();
+    if (box === null) throw new Error('canvas not visible');
+    const shape = await page.evaluate(() => {
+      const field = window.__wumble.root.field.geometry;
+      const xs = field.edges.map((edge) => edge.x);
+      const widths = xs.slice(1).map((x, i) => x - (xs[i] ?? 0));
+      return { map: xs[0] ?? 0, widest: Math.max(...widths) };
+    });
+    // the chord map steps aside: most of a narrow screen belongs to the stripes
+    expect(shape.map).toBeLessThan(box.width * 0.4);
+    // and what is left still carries a stripe wide enough to aim at
+    expect(shape.widest).toBeGreaterThan(14);
+    const point = await tonePoint(page, 65); // F4, in the middle of the view
+    await page.mouse.click(point.x, point.y);
+    expect(await page.evaluate(() => window.__wumble.app.player.pointers.size)).toBe(0);
+  });
+
   test('the strip below the field pulls the octaves past and settles on one', async ({ page }) => {
     await openApp(page);
     const box = await page.locator('wm-field canvas').boundingBox();

@@ -15,6 +15,9 @@ import { t } from '../i18n';
 
 const DWELL_MS = 95; // resting chooses a chord, sweeping passes over it
 const MAP_SHARE = 0.26;
+const MAP_MIN = 230; // below this the chord names stop being readable
+const MAP_MAX = 340;
+const MAP_NARROW = 0.34; // on a narrow screen the map never takes more than a third
 const HEAD = 52;
 const APPLAUSE_SIZE = 2.2;
 const SLIDER_HEIGHT = 46; // the strip below the field: grab it anywhere and pull the octaves past
@@ -142,8 +145,12 @@ export class WmField extends HTMLElement {
     return Math.max(18, Math.abs(this.field.edgeAt(middle + 1, y) - this.field.edgeAt(middle, y)) * 1.6);
   }
 
+  // Where the map ends and the field begins. On a phone held upright the map has to give way: the stripes need the
+  // width more than the chord names do.
   private get split(): number {
-    return Math.max(230, Math.min(340, this.canvas.getBoundingClientRect().width * MAP_SHARE));
+    const { width } = this.canvas.getBoundingClientRect();
+    const roomy = Math.min(MAP_MAX, Math.max(MAP_MIN, width * MAP_SHARE));
+    return Math.min(roomy, width * MAP_NARROW);
   }
 
   // The strip along the bottom of the field, where the octaves are pulled past

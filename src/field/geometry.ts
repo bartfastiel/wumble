@@ -40,7 +40,11 @@ export interface FieldBox {
 // rest – where the hand is playing there is room, the octaves further out need less.
 export const FITNESS_WEIGHT: readonly [number, number, number, number] = [1.5, 1.22, 1, 0.6];
 export const FOCUS_STEPS = 10; // how far the focus reaches, in scale steps
-export const focusWeight = (steps: number): number => 0.24 + 0.76 * Math.exp(-((steps / FOCUS_STEPS) ** 2));
+// How many tones lie wide at once: as many as the width can give a playable size to, never more than FOCUS_STEPS.
+const PLAYABLE = 52; // pixels a pair of focused stripes wants
+export const focusReach = (width: number): number => Math.max(4, Math.min(FOCUS_STEPS, width / PLAYABLE));
+export const focusWeight = (steps: number, reach: number = FOCUS_STEPS): number =>
+  0.24 + 0.76 * Math.exp(-((steps / reach) ** 2));
 
 // Stable pseudo-randomness: the same field looks the same in every session.
 export const noise = (seed: number): number => {
@@ -50,6 +54,7 @@ export const noise = (seed: number): number => {
 
 const BASE_TILT = (2.4 * Math.PI) / 180;
 const EDGE_TILT = (26 * Math.PI) / 180;
+const LEAN_PER_WIDTH = 0.9; // a stripe may drift sideways by this much of its own width over the whole height
 const SLIDE_SPEED = 9; // how fast the focus follows its target
 const STILL = 1e-4; // below this nothing is moving any more
 
@@ -128,7 +133,8 @@ export class Field {
     const drift = (this.target - this.focus) * Math.min(1, seconds * SLIDE_SPEED);
     this.focus += drift;
     if (Math.abs(this.target - this.focus) < STILL) this.focus = this.target;
-    const weights = this.stripes.map((_, i) => FITNESS_WEIGHT[fitness[i] ?? 2] * focusWeight(i - this.focus));
+    const reach = focusReach(this.box.right - this.box.left);
+    const weights = this.stripes.map((_, i) => FITNESS_WEIGHT[fitness[i] ?? 2] * focusWeight(i - this.focus, reach));
     const total = weights.reduce((sum, w) => sum + w, 0) || 1;
     const speed = Math.min(1, seconds * 5);
     let moved = Math.abs(drift) > STILL;
@@ -191,9 +197,8 @@ export class Field {
         edge.lean = 0;
         continue;
       }
-      const swing = Math.max(0, narrow * 0.34 - 2) / span;
-      const wanted = Math.tan(edge.wish) - Math.tan(BASE_TILT);
-      edge.lean = Math.tan(BASE_TILT) + Math.max(-swing, Math.min(swing, wanted));
+      const swing = Math.max(0, narrow * LEAN_PER_WIDTH - 2) / span;
+      edge.lean = Math.max(-swing, Math.min(swing, Math.tan(edge.wish)));
     }
   }
 
