@@ -32,6 +32,7 @@ export class WmHeader extends HTMLElement {
   private readonly heading = document.createElement('h1');
   private readonly score = document.createElement('span');
   private readonly echoEnd = document.createElement('button');
+  private auto = document.createElement('button');
   private readonly keySign = document.createElement('span');
   private readonly loopList = document.createElement('div');
   private readonly followers: ((settings: Settings) => void)[] = [];
@@ -107,6 +108,7 @@ export class WmHeader extends HTMLElement {
       this.panelButton('library', 'songs', 'songs'),
       chords,
       this.heading,
+      this.buildAutoplay(app),
       this.buildEchoEnd(app),
       this.score,
       melody,
@@ -323,6 +325,20 @@ export class WmHeader extends HTMLElement {
     });
   }
 
+  // While a song runs, the playing can be handed to the app and taken back again – mid-song, without stopping it
+  private buildAutoplay(app: App): HTMLButtonElement {
+    this.auto = iconButton({
+      name: 'autoplay',
+      label: describedBy('autoplay'),
+      extra: 'auto',
+      onClick: () => {
+        app.setAutoplay(!app.autoplay());
+      },
+    });
+    this.auto.hidden = true;
+    return this.auto;
+  }
+
   private buildEchoEnd(app: App): HTMLButtonElement {
     this.echoEnd.type = 'button';
     this.echoEnd.className = 'ibtn filled end';
@@ -376,6 +392,9 @@ export class WmHeader extends HTMLElement {
     const scored = learn.levelId !== null && LEVELS[learn.levelId].factor > 0;
     this.score.textContent = scoreText(learn.song, scored, learn.score);
     this.echoEnd.hidden = !echo.active();
+    this.auto.hidden = learn.song === null;
+    this.auto.classList.toggle('on', app.autoplay());
+    this.auto.setAttribute('aria-pressed', String(app.autoplay()));
   }
 
   private updateBand(): void {
@@ -461,7 +480,8 @@ type BarKey =
   | 'view'
   | 'share'
   | 'help'
-  | 'echo';
+  | 'echo'
+  | 'autoplay';
 
 const describedBy = (key: BarKey): string => {
   const name = t(`bar.${key}.name`);

@@ -8,16 +8,17 @@ import { slug } from '../song-notation';
 import { GROUPS, SONGS } from './index';
 
 describe('SONGS', () => {
-  it('holds the 27 songs of the reference, 13 of them with lyrics, in four groups', () => {
-    expect(SONGS).toHaveLength(27);
-    expect(SONGS.filter((song) => song.notes.every((note) => note.text !== undefined))).toHaveLength(13);
-    expect(GROUPS).toEqual(['children', 'world', 'bluesRockJazz', 'exercises']);
+  it('holds the 27 songs of the reference and the 9 for singing together, in five groups', () => {
+    expect(SONGS).toHaveLength(36);
+    expect(SONGS.filter((song) => song.notes.some((note) => note.text !== undefined))).toHaveLength(22);
+    expect(GROUPS).toEqual(['feasts', 'children', 'world', 'bluesRockJazz', 'exercises']);
     for (const group of GROUPS) expect(SONGS.some((song) => song.group === group)).toBe(true);
-    expect(new Set(SONGS.map((song) => slug(song.title))).size).toBe(27);
+    expect(new Set(SONGS.map((song) => slug(song.title))).size).toBe(36);
   });
 
   it('carries title, key, tempo, style and group of the reference in the same order', () => {
-    expect(SONGS.map(({ title, k, bpm, style, group }) => ({ title, k, bpm, style, group }))).toEqual(
+    const library = SONGS.filter((song) => song.group !== 'feasts');
+    expect(library.map(({ title, k, bpm, style, group }) => ({ title, k, bpm, style, group }))).toEqual(
       RECORDED.songs.map((song) => ({
         title: song.title,
         k: song.k,
@@ -26,6 +27,19 @@ describe('SONGS', () => {
         group: song.group,
       })),
     );
+  });
+
+  // Every feast song is sung from beginning to end: a lead-in without words, then each verse with the chorus
+  // after it. A syllable per note, and no note of a sung part left without one.
+  it('sings every feast song whole, with a lead-in that carries no words', () => {
+    const feasts = SONGS.filter((song) => song.group === 'feasts');
+    expect(feasts).toHaveLength(9);
+    for (const song of feasts) {
+      const lead = song.notes.findIndex((note) => note.text !== undefined);
+      expect(lead).toBeGreaterThan(0); // there is a lead-in, and it ends
+      expect(song.notes.slice(0, lead).every((note) => note.text === undefined)).toBe(true);
+      expect(song.notes.slice(lead).every((note) => note.text !== undefined)).toBe(true);
+    }
   });
 
   it.each(SONGS.map((song) => [song.title, song] as const))(

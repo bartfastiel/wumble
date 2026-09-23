@@ -59,6 +59,7 @@ export const de = {
   learn: {
     group: {
       scanned: 'Gescannt',
+      feasts: 'Zum Mitsingen',
       children: 'Kinderlieder',
       world: 'Aus aller Welt',
       bluesRockJazz: 'Blues, Rock & Jazz',
@@ -70,6 +71,9 @@ export const de = {
     score: '{points} P.',
     done: { points: '{points} Punkte', newRecord: 'Neuer Rekord!', record: 'Rekord {points}' },
     freePlay: 'Freies Spiel',
+    selfPlay: 'Die App spielt',
+    selfPlayHint:
+      'Niemand muss spielen können: Wumble übernimmt die Melodie, alle singen mit. Wer mag, spielt einfach dazu.',
   },
   audio: {
     combi: {
@@ -208,6 +212,7 @@ export const de = {
     share: { name: 'Link teilen', text: 'Adresse mit allem, was du eingestellt hast, in die Zwischenablage' },
     help: { name: 'Hilfe', text: 'Was das Feld bedeutet und was alles mitspielt' },
     echo: { name: 'Echo beenden', text: 'Das Echo hört auf, die Band spielt weiter' },
+    autoplay: { name: 'Die App spielt', text: 'Wumble übernimmt die Melodie – die Hände bleiben frei zum Singen' },
   },
   join: {
     title: 'Wie machst du mit?',

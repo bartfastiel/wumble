@@ -1,3 +1,4 @@
+import { GROUPS, SONGS } from '../src/learn/songs';
 import { expect, test } from './fixtures';
 import { openApp } from './helpers';
 
@@ -47,11 +48,11 @@ test.describe('sheet scan', () => {
         style: store.get().style,
       };
     });
-    expect(state).toMatchObject({ group: 'scanned', notes: 27, count: 28, style: 'classical' });
+    expect(state).toMatchObject({ group: 'scanned', notes: 27, count: SONGS.length + 1, style: 'classical' });
     expect(state.first).toMatch(/^Gescannt: /);
     await page.locator('wm-header button[data-panel=library]').click();
     await expect(page.locator('wm-library h2').first()).toHaveText('Gescannt');
-    await expect(page.locator('wm-library h2 + button')).toHaveCount(5);
+    await expect(page.locator('wm-library h2 + button')).toHaveCount(GROUPS.length + 1); // and the scan on top
   });
 
   test('reads the example as a photo and follows a change of the key', async ({ page }) => {

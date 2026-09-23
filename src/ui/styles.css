@@ -197,6 +197,13 @@ header .gap {
   color: var(--lit);
 }
 
+/* The app has the melody: lit like the band, because something is playing that is not a hand */
+.ibtn.auto.on {
+  border-color: hsl(212 70% 70% / 0.4);
+  background: hsl(212 70% 60% / 0.14);
+  color: var(--lit);
+}
+
 /* Loop: the dot carries the number of layers, armed it pulses, recording it burns */
 .ibtn.loop {
   color: hsl(14 92% 64%);
@@ -829,6 +836,16 @@ label.opt .swatch {
 .list .seg button.on {
   background: hsl(var(--hue) 30% 96%);
   color: hsl(var(--hue) 40% 22%);
+}
+
+/* The switch that hands the playing to the app, lit while it has it */
+.list > button.on {
+  background: hsl(var(--hue) 30% 100% / 0.14);
+  font-weight: 600;
+}
+
+.list > button.on .icon-art {
+  color: var(--lit);
 }
 
 .panel p {

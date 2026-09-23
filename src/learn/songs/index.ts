@@ -3,9 +3,12 @@ import { parseSong, type Song, type SongGroup } from '../song-notation';
 import { BLUES_ROCK_JAZZ } from './blues-rock-jazz';
 import { CHILDREN } from './children';
 import { EXERCISES } from './exercises';
+import { FEASTS } from './feasts';
 import { WORLD } from './world';
 
 // Groups of the library in display order; the library sorts the songs of a group alphabetically
-export const GROUPS: readonly SongGroup[] = ['children', 'world', 'bluesRockJazz', 'exercises'];
+export const GROUPS: readonly SongGroup[] = ['feasts', 'children', 'world', 'bluesRockJazz', 'exercises'];
 
-export const SONGS: readonly Song[] = [...CHILDREN, ...WORLD, ...BLUES_ROCK_JAZZ, ...EXERCISES].map(parseSong);
+export const SONGS: readonly Song[] = [...FEASTS, ...CHILDREN, ...WORLD, ...BLUES_ROCK_JAZZ, ...EXERCISES].map(
+  parseSong,
+);

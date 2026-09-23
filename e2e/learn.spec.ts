@@ -1,5 +1,5 @@
 import { expect, test } from './fixtures';
-import { openApp, stripePoint } from './helpers';
+import { nextFrames, openApp, stripePoint } from './helpers';
 
 test.describe('learn mode', () => {
   test('tapping through "Alle meine Entchen" ends in the done modal', async ({ page }) => {
@@ -26,6 +26,30 @@ test.describe('learn mode', () => {
     await page.locator('wm-done button.secondary').click();
     await expect(page.locator('wm-done')).toBeHidden();
     await expect(page.locator('wm-header h1')).toHaveText('Freies Spiel');
+  });
+
+  // The party case: nobody at the keyboard, everybody singing. The app takes the melody over and walks the song
+  // on by itself, and the same button hands it back mid-song.
+  test('the app plays a song by itself and gives it back', async ({ page }) => {
+    await openApp(page, '#song=hoch-soll-er-leben', { quiet: true });
+    const title = page.locator('wm-header h1');
+    const self = page.locator('wm-header button.auto');
+    await expect(title).toHaveText('Hoch soll er leben · 1/27');
+    await expect(self).toBeVisible();
+    await expect(self).toHaveAttribute('aria-pressed', 'false');
+    await self.click();
+    await expect(self).toHaveAttribute('aria-pressed', 'true');
+    // How far it has come by the time we look is the machine's business: that it moves on its own is the point
+    await expect.poll(() => page.evaluate(() => window.__wumble.app.learn.pos), { timeout: 15_000 }).toBeGreaterThan(3);
+    await self.click();
+    await expect(self).toHaveAttribute('aria-pressed', 'false');
+    // Handing back releases the tone that was sounding, which finishes it – and then nothing moves on its own
+    const stopped = await page.evaluate(() => window.__wumble.app.learn.pos);
+    await nextFrames(page, 60);
+    expect(await page.evaluate(() => window.__wumble.app.learn.pos)).toBe(stopped);
+    await page.locator('wm-header button[data-panel=library]').click();
+    await page.locator('wm-library button', { hasText: 'Freies Spiel' }).click();
+    await expect(self).toBeHidden();
   });
 
   test('medium scores the hits and shows the badge', async ({ page }) => {

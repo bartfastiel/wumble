@@ -66,6 +66,8 @@ export const FULL_LINE = 9;
 export const MAX_LINE = 12;
 const SENTENCE_END = /[,.;:!?]['’"”)]?$/;
 const MELISMA = '_';
+// A note of the lead-in: played so everyone hears where the first word falls, but there is nothing to sing on it
+export const LEAD_IN = '♪';
 
 // Does a word end with syllable i? Not with a trailing hyphen, and not when a melisma `_` follows (it belongs to the
 // word before it)
@@ -81,6 +83,12 @@ export const breakLines = (syllables: readonly string[]): number[][] => {
   syllables.forEach((syllable, i) => {
     line.push(i);
     if (i === syllables.length - 1) return;
+    // The lead-in keeps a line of its own: it counts the song in, it does not start the first line of words
+    if (syllable === LEAD_IN && syllables[i + 1] !== LEAD_IN) {
+      lines.push(line);
+      line = [];
+      return;
+    }
     const sentence = SENTENCE_END.test(syllable);
     const wordEnd = isWordEnd(syllables, i);
     if ((wordEnd && ((line.length >= MIN_LINE && sentence) || line.length >= FULL_LINE)) || line.length >= MAX_LINE) {
@@ -116,7 +124,9 @@ export const songFromMessage = (message: SongMessage): KaraokeSong | null => {
   if (!Array.isArray(rawNotes) || rawNotes.length === 0) return null;
   const notes = (rawNotes as readonly unknown[]).map(toNote);
   const key = KEYS.find((k) => k.signature === Math.trunc(numberOr(message.k, 0))) ?? keyBySignature(0);
-  const syllables = notes.map((note) => note.text ?? key.names[pcOf(note.midi)]);
+  // A song with words shows its lead-in as notes, not as note names: those would read like lyrics nobody can sing
+  const sung = notes.some((note) => note.text !== null && note.text !== '');
+  const syllables = notes.map((note) => note.text ?? (sung ? LEAD_IN : key.names[pcOf(note.midi)]));
   const bpm = numberOr(message.bpm, 0);
   const title: unknown = message.title;
   return {

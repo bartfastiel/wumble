@@ -59,6 +59,7 @@ export const en = {
   learn: {
     group: {
       scanned: 'Scanned',
+      feasts: 'To sing together',
       children: 'Children’s songs',
       world: 'From around the world',
       bluesRockJazz: 'Blues, Rock & Jazz',
@@ -70,6 +71,9 @@ export const en = {
     score: '{points} pts',
     done: { points: '{points} points', newRecord: 'New record!', record: 'Record {points}' },
     freePlay: 'Free play',
+    selfPlay: 'The app plays',
+    selfPlayHint:
+      'Nobody has to be able to play: Wumble takes the melody and everyone sings along. Anyone who likes plays with it.',
   },
   audio: {
     combi: {
@@ -208,6 +212,7 @@ export const en = {
     share: { name: 'Share the link', text: 'The address with everything you have set, on the clipboard' },
     help: { name: 'Help', text: 'What the field means and what else plays along' },
     echo: { name: 'End the echo', text: 'The echo stops, the band plays on' },
+    autoplay: { name: 'The app plays', text: 'Wumble takes the melody – hands stay free for singing' },
   },
   join: {
     title: 'How do you join in?',
