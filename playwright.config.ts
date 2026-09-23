@@ -14,7 +14,7 @@ export default defineConfig({
   timeout: ci ? 60_000 : 30_000,
   retries: ci ? 2 : 0,
   // Every spec drives audio and an animated canvas; too many at once starve each other on a shared runner
-  workers: ci ? 2 : undefined,
+  ...(ci ? { workers: 2 } : {}),
   reporter: ci ? [['list'], ['html', { open: 'never' }]] : 'list',
   // German is the schema of the user texts; the specs check them in German
   use: { baseURL: url, trace: 'retain-on-failure', locale: 'de-DE' },
