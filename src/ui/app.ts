@@ -123,6 +123,7 @@ export const createApp = (options: AppOptions): App => {
     ...(options.relayUrl === undefined ? {} : { relayUrl: options.relayUrl }),
     onChange: () => {
       shareState(); // a room that just opened, or a guest that just arrived, needs the key to play in
+      catchUp(); // and the song that was already running when it opened
       emit('room');
     },
     onApplause: () => {
@@ -299,6 +300,14 @@ export const createApp = (options: AppOptions): App => {
     });
   };
 
+  // A song that started before the room opened: the room has never heard of it, and a guest arriving now would be
+  // offered karaoke without words, or none at all while a song is running.
+  const catchUp = (): void => {
+    const song = learn.song;
+    if (!room.isOpen || song === null || room.knowsSong) return;
+    room.songStarted({ title: song.title, bpm: song.bpm, signature: song.k, notes: song.notes }, store.model().hue);
+  };
+
   // The chord of the tone the thread is on: a song changes harmony exactly where it says it does, and the field
   // is measured against that chord from the moment the way arrives there.
   const followSong = (): void => {
@@ -390,6 +399,13 @@ export const createApp = (options: AppOptions): App => {
     started = true;
     engine.ensure();
     engine.fadeIn(FADE_IN_SECONDS);
+    // A guest hears only what their own finger plays: band, radio and chords belong to whoever opened the room
+    if (guest !== null) {
+      player.silenceChords();
+      emit('draw');
+      updateUrl();
+      return;
+    }
     if (wanted.radio) radio.setOn(true);
     if (wanted.band) startBand();
     // The chord that was chosen all along is struck now, so the field sounds from the first moment

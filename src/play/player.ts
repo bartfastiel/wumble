@@ -116,7 +116,13 @@ export class Player {
 
   // Whether the chosen chord is heard at all
   get accompanying(): boolean {
-    return this.chordVoice.accompanying;
+    return this.chordVoice.accompanying && !this.chordVoice.silent;
+  }
+
+  // A device that may hear the melody but not the chords: it still follows the harmony, it just does not play it
+  silenceChords(): void {
+    this.chordVoice.silent = true;
+    this.chordVoice.accompanying = false;
   }
 
   press(id: PointerId, tone: number): void {

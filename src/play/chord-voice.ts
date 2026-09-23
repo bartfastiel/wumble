@@ -15,6 +15,7 @@ export interface ChordContext {
 export class ChordVoice {
   current = 0; // index into the map; the app sets it to the tonic when a model is built
   accompanying = true; // false: the chord stays chosen, but only the melody is heard
+  silent = false; // this device never sounds a chord at all – a guest in someone else's room
   struck = false; // whether this chord has been played at all – before that, choosing it is not a second tap
   private voices: VoiceHandle[] = [];
 
@@ -32,7 +33,7 @@ export class ChordVoice {
     if (index === this.current && this.accompanying && this.struck) return;
     this.stop(at);
     this.current = index;
-    this.accompanying = true;
+    if (!this.silent) this.accompanying = true;
     this.strike(at);
   }
 
@@ -47,6 +48,7 @@ export class ChordVoice {
 
   // Tapping the chord that is already chosen: the accompaniment steps back, or comes in again
   toggle(at: number): void {
+    if (this.silent) return;
     this.accompanying = !this.accompanying;
     if (this.accompanying) this.strike(at);
     else this.stop(at);
@@ -64,7 +66,7 @@ export class ChordVoice {
   }
 
   private strike(at: number): void {
-    if (!this.accompanying) return;
+    if (this.silent || !this.accompanying) return;
     this.struck = true;
     if (this.context.bandRunning()) return; // the band plays this chord itself
     const { chord, bass } = this.context.frequencies(this.current);

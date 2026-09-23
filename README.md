@@ -65,7 +65,7 @@ twelve-bar blues. **Songs** lay the way through a melody over the field as a rop
 long – and as thick – as the tone lasts, the stripe that is due lit along its whole length. Levels score the hits,
 and nothing accompanies a song but the hand. **Scan sheet music** photographs a printed melody and lays it on the
 field.
-**Audience** opens a room with a QR code. Whoever scans it is asked once: sing along, or play along? A singer sees the lyrics scroll like karaoke and can applaud; a musician gets the same field in the host's key, style and tuning, on a sound nobody else has taken, and plays the melody on their own device – the host's field shows a small light above every tone a guest is holding. Chords, band and key stay with whoever opened the room.
+**Audience** opens a room with a QR code. Whoever scans it is asked once: sing along, or play along? A singer sees the lyrics scroll like karaoke and can applaud; a musician gets the whole field in the host's key, style and tuning, on a sound nobody else has taken, and plays the melody on their own device – the host's field shows a small light above every tone a guest is holding. Chords, band, radio and key stay with whoever opened the room; a guest's screen has none of them, and singing is only offered while a song with words is running.
 The URL fragment carries every setting as a shareable link.
 
 ## Development

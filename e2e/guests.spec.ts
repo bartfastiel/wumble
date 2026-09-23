@@ -22,6 +22,8 @@ test.describe('guests', () => {
     // The guest is asked first, and sees the host's sound greyed out
     await expect(guest.locator('wm-join')).toBeVisible();
     await expect(guest.locator('wm-join .tile[title="Klavier"]')).toBeDisabled();
+    // Free play: nothing to sing along to, so the choice is not offered at all
+    await expect(guest.locator('wm-join .tile[title^="Singen"]')).toHaveCount(0);
     // The key and style arrived before any choice was made
     expect(await guest.evaluate(() => window.__wumble.app.store.get())).toMatchObject({
       signature: 3,
@@ -52,7 +54,8 @@ test.describe('guests', () => {
   });
 
   test('a guest who came to sing gets the karaoke view instead', async ({ page, context }) => {
-    await openApp(page, '', { query: relayQuery(), quiet: true });
+    // A song with words is running, so there is something to sing along to
+    await openApp(page, '#song=alle-meine-entchen', { query: relayQuery(), quiet: true });
     await page.locator('wm-header button[data-panel=library]').click();
     await page.locator('wm-library button', { hasText: 'Publikum' }).click();
     const code = await page.evaluate(() => window.__wumble.app.room.code);

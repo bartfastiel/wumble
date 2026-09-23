@@ -15,9 +15,15 @@ A guest is asked once, on the page the code leads to: sing along, or play along?
 sound nobody else is using, at the middle of the field – so the question can be answered by pressing Play.
 
 A guest who plays gets the same field in the host's key, style and tuning. Those arrive over the relay and are
-mirrored into the local settings; the chord under the field follows the host bar by bar. What a guest may not do is
-everything that would reach into the host's music: no key of their own, no chords, no band, no songs. The bar keeps
-only the sound to play on and how the field looks.
+mirrored into the local settings; the chord under the field follows the host bar by bar, and decides the width and
+colour of every stripe as it does on the host's screen.
+
+What a guest does not get is everything that belongs to the host: no map of chords – the whole width goes to the
+tones, which is also what makes the stripes wide enough to hit on a phone – no chord sounding on their device, no
+band, no radio, no loop, no songs. Their bar keeps the sound to play on and how the field looks, and nothing else.
+
+Singing is only offered when there is something to sing: the choice appears once the host is on a song that has
+words, and until then the page asks only where to sit.
 
 The sound is made on the guest's own device. What travels to the host is the tone alone, and the host's field shows
 it as a small light above that stripe – the same tone, one screen further, played by someone else.

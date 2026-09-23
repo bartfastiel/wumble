@@ -29,7 +29,7 @@ const OPEN_LOW = 41; // a guest who came to play bass opens two octaves down
 const LOOK_AHEAD_BARS = 8; // how far the map promises the schema's next chord
 
 interface Grip {
-  readonly area: 'map' | 'field' | 'slider' | 'none'; // 'none': the map, on a device that may not use it
+  readonly area: 'map' | 'field' | 'slider';
   stripe: number | null;
   startY: number;
   y: number;
@@ -168,7 +168,10 @@ export class WmField extends HTMLElement {
 
   // Where the map ends and the field begins. On a phone held upright the map has to give way: the stripes need the
   // width more than the chord names do.
+  // Where the map ends and the field begins. A guest has no map: the chords belong to whoever opened the room, so
+  // the whole width goes to the tones – which is also what makes the stripes wide enough to hit on a phone.
   private get split(): number {
+    if (this.app?.guest != null) return 0;
     const { width } = this.canvas.getBoundingClientRect();
     const roomy = Math.min(MAP_MAX, Math.max(MAP_MIN, width * MAP_SHARE));
     return Math.min(roomy, width * MAP_NARROW);
@@ -177,7 +180,13 @@ export class WmField extends HTMLElement {
   // The strip along the bottom of the field, where the octaves are pulled past
   private get slider(): { left: number; right: number; top: number; bottom: number } {
     const { width, height } = this.canvas.getBoundingClientRect();
-    return { left: this.split + 10, right: width - 16, top: height - SLIDER_HEIGHT, bottom: height - 8 };
+    const split = this.split;
+    return {
+      left: split + (split === 0 ? 16 : 10),
+      right: width - 16,
+      top: height - SLIDER_HEIGHT,
+      bottom: height - 8,
+    };
   }
 
   private resize(): void {
@@ -210,7 +219,7 @@ export class WmField extends HTMLElement {
     const fresh = this.field.stripes.length === 0;
     this.field.look = app.store.get().look;
     this.field.layout(
-      { left: split + 10, right: width - 16, top: HEAD + 4, bottom: height - SLIDER_HEIGHT - 8 },
+      { left: split + (split === 0 ? 16 : 10), right: width - 16, top: HEAD + 4, bottom: height - SLIDER_HEIGHT - 8 },
       model.tones,
       model.style.scale.length,
     );
@@ -219,7 +228,7 @@ export class WmField extends HTMLElement {
     // key would throw away the sizes it has grown to and make the whole left hand jump.
     const shape = [model.styleId, this.field.look, Math.round(split), Math.round(height)].join('|');
     if (shape !== this.mapShape) {
-      this.spots = layoutMap(model.map, { width: split, height, top: HEAD }, this.field.look);
+      this.spots = split === 0 ? [] : layoutMap(model.map, { width: split, height, top: HEAD }, this.field.look);
       this.mapShape = shape;
     }
     this.requestDraw();
@@ -234,8 +243,7 @@ export class WmField extends HTMLElement {
       const { x, y } = this.local(event);
       const slider = this.slider;
       let area: Grip['area'] = 'field';
-      // A guest plays the melody and nothing else: the chords belong to whoever opened the room
-      if (x < this.split) area = app.guest === null ? 'map' : 'none';
+      if (x < this.split) area = 'map';
       else if (y >= slider.top) area = 'slider';
       const grip: Grip = {
         area,

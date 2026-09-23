@@ -1420,9 +1420,12 @@ wm-listener .applause:active {
   opacity: 0.85;
 }
 
-/* A guest who came to play along: the chords, the band and the songs belong to whoever opened the room, so their
-   side of the bar is not there at all. What is left is the sound to play on and how the field looks. */
+/* A guest who came to play along: the chords, the band, the radio, the loop and the songs belong to whoever opened
+   the room, so none of that is on their screen. What is left is the sound to play on and how the field looks. */
 body.guest .zone.chords,
+body.guest .ibtn.radio,
+body.guest .ibtn.loop,
+body.guest .section:has([data-section='loop']),
 body.guest header button[data-panel='library'],
 body.guest header button[data-action='share'] {
   display: none;

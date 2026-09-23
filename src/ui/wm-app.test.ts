@@ -227,9 +227,26 @@ describe('wm-app', () => {
     // A guest is asked first: sing along, or play along?
     expect(root.join.hidden).toBe(false);
     expect(relay.sockets[0]?.url).toBe('ws://127.0.0.1:8765/ws?room=k7m3x&role=musician');
+    // Nothing to sing along to yet, so nothing is offered
+    expect(
+      [...document.querySelectorAll<HTMLButtonElement>('wm-join .tile')].some((tile) =>
+        tile.title.startsWith('Singen'),
+      ),
+    ).toBe(false);
+    relay.sockets[0]?.deliver(
+      JSON.stringify({
+        t: 'song',
+        title: 'Alle meine Entchen',
+        bpm: 100,
+        k: 0,
+        hue: 85,
+        notes: [{ midi: 60, beats: 1, text: 'Al' }],
+      }),
+    );
     const sing = [...document.querySelectorAll<HTMLButtonElement>('wm-join .tile')].find((tile) =>
       tile.title.startsWith('Singen'),
     );
+    expect(sing).toBeDefined();
     sing?.click();
     document.querySelector<HTMLButtonElement>('wm-join button.play')?.click();
     expect(root.listener.isOpen).toBe(true);
