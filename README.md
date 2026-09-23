@@ -63,8 +63,10 @@ the digits choose a chord. **Band** adds drums, bass and chords in the groove of
 panel asks the one question behind it: who chooses the chords – you, the field thinking along, or a schema like the
 twelve-bar blues. **Songs** lay the way through a melody over the field as a rope: every tone a knot, every leg as
 long – and as thick – as the tone lasts, the stripe that is due lit along its whole length. Levels score the hits,
-and nothing accompanies a song but the hand. **Scan sheet music** photographs a printed melody and lays it on the
-field.
+and nothing accompanies a song but the hand. **To sing together** is the first group in the list: carols and
+birthday songs with every verse, the chorus in its place and a short lead-in – and a switch that lets the app play
+the melody itself, so a room can sing without anyone at the keyboard. **Scan sheet music** photographs a printed
+melody and lays it on the field.
 **Audience** opens a room with a QR code. Whoever scans it is asked once: sing along, or play along? A singer sees the lyrics scroll like karaoke and can applaud; a musician gets the whole field in the host's key, style and tuning, on a sound nobody else has taken, and plays the melody on their own device – the host's field shows a small light above every tone a guest is holding. Chords, band, radio and key stay with whoever opened the room; a guest's screen has none of them, and singing is only offered while a song with words is running.
 The URL fragment carries every setting as a shareable link.
 
@@ -133,12 +135,16 @@ The sampler uses royalty-free recordings only:
   [CC0](https://creativecommons.org/publicdomain/zero/1.0/), source: [sgossner/VSCO-2-CE](https://github.com/sgossner/VSCO-2-CE)
   – solo violin, violin section, solo double bass and church organ "Rode" (sampled by Simon Dalzell / Ivy Audio).
 
-Melodies and lyrics are traditional or by composers who died before 1925; every one of them is checked against a score
-and, programmatically, against the scale and range of its style.
+Melodies and lyrics are traditional or by composers who died before 1925; every one of them is checked against a
+score and, programmatically, against the scale and range of its style. The songs for singing together are public
+domain for the same reason – the German carols are 18th and 19th century, "Jingle Bells" is Pierpont 1857, and the
+birthday tune is Mildred J. Hill's, whose words were held free in 2015 and whose German counterpart has no author at
+all. The reasoning stands song by song in
+[the decision](docs/adr/2026-09-23-songs-for-singing-together-whole.md).
 
 ## Deployment
 
 Every push to `main` puts `dist/` (with the relay) on the server as production, served directly under its host. Every pull request gets a preview
 `pr-<nr>/` (link in the PR comment and as an environment) that disappears when the PR is closed. Production and
-previews live under separate paths; the production path stays secret. A tag `v*` creates a GitHub release with the
+previews live under separate paths. A tag `v*` creates a GitHub release with the
 single file `wumble.html`. The page is not advertised anywhere, but it is not hidden either.

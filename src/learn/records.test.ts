@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { RECORD_STORAGE_KEY, recordKey, Records, type RecordStorage } from './records';
 import { SONGS } from './songs';
 
-const entchen = SONGS[0];
+const entchen = SONGS.find((song) => song.title === 'Alle meine Entchen');
 if (entchen === undefined) throw new Error('no songs');
 
 const memory = (initial: Record<string, string> = {}): RecordStorage & { readonly data: Record<string, string> } => {

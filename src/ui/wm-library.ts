@@ -15,6 +15,8 @@ export const OPEN_EVENT = 'wm-open'; // detail: the extra panel to open (scan, a
 const LIBRARY_GROUPS: readonly Song['group'][] = ['scanned', ...GROUPS]; // scans of this session on top
 
 export class WmLibrary extends WmPanel {
+  private self: HTMLButtonElement | null = null; // the switch that hands the playing to the app
+
   protected override build(): void {
     this.setHeading(t('ui.library'));
     this.body.classList.add('list');
@@ -25,6 +27,9 @@ export class WmLibrary extends WmPanel {
     });
     app.on('songs', () => {
       this.list();
+    });
+    app.on('title', () => {
+      this.showSelf(); // the app may have taken the playing over, or handed it back
     });
     app.on('settings', (settings, previous) => {
       if (settings.difficulty !== previous.difficulty || settings.german !== previous.german) this.list();
@@ -80,15 +85,33 @@ export class WmLibrary extends WmPanel {
       },
       'mic',
     );
+    // The app plays the song itself: armed here, it holds for every song that follows – at a party the list is
+    // opened once and then only songs are picked.
+    this.self = this.action(
+      t('learn.selfPlay'),
+      () => {
+        app.setAutoplay(!app.autoplay());
+      },
+      'autoplay',
+    );
+    this.showSelf();
     this.body.replaceChildren(
       levels.element,
       hint(t('learn.levelHint')),
+      this.self,
+      hint(t('learn.selfPlayHint')),
       this.extra('scan', t('ui.scan'), 'camera'),
       echo,
       this.extra('audience', t('ui.audience'), 'people'),
       free,
       ...LIBRARY_GROUPS.flatMap((group) => this.groupNodes(group)),
     );
+  }
+
+  private showSelf(): void {
+    const on = this.context.autoplay();
+    this.self?.classList.toggle('on', on);
+    this.self?.setAttribute('aria-pressed', String(on));
   }
 
   private groupNodes(group: Song['group']): Node[] {

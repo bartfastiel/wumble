@@ -440,6 +440,7 @@ export class WmField extends HTMLElement {
       const seconds = Math.min(0.05, gap / 1000);
       this.lastFrame = now;
       app.learn.tick(now);
+      app.autoStep(now); // the app's own finger, if it took the song over
       const breathing = this.breathe(seconds);
       this.floaters = this.floaters.filter((floater) => now - floater.t0 < 900);
       const busy =

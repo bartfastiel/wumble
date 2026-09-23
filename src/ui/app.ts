@@ -27,6 +27,8 @@ import { pcOf } from '../theory/pitch';
 import { melodyFrequency } from '../theory/tuning';
 
 const FADE_IN_SECONDS = 3.5; // the speakers may still be turned up from whatever ran before
+const AUTO_POINTER = 'autoplay'; // the app's own finger, one at a time
+const AUTO_RESYNC_MS = 250; // fallen this far behind (a hidden tab, a stalled frame): start counting from now again
 
 export type ExtraPanel = 'scan' | 'audience'; // opened from the library or by a link
 
@@ -65,6 +67,9 @@ export interface App {
   startSong(song: Song): void;
   restartSong(): void;
   stopSong(): void;
+  readonly autoplay: () => boolean; // the app plays the song itself, so everyone else can sing
+  setAutoplay(on: boolean): void;
+  autoStep(at: number): void; // one frame of the app's own playing; the field calls it after the learn tick
   startBand(): void;
   stopBand(): void;
   toggleBand(): void;
@@ -143,6 +148,7 @@ export const createApp = (options: AppOptions): App => {
       emit('title');
     },
     onFinish: (result) => {
+      player.release(AUTO_POINTER);
       room.songEnded();
       emit('records');
       emit('title');
@@ -232,6 +238,7 @@ export const createApp = (options: AppOptions): App => {
 
   const startSong = (song: Song): void => {
     echo.stop();
+    autoAt = 0;
     // A song is played, not accompanied: the band and the radio step aside so the way through it is the only thing
     // sounding besides the hand
     band.stop();
@@ -248,6 +255,7 @@ export const createApp = (options: AppOptions): App => {
   };
   const stopSong = (): void => {
     if (learn.song !== null) room.freePlay(store.model().hue);
+    player.release(AUTO_POINTER);
     learn.stop();
     player.harmony.reset();
     emit('title');
@@ -315,6 +323,34 @@ export const createApp = (options: AppOptions): App => {
     if (spot !== null && spot.chord !== player.chord) player.chooseChord(spot.chord, false);
   };
 
+  // The app plays the song itself. At a party nobody has to be the one who can play: it presses exactly the spot
+  // the thread points at, for exactly as long as the note lasts, and everything else – the karaoke in the room, the
+  // chord under the melody, the title – happens as if a hand had done it. One press per note, one note at a time.
+  let autoplay = false;
+  let autoAt = 0; // when the tone now due should begin; 0 before the first one
+  let pressedAt: number | null = null; // the moment the app's finger means, not the frame it happened to land in
+  const autoStep = (at: number): void => {
+    if (!autoplay || learn.song === null || learn.done || learn.hold !== null) return;
+    const placed = learn.placed[learn.pos];
+    if (placed?.spot == null) return;
+    player.release(AUTO_POINTER); // the tone before it has had its full length
+    followSong(); // its chord first: the melody is tuned against it, and the field shows it
+    // A frame arrives whenever it arrives. Counting from when the tone was due keeps the song from dragging a
+    // sixtieth of a second behind on every single note.
+    if (autoAt === 0 || at - autoAt > AUTO_RESYNC_MS) autoAt = at;
+    pressedAt = autoAt;
+    player.press(AUTO_POINTER, placed.spot.tone);
+    pressedAt = null;
+    autoAt += (placed.note.beats * 60000) / learn.song.bpm;
+  };
+  const setAutoplay = (on: boolean): void => {
+    autoplay = on;
+    autoAt = 0;
+    if (!on) player.release(AUTO_POINTER);
+    emit('title');
+    emit('draw');
+  };
+
   // The hand takes over: the radio hushes for two bars, and a schema stops choosing for the same while
   const humanLeads = (): void => {
     radio.pause();
@@ -327,7 +363,7 @@ export const createApp = (options: AppOptions): App => {
       guest?.note(store.model().tones[tone] ?? 0, true);
       if (learn.song !== null) {
         // Only the tone counts: which chord lies under it is the other hand's free choice
-        learn.press(id, { chord, tone }, now(), true);
+        learn.press(id, { chord, tone }, pressedAt ?? now(), true);
         followSong();
         emit('title');
       } else if (room.isOpen) tellAudience(tone, chord);
@@ -451,6 +487,9 @@ export const createApp = (options: AppOptions): App => {
       if (learn.song !== null) startSong(learn.song);
     },
     stopSong,
+    autoplay: () => autoplay,
+    setAutoplay,
+    autoStep,
     startBand,
     stopBand: () => {
       started = true;

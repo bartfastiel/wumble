@@ -32,6 +32,7 @@ export type IconName =
   | 'camera'
   | 'mic'
   | 'people'
+  | 'autoplay'
   | 'stop';
 
 // Paths are drawn in a 24×24 box with a 2-unit margin, so they sit optically level next to each other.
@@ -115,6 +116,8 @@ const PATHS: Readonly<Record<IconName, readonly string[]>> = {
     'M17 14.4a5.5 5.5 0 0 1 3.5 5.1',
   ],
   staff: ['M3 6h18', 'M3 10h18', 'M3 14h18', 'M3 18h18', 'M9 15.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z'],
+  // A screen playing by itself: the app takes the melody over, so the hands are free to sing
+  autoplay: ['M4 5h16v14H4z', 'M10 9 15 12l-5 3z'],
   stop: ['M6.5 6.5h11v11h-11z'],
 };
 

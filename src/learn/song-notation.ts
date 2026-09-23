@@ -3,7 +3,15 @@
 import { type Degree, MAJOR } from '../theory/scales';
 import type { StyleId } from '../theory/styles';
 
-export type SongGroup = 'scanned' | 'children' | 'world' | 'bluesRockJazz' | 'exercises'; // scanned: this session only
+// scanned: this session only · feasts: the songs a room actually sings together, at Christmas and at birthdays
+export type SongGroup = 'scanned' | 'feasts' | 'children' | 'world' | 'bluesRockJazz' | 'exercises';
+
+// A part of a song: its own notes, and the syllables that go on them. Without text it is played, not sung – a short
+// lead-in, so everyone knows where the first word falls.
+export interface SongPart {
+  readonly notes: string;
+  readonly text?: string;
+}
 
 export interface SongDefinition {
   readonly title: string;
@@ -11,8 +19,11 @@ export interface SongDefinition {
   readonly bpm: number;
   readonly style?: StyleId; // default classical
   readonly group: SongGroup;
-  readonly notes: string;
-  readonly text?: string;
+  readonly notes: string; // the melody of one verse
+  readonly text?: string; // the words of the first verse, one syllable per note
+  readonly verses?: readonly string[]; // further verses: the same melody, other words
+  readonly chorus?: SongPart; // sung after every verse
+  readonly intro?: string; // a few notes before the singing starts, so the first word is not a surprise
 }
 
 export interface SongNote {
@@ -65,20 +76,34 @@ const parseNote = (token: string): SongNote => {
 
 const words = (text: string): string[] => text.trim().split(/\s+/);
 
-// A syllable count that differs from the note count aborts the load: it protects against shifted lyrics
-export const parseSong = (def: SongDefinition): Song => {
-  const tokens = words(def.notes);
-  const syllables = def.text === undefined ? null : words(def.text);
+// One part, with its syllables laid on its notes. A syllable count that differs from the note count aborts the
+// load: it protects against lyrics that have slipped by one and would then be wrong for the whole song.
+const parsePart = (title: string, notes: string, text: string | undefined): SongNote[] => {
+  const tokens = words(notes);
+  const syllables = text === undefined ? null : words(text);
   if (syllables !== null && syllables.length !== tokens.length) {
     throw new Error(
-      `lyrics do not match: "${def.title}" has ${String(tokens.length)} notes but ${String(syllables.length)} syllables`,
+      `lyrics do not match: "${title}" has ${String(tokens.length)} notes but ${String(syllables.length)} syllables`,
     );
   }
-  const notes = tokens.map((token, i) => {
+  return tokens.map((token, i) => {
     const note = parseNote(token);
-    const text = syllables?.[i];
-    return text === undefined ? note : { ...note, text };
+    const syllable = syllables?.[i];
+    return syllable === undefined ? note : { ...note, text: syllable };
   });
+};
+
+// The whole song as it is sung: the lead-in, then every verse with the chorus after it. A song without verses is
+// one verse, which is how every song in the library was written before there were any.
+export const parseSong = (def: SongDefinition): Song => {
+  const notes: SongNote[] = [];
+  if (def.intro !== undefined) notes.push(...parsePart(def.title, def.intro, undefined));
+  const verses = def.verses ?? [def.text].filter((verse) => verse !== undefined);
+  const sung = verses.length === 0 ? [undefined] : verses;
+  for (const verse of sung) {
+    notes.push(...parsePart(def.title, def.notes, verse));
+    if (def.chorus !== undefined) notes.push(...parsePart(def.title, def.chorus.notes, def.chorus.text));
+  }
   return { title: def.title, k: def.k, bpm: def.bpm, style: def.style ?? 'classical', group: def.group, notes };
 };
 

@@ -102,8 +102,9 @@ describe('songFromMessage', () => {
         { midi: 0, beats: 1, text: null },
         { midi: 0, beats: 0.5, text: 'x' },
       ],
-      syllables: ['C♯', 'C', 'x'],
-      lines: [[0, 1, 2]],
+      // One note carries a word, so the two without one are the lead-in: their own line, and no note names
+      syllables: ['♪', '♪', 'x'],
+      lines: [[0, 1], [2]],
     });
   });
 });
