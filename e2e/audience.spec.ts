@@ -17,7 +17,7 @@ const hit = (page: Page, index: number): Promise<void> =>
 
 test.describe('audience', () => {
   test('a listener follows the song of the player and applauds', async ({ page, context }) => {
-    await openApp(page, '', { query: relayQuery() });
+    await openApp(page, '', { query: relayQuery(), quiet: true });
     await page.locator('wm-header button[data-panel=library]').click();
     await page.locator('wm-library button', { hasText: 'Publikum' }).click();
     await expect(page.locator('wm-audience')).toHaveClass(/open/);

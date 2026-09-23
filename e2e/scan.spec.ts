@@ -19,7 +19,7 @@ const greenPixels = (x: number): number => {
 
 test.describe('sheet scan', () => {
   test('reads the example, draws the overlay and plays the song in the learn mode', async ({ page }) => {
-    await openApp(page);
+    await openApp(page, '', { quiet: true });
     await page.locator('wm-header button[data-panel=library]').click();
     await page.locator('wm-library button', { hasText: 'Notenblatt scannen' }).click();
     await expect(page.locator('wm-scan')).toHaveClass(/open/);
@@ -55,7 +55,7 @@ test.describe('sheet scan', () => {
   });
 
   test('reads the example as a photo and follows a change of the key', async ({ page }) => {
-    await openApp(page, '#scan');
+    await openApp(page, '#scan', { quiet: true });
     await expect(page.locator('wm-scan')).toHaveClass(/open/);
     await page.locator('wm-scan').getByRole('button', { name: 'Beispiel als Foto' }).click();
     await expect(page.locator('wm-scan p.result')).toHaveText(new RegExp(`^27 Noten erkannt: ${EXAMPLE_NAMES} `));

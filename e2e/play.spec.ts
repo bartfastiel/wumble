@@ -3,7 +3,7 @@ import { openApp, stripePoint, tonePoint } from './helpers';
 
 test.describe('free play', () => {
   test('a tap sounds the tone it landed on', async ({ page }) => {
-    await openApp(page, '#style=classical');
+    await openApp(page, '#style=classical', { quiet: true });
     const point = await tonePoint(page, 64); // E4
     await page.mouse.move(point.x, point.y);
     await page.mouse.down();
@@ -21,7 +21,7 @@ test.describe('free play', () => {
   });
 
   test('sliding onto another stripe is a glissando', async ({ page }) => {
-    await openApp(page, '#style=classical');
+    await openApp(page, '#style=classical', { quiet: true });
     const from = await tonePoint(page, 64);
     const to = await tonePoint(page, 67);
     await page.mouse.move(from.x, from.y);
@@ -40,7 +40,7 @@ test.describe('free play', () => {
   });
 
   test('a chord chosen on the map keeps sounding after the finger is gone', async ({ page }) => {
-    await openApp(page);
+    await openApp(page, '', { quiet: true });
     const home = await page.evaluate(() => window.__wumble.app.store.model().home);
     const point = await stripePoint(page, `chord:${String(home)}`);
     await page.mouse.click(point.x, point.y);
@@ -50,7 +50,7 @@ test.describe('free play', () => {
 
   test('on a phone held upright the map gives way and the focused tones stay hittable', async ({ page }) => {
     await page.setViewportSize({ width: 412, height: 839 });
-    await openApp(page);
+    await openApp(page, '', { quiet: true });
     const box = await page.locator('wm-field canvas').boundingBox();
     if (box === null) throw new Error('canvas not visible');
     const shape = await page.evaluate(() => {
@@ -69,7 +69,7 @@ test.describe('free play', () => {
   });
 
   test('the strip below the field pulls the octaves past and settles on one', async ({ page }) => {
-    await openApp(page);
+    await openApp(page, '', { quiet: true });
     const box = await page.locator('wm-field canvas').boundingBox();
     if (box === null) throw new Error('canvas not visible');
     const focusOf = (): Promise<{ focus: number; settling: number }> =>
@@ -94,7 +94,7 @@ test.describe('free play', () => {
   });
 
   test('the laptop keyboard plays a tone and the digits choose a chord', async ({ page }) => {
-    await openApp(page);
+    await openApp(page, '', { quiet: true });
     await page.keyboard.down('KeyA');
     const pressed = await page.evaluate(() => {
       const pointer = window.__wumble.app.player.pointers.get('kKeyA');

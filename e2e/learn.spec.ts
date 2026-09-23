@@ -3,7 +3,7 @@ import { openApp, stripePoint } from './helpers';
 
 test.describe('learn mode', () => {
   test('tapping through "Alle meine Entchen" ends in the done modal', async ({ page }) => {
-    await openApp(page);
+    await openApp(page, '', { quiet: true });
     await page.locator('wm-header button[data-panel=library]').click();
     await page.locator('wm-library button', { hasText: 'Alle meine Entchen' }).click();
     await expect(page.locator('wm-library')).not.toHaveClass(/open/);
@@ -29,7 +29,7 @@ test.describe('learn mode', () => {
   });
 
   test('medium scores the hits and shows the badge', async ({ page }) => {
-    await openApp(page, '#level=medium&song=alle-meine-entchen');
+    await openApp(page, '#level=medium&song=alle-meine-entchen', { quiet: true });
     await expect(page.locator('wm-header .score')).toHaveText('0 P.');
     const tone = await page.evaluate(() => window.__wumble.app.learn.placed[0]?.spot?.tone ?? null);
     if (tone === null) throw new Error('note off the field');
