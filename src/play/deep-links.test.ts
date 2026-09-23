@@ -8,6 +8,7 @@ import {
   DEFAULTS,
   DIFFICULTIES,
   LABEL_SETTINGS,
+  LOOKS,
   PLAY_MODES,
   SCHEMA_IDS,
   type Settings,
@@ -85,6 +86,7 @@ describe('parseHash', () => {
     for (const id of DIFFICULTIES) expect(parseHash(`#level=${id}`)).toEqual({ difficulty: id });
     for (const id of SCHEMA_IDS) expect(parseHash(`#schema=${id}`)).toEqual({ schema: id });
     for (const id of LABEL_SETTINGS) expect(parseHash(`#labels=${id}`)).toEqual({ labels: id });
+    for (const id of LOOKS) expect(parseHash(`#look=${id}`)).toEqual({ look: id });
   });
 
   it('reads flags, tempo, room and song', () => {
@@ -143,11 +145,18 @@ describe('formatHash', () => {
     expect(formatHash(settings)).toBe('#style=jazz');
   });
 
+  it('writes the look only when it differs from the default', () => {
+    expect(formatHash({ ...DEFAULTS, look: 'precise' })).toBe('#look=precise');
+    expect(formatHash({ ...DEFAULTS, look: 'organic' })).toBe('');
+  });
+
   it('writes the key by name and the extras', () => {
     const settings: Settings = { ...DEFAULTS, signature: 6, tuning: 'just', labels: 'names' };
+    // Band and radio play by default, so only switching them off is carried
     expect(formatHash(settings, { song: 'Alle meine Entchen', band: true, radio: true })).toBe(
-      '#key=F#&tuning=just&labels=names&song=alle-meine-entchen&band=1&radio=1',
+      '#key=F#&tuning=just&labels=names&song=alle-meine-entchen',
     );
+    expect(formatHash(settings, { band: false, radio: false })).toBe('#key=F#&tuning=just&labels=names&band=0&radio=0');
   });
 
   it('writes a room alone, because nothing else matters to a listener', () => {

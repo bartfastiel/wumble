@@ -13,10 +13,10 @@ const spotOf = (spots: readonly MapSpot[], chord: MapChord): MapSpot => {
 };
 
 describe('layoutMap', () => {
-  it('lays out one spot per chord plus the field of silence', () => {
+  it('lays out one spot per chord of the map, and nothing else', () => {
     const spots = layoutMap(classical, BOX);
-    expect(spots).toHaveLength(classical.length + 1);
-    expect(spots.filter((spot) => spot.chord === null)).toHaveLength(1);
+    expect(spots).toHaveLength(classical.length);
+    expect(spots.map((spot) => spot.chord)).toEqual([...classical]);
   });
 
   it.each(STYLE_IDS)('%s: every spot stays inside the box and clear of its neighbours', (styleId) => {
@@ -47,7 +47,7 @@ describe('layoutMap', () => {
 
   it('puts substitutes beside their chord, not on the axis', () => {
     const spots = layoutMap(classical, BOX);
-    const axis = spots.filter((spot) => spot.chord?.side === 0).map((spot) => spot.x);
+    const axis = spots.filter((spot) => spot.chord.side === 0).map((spot) => spot.x);
     const beside = classical.filter((chord) => chord.side !== 0);
     const middle = axis.reduce((sum, x) => sum + x, 0) / axis.length;
     for (const chord of beside) {
@@ -63,6 +63,35 @@ describe('layoutMap', () => {
   it('copes with a narrow box', () => {
     const spots = layoutMap(classical, { width: 140, height: 300, top: 20 });
     for (const spot of spots) expect(spot.limit).toBeGreaterThan(0);
+  });
+});
+
+describe('layoutMap: the built look', () => {
+  it('puts the map in three columns, nothing overlapping, nothing outside the box', () => {
+    const spots = layoutMap(classical, BOX, 'precise');
+    const columns = [...new Set(spots.map((spot) => Math.round(spot.x)))].sort((a, b) => a - b);
+    expect(columns).toHaveLength(3); // the far side, the axis, the substitutes
+    for (const spot of spots) {
+      expect(spot.x - spot.limit).toBeGreaterThanOrEqual(-1);
+      expect(spot.x + spot.limit).toBeLessThanOrEqual(BOX.width + 1);
+    }
+    for (const [i, a] of spots.entries()) {
+      for (const b of spots.slice(i + 1)) expect(a.limit + b.limit).toBeLessThanOrEqual(distance(a, b) + 1e-9);
+    }
+  });
+
+  it('lines the chords of a pull step up at the same height', () => {
+    const spots = layoutMap(classical, BOX, 'precise');
+    const byStep = new Map<number, number[]>();
+    for (const spot of spots) byStep.set(spot.chord.step, [...(byStep.get(spot.chord.step) ?? []), spot.y]);
+    for (const heights of byStep.values()) expect(new Set(heights.map((y) => Math.round(y))).size).toBe(1);
+  });
+
+  it('reports movement while it breathes, and stops when it has arrived', () => {
+    const spots = layoutMap(classical, BOX);
+    expect(breatheMap(spots, spots[0] ?? null, () => 0.5, 0.016)).toBe(true);
+    for (let frame = 0; frame < 400 && breatheMap(spots, spots[0] ?? null, () => 0.5, 0.016); frame++);
+    expect(breatheMap(spots, spots[0] ?? null, () => 0.5, 0.016)).toBe(false);
   });
 });
 

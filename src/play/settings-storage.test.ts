@@ -22,6 +22,7 @@ const stored: Settings = {
   mode: 'autoHarmony',
   combi: 'piano',
   labels: 'degrees',
+  look: 'precise',
   german: true,
   difficulty: 'hard',
   tempo: 88,

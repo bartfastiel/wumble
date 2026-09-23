@@ -1,5 +1,6 @@
 // Colours in OKLCH, where equal numbers look equally bright. Hue carries fitness, lightness the register,
 // chroma the certainty — three readable channels instead of one colourful one.
+import type { Look } from './geometry';
 import type { Fitness } from '../theory/fitness';
 import type { PitchClass } from '../theory/pitch';
 
@@ -32,6 +33,9 @@ export const cssOf = ({ l, c, h }: Oklch): string => {
 // Warm where a tone carries, cool where it pulls — a narrow arc, not a rainbow
 const FITNESS_HUE: readonly [number, number, number, number] = [74, 96, 148, 238];
 const FITNESS_CHROMA: readonly [number, number, number, number] = [0.135, 0.1, 0.05, 0.026];
+// The built look says the same with less: one warm accent against graphite, and no nudge per pitch class
+const PRECISE_HUE: readonly [number, number, number, number] = [68, 78, 210, 244];
+const PRECISE_CHROMA: readonly [number, number, number, number] = [0.115, 0.075, 0.016, 0.01];
 export const CENTRE_MIDI = 65;
 
 export const registerTilt = (midi: number): number => Math.max(-1.2, Math.min(1.2, (midi - CENTRE_MIDI) / 24));
@@ -40,22 +44,25 @@ export interface ToneColourOptions {
   readonly held?: boolean;
   readonly lift?: number;
   readonly base?: boolean; // the tonic of the key keeps its full colour
+  readonly look?: Look;
 }
 
 export const toneColour = (
   fitness: Fitness,
   pc: PitchClass,
   midi: number,
-  { held = false, lift = 0, base = false }: ToneColourOptions = {},
+  { held = false, lift = 0, base = false, look = 'organic' }: ToneColourOptions = {},
 ): Oklch => {
+  const precise = look === 'precise';
   const tilt = registerTilt(midi);
-  // a touch of pitch class, enough to tell two stripes apart, not enough to be colourful
-  const nudge = (((((pc * 7) % 12) + 12) % 12) - 5.5) * 1.5;
+  // a touch of pitch class, enough to tell two stripes apart, not enough to be colourful – the built look drops it
+  const nudge = precise ? 0 : (((((pc * 7) % 12) + 12) % 12) - 5.5) * 1.5;
   const dim = base || held ? 0 : 0.07;
+  const chroma = precise ? PRECISE_CHROMA : FITNESS_CHROMA;
   return {
-    l: 0.585 + tilt * 0.085 + lift - dim,
-    c: FITNESS_CHROMA[fitness] * (base || held ? 1 : 0.88),
-    h: FITNESS_HUE[fitness] + nudge,
+    l: (precise ? 0.545 : 0.585) + tilt * (precise ? 0.05 : 0.085) + lift - dim,
+    c: chroma[fitness] * (base || held ? 1 : 0.88),
+    h: (precise ? PRECISE_HUE : FITNESS_HUE)[fitness] + nudge,
   };
 };
 

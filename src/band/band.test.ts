@@ -223,6 +223,23 @@ describe('Band live', () => {
     expect(setup.band.output()).toBe(setup.engine);
   });
 
+  it('steps back for two bars when a hand chooses a chord of its own', () => {
+    const setup = createSetup('classical', 'pop');
+    const model = buildModel(keyBySignature(0), 'classical');
+    setup.band.start();
+    setup.time.advance(0.05 + 0.1);
+    const own = model.chords.findIndex((chord) => chord.offset === 5); // the subdominant, not in bar 1 of pop
+    setup.setChordSource(own);
+    setup.band.yield();
+    expect(setup.band.currentChord()).toBe(own); // the hand leads
+    expect(setup.band.bandChord()).toBeNull(); // and the map stops showing a schema chord
+    // two bars later the schema takes over again: pop is I - V - vi - IV, so bar 3 is the submediant
+    setup.time.advance(2.4 * 2 + 0.1);
+    expect(chordAt(model, setup.band.currentChord()).offset).toBe(9);
+    expect(setup.band.bandChord()).not.toBeNull();
+    setup.band.stop();
+  });
+
   it.each(Object.keys(SCHEMATA))('%s: names a chord for every bar, or follows the play', (id) => {
     const setup = createSetup('classical', id as 'pop');
     setup.band.start();

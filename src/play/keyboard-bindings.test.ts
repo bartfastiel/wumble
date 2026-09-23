@@ -2,10 +2,18 @@
 import { describe, expect, it, vi } from 'vitest';
 import { keyBySignature } from '../theory/keys';
 import { buildModel } from '../theory/model';
-import { SILENT } from './chord-voice';
 import { FakeClock, FakeEngine } from './__fixtures__/fakes';
-import { bindKeyboard, KEY_STEPS, keyChord, keyTone, type KeyboardOptions, pointerIdOf } from './keyboard-bindings';
+import {
+  bindKeyboard,
+  KEY_STEPS,
+  keyChord,
+  keyTone,
+  type KeyboardOptions,
+  MUTE,
+  pointerIdOf,
+} from './keyboard-bindings';
 import { Player } from './player';
+import { DEFAULTS } from './settings';
 import { createStore } from './store';
 
 const cMajor = buildModel(keyBySignature(0), 'classical');
@@ -14,7 +22,8 @@ const PER_OCTAVE = cMajor.style.scale.length;
 
 const setup = (options: KeyboardOptions = {}): { player: Player; engine: FakeEngine; unbind: () => void } => {
   const engine = new FakeEngine();
-  const player = new Player({ engine, store: createStore(), clock: new FakeClock() });
+  const store = createStore({ ...DEFAULTS, mode: 'twoHands' });
+  const player = new Player({ engine, store, clock: new FakeClock() });
   return { player, engine, unbind: bindKeyboard(document, player, options) };
 };
 const key = (type: 'keydown' | 'keyup', code: string, init: KeyboardEventInit = {}): KeyboardEvent =>
@@ -45,10 +54,10 @@ describe('keyTone', () => {
 });
 
 describe('keyChord', () => {
-  it('maps the digits to the map and zero to silence', () => {
+  it('maps the digits to the map, and zero to the chord that is already chosen', () => {
     expect(keyChord('Digit1')).toBe(0);
     expect(keyChord('Digit7')).toBe(6);
-    expect(keyChord('Digit0')).toBe(SILENT);
+    expect(keyChord('Digit0')).toBe(MUTE);
     expect(keyChord('KeyA')).toBeNull();
   });
 });
@@ -77,7 +86,8 @@ describe('bindKeyboard', () => {
     document.dispatchEvent(key('keydown', 'KeyC'));
     expect(player.pointers.get('kKeyC')).toMatchObject({ chord: 1, tone: keyTone('KeyC', TONES, PER_OCTAVE) });
     document.dispatchEvent(key('keydown', 'Digit0'));
-    expect(player.chord).toBe(SILENT);
+    expect(player.chord).toBe(1); // still the same chord, only the accompaniment stepped back
+    expect(player.accompanying).toBe(false);
     unbind();
   });
 

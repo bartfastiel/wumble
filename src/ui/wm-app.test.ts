@@ -6,7 +6,7 @@ import { FakeRelay } from '../audience/__fixtures__/fake-relay';
 import { type App, createApp } from './app';
 import { WmApp } from './wm-app';
 import { WmAudience } from './wm-audience';
-import { WmCredits } from './wm-credits';
+import { WmWelcome } from './wm-welcome';
 import { WmDone } from './wm-done';
 import { WmField } from './wm-field';
 import { WmHeader } from './wm-header';
@@ -67,7 +67,7 @@ beforeAll(() => {
   customElements.define('wm-listener', WmListener);
   customElements.define('wm-scan', WmScan);
   customElements.define('wm-done', WmDone);
-  customElements.define('wm-credits', WmCredits);
+  customElements.define('wm-welcome', WmWelcome);
   customElements.define('wm-app', WmApp);
 });
 beforeEach(() => {
@@ -79,17 +79,29 @@ afterEach(() => {
 });
 
 describe('wm-app', () => {
-  it('shows header, field, panels, the done modal and the credits on the first start', () => {
+  it('shows header, field, panels, the done modal and the welcome page on every start', () => {
     const { root, storage } = mount();
     expect(root.querySelector('wm-header h1')?.textContent).toBe('Freies Spiel');
     expect(root.querySelector('wm-field canvas')).not.toBeNull();
     expect(root.querySelectorAll('.panel')).toHaveLength(5);
     expect(root.done.hidden).toBe(true);
-    expect(root.credits.hidden).toBe(false);
-    click('wm-credits button');
-    expect(root.credits.hidden).toBe(true);
-    // A second start with the same credits shows no splash
-    expect(mount(storage).root.credits.hidden).toBe(true);
+    expect(root.welcome.hidden).toBe(false);
+    expect(root.querySelector('wm-welcome button')?.textContent).toBe('Spielen');
+    // it says where the three areas are
+    expect(root.querySelectorAll('wm-welcome .where')).toHaveLength(3);
+    click('wm-welcome button');
+    expect(root.welcome.hidden).toBe(true);
+    // and it is there again the next time, because the sound needs a gesture anyway
+    expect(mount(storage).root.welcome.hidden).toBe(false);
+  });
+
+  it('starts the music on Play: sound fading in, band and radio running', () => {
+    const { root, app } = mount();
+    expect(app.band.running()).toBe(false); // nothing sounds before the gesture
+    click('wm-welcome button');
+    expect(app.band.running()).toBe(true);
+    expect(app.radio.on()).toBe(true);
+    expect(root.welcome.hidden).toBe(true);
   });
 
   it('opens panels from the header and closes them with the back button and Escape', () => {
@@ -122,7 +134,7 @@ describe('wm-app', () => {
 
   it('starts a song from the library, scores it and ends in the done modal', () => {
     const { root, app } = mount();
-    click('wm-credits button');
+    click('wm-welcome button');
     click('button[data-panel=library]');
     const button = [...document.querySelectorAll<HTMLButtonElement>('wm-library button')].find((candidate) =>
       candidate.textContent.startsWith('Alle meine Entchen'),
@@ -147,7 +159,7 @@ describe('wm-app', () => {
 
   it('plays the laptop keyboard unless a panel is open', () => {
     const { root, app } = mount();
-    click('wm-credits button');
+    click('wm-welcome button');
     key('keydown', 'KeyA');
     expect(app.player.pointers.has('kKeyA')).toBe(true);
     key('keyup', 'KeyA');
@@ -169,7 +181,7 @@ describe('wm-app', () => {
 
   it('opens a room from the library, shows code and count, and joins one from a link', async () => {
     const { root, app, relay } = mount();
-    click('wm-credits button');
+    click('wm-welcome button');
     click('button[data-panel=library]');
     const audience = [...document.querySelectorAll<HTMLButtonElement>('wm-library button')].find(
       (candidate) => candidate.textContent === '\u{1F465} Publikum',
@@ -209,23 +221,26 @@ describe('wm-app', () => {
 
   it('tells the audience the tone, with or without a chord under it', () => {
     const { app } = mount();
+    app.store.update({ mode: 'twoHands' }); // the field must not pick a chord behind our back
     const told: [string, string][] = [];
     app.room.tone = (name, chord) => told.push([name, chord]);
     Object.defineProperty(app.room, 'isOpen', { get: () => true });
+    app.player.chooseChord(app.player.chord); // first tap: the chord sounds
+    app.player.chooseChord(app.player.chord); // second tap: muted, the chord stays chosen
     app.player.press(1, app.player.model.tones.indexOf(67));
     app.player.release(1);
     app.player.chooseChord(app.player.model.home);
     app.player.press(2, app.player.model.tones.indexOf(64));
     app.player.release(2);
     expect(told).toEqual([
-      ['G', ''], // nothing chosen on the map: the tone stands alone
+      ['G', ''], // the accompaniment is muted: the tone stands alone
       ['E', 'C'],
     ]);
   });
 
   it('lets applause from the room float over the field', async () => {
     const { root, app, relay } = mount();
-    click('wm-credits button');
+    click('wm-welcome button');
     click('button[data-panel=library]');
     [...document.querySelectorAll<HTMLButtonElement>('wm-library button')]
       .find((candidate) => candidate.textContent === '\u{1F465} Publikum')
@@ -240,13 +255,17 @@ describe('wm-app', () => {
 
   it('toggles the band from the header and shows the loop button', () => {
     const { root, app } = mount();
-    click('wm-header button.band');
+    click('wm-welcome button'); // Play: band and radio come up by themselves
     expect(app.band.running()).toBe(true);
     expect(app.player.bandRunning).toBe(true);
     expect(root.querySelector<HTMLButtonElement>('wm-header button.loop')?.hidden).toBe(false);
-    expect(location.hash).toBe('#band=1');
+    expect(location.hash).toBe(''); // the default needs no link
     click('wm-header button.band');
     expect(app.band.running()).toBe(false);
+    expect(location.hash).toBe('#band=0'); // switching it off is worth carrying
     expect(root.querySelector<HTMLButtonElement>('wm-header button.loop')?.hidden).toBe(true);
+    click('wm-header button.band');
+    expect(app.band.running()).toBe(true);
+    expect(location.hash).toBe('');
   });
 });

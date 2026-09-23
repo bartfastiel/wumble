@@ -183,10 +183,11 @@ export class Harmony implements HarmonyState {
     this.pending = null;
   }
 
-  // Chosen on the map: this chord is the current one now
-  lead(chord: number, at: number): void {
+  // Chosen on the map: this chord is the current one now. It is already sounding – whoever chose it struck it –
+  // so nothing is played here, only remembered.
+  lead(chord: number): void {
     this.lastNoteAt = this.clock.now();
-    this.follow(chord, at);
+    this.current = chord;
   }
 
   // A chord becomes the current one – there is only ever one sounding, so nothing needs counting.

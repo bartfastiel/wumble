@@ -7,6 +7,7 @@ import {
   clampTempo,
   COMBI_IDS,
   LABEL_SETTINGS,
+  LOOKS,
   type LoopBars,
   PLAY_MODES,
   SCHEMA_IDS,
@@ -115,6 +116,15 @@ export class WmSettings extends WmPanel {
         ),
       ),
       ...this.group('german', checkbox(t('settings.german'), settings.german, update('german'))),
+      ...this.group(
+        'look',
+        radioGroup(
+          t('settings.look'),
+          LOOKS.map((id) => ({ value: id, label: t(`play.look.${id}`) })),
+          settings.look,
+          update('look'),
+        ),
+      ),
       ...this.group(
         'signature',
         radioGroup(

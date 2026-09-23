@@ -4,7 +4,7 @@ import { setLocale } from '../i18n';
 import type { Finish } from '../learn/session';
 import { SONGS } from '../learn/songs';
 import { keyBySignature } from '../theory/keys';
-import { creditsSeen, creditsText, rememberCredits, textHash } from './credits';
+import { CODE_LICENSE, creditLine, SOUND_CREDITS } from './credits';
 import { doneText } from './wm-done';
 import { points, scoreText, titleText } from './title';
 
@@ -65,37 +65,14 @@ describe('doneText', () => {
 });
 
 describe('credits', () => {
-  it('hashes the shown text and remembers it', () => {
-    const items = new Map<string, string>();
-    const storage = {
-      getItem: (key: string) => items.get(key) ?? null,
-      setItem: (key: string, value: string) => {
-        items.set(key, value);
-      },
-    };
-    const text = creditsText();
-    expect(text).toContain('Salamander Grand Piano V3');
-    expect(text).toContain('CC0');
-    expect(creditsSeen(storage, text)).toBe(false);
-    rememberCredits(storage, text);
-    expect(creditsSeen(storage, text)).toBe(true);
-    expect(creditsSeen(storage, `${text} changed`)).toBe(false);
-    expect(textHash('a')).not.toBe(textHash('b'));
-    expect(textHash('wumble')).toMatch(/^[0-9a-f]+$/);
-  });
-
-  it('survives a blocked storage', () => {
-    const blocked = {
-      getItem: () => {
-        throw new Error('blocked');
-      },
-      setItem: () => {
-        throw new Error('blocked');
-      },
-    };
-    expect(creditsSeen(blocked, 'x')).toBe(false);
-    expect(() => {
-      rememberCredits(blocked, 'x');
-    }).not.toThrow();
+  it('names every recording with its author and licence', () => {
+    for (const credit of SOUND_CREDITS) {
+      const line = creditLine(credit);
+      expect(line).toContain(credit.name);
+      expect(line).toContain(credit.author);
+      expect(line).toContain(credit.license);
+    }
+    expect(SOUND_CREDITS.map((credit) => credit.name)).toContain('Salamander Grand Piano V3');
+    expect(CODE_LICENSE.name).toBe('MIT');
   });
 });

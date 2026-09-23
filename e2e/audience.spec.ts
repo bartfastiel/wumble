@@ -74,12 +74,19 @@ test.describe('audience', () => {
       player.release(2);
     });
     await expect(listener.locator('wm-listener .tone')).toHaveText('G');
-    await expect(listener.locator('wm-listener .chord')).toBeEmpty(); // no chord chosen: the tone stands alone
+    // with the accompaniment muted the tone stands alone; the chord is back as soon as it sounds again
+    await page.evaluate(() => {
+      const { player } = window.__wumble.app;
+      player.chooseChord(player.chord); // mute
+      player.press(3, player.model.tones.indexOf(64));
+      player.release(3);
+    });
+    await expect(listener.locator('wm-listener .chord')).toBeEmpty();
     await page.evaluate(() => {
       const { player } = window.__wumble.app;
       player.chooseChord(player.model.home);
-      player.press(3, player.model.tones.indexOf(64));
-      player.release(3);
+      player.press(4, player.model.tones.indexOf(64));
+      player.release(4);
     });
     await expect(listener.locator('wm-listener .chord')).toHaveText('C');
   });

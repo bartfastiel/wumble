@@ -95,6 +95,9 @@ export const createRecordingEngine = (clock: Clock = { now: () => 0 }): Recordin
     lastCallAt: () => lastCallAt,
     ensured: () => ensured,
     released: () => released,
+    fadeIn() {
+      // nothing to fade in a recording
+    },
     ensure() {
       ensured++;
       return clock.now();

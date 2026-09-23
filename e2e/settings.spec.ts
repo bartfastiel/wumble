@@ -23,12 +23,19 @@ test.describe('settings', () => {
     await openApp(page);
     await page.locator('wm-header button[data-panel=settings]').click();
     await page.locator('wm-settings input[name=Stil][value=blues]').check();
-    const settings = await page.evaluate(() => window.__wumble.app.store.get());
-    expect(settings).toMatchObject({ style: 'blues', combi: 'organ', tempo: 96 });
+    // The band is playing, so the tempo stays where it is – only the sound follows the style
+    const running = await page.evaluate(() => window.__wumble.app.store.get());
+    expect(running).toMatchObject({ style: 'blues', combi: 'organ', tempo: 100 });
     await expect(page.locator('wm-settings input[value=organ]')).toBeChecked();
+    // with the band stopped, the style brings its own tempo along
+    await page.evaluate(() => {
+      window.__wumble.app.stopBand();
+    });
+    await page.locator('wm-settings input[name=Stil][value=classical]').check();
+    await page.locator('wm-settings input[name=Stil][value=blues]').check();
     await expect(page.locator('wm-settings output')).toHaveText('96 bpm');
     await context.grantPermissions(['clipboard-read', 'clipboard-write']).catch(() => undefined);
     await page.locator('wm-settings button.share').click();
-    await expect(page.locator('wm-settings button.share')).toHaveText('Kopiert: #style=blues&sound=organ');
+    await expect(page.locator('wm-settings button.share')).toHaveText('Kopiert: #style=blues&sound=organ&band=0');
   });
 });

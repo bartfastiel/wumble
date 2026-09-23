@@ -48,6 +48,31 @@ test.describe('free play', () => {
     expect(await page.evaluate(() => window.__wumble.app.player.pointers.size)).toBe(0);
   });
 
+  test('the strip below the field pulls the octaves past and settles on one', async ({ page }) => {
+    await openApp(page);
+    const box = await page.locator('wm-field canvas').boundingBox();
+    if (box === null) throw new Error('canvas not visible');
+    const focusOf = (): Promise<{ focus: number; settling: number }> =>
+      page.evaluate(() => {
+        const field = window.__wumble.root.field.geometry;
+        return { focus: field.focus, settling: field.settling };
+      });
+    const before = await focusOf();
+    const y = box.y + box.height - 26;
+    await page.mouse.move(box.x + box.width - 200, y);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width - 340, y, { steps: 12 });
+    // the field follows the finger at once, without waiting for it to lift
+    const dragged = await focusOf();
+    expect(dragged.settling).toBeGreaterThan(before.settling);
+    await page.mouse.up();
+    // and settles on an octave
+    const perOctave = await page.evaluate(() => window.__wumble.app.store.model().style.scale.length);
+    const settled = await focusOf();
+    expect(settled.settling % perOctave).toBe(0);
+    await expect.poll(async () => (await focusOf()).focus).toBe(settled.settling);
+  });
+
   test('the laptop keyboard plays a tone and the digits choose a chord', async ({ page }) => {
     await openApp(page);
     await page.keyboard.down('KeyA');
@@ -60,7 +85,9 @@ test.describe('free play', () => {
     expect(await page.evaluate(() => window.__wumble.app.player.pointers.size)).toBe(0);
     await page.keyboard.press('Digit2');
     expect(await page.evaluate(() => window.__wumble.app.player.chord)).toBe(1);
+    // 0 is not another chord but the one already chosen: it steps the accompaniment back
     await page.keyboard.press('Digit0');
-    expect(await page.evaluate(() => window.__wumble.app.player.chord)).toBe(-1); // silence
+    expect(await page.evaluate(() => window.__wumble.app.player.chord)).toBe(1);
+    expect(await page.evaluate(() => window.__wumble.app.player.accompanying)).toBe(false);
   });
 });

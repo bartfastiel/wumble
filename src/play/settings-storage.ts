@@ -12,6 +12,8 @@ import {
   isTempo,
   LABEL_SETTINGS,
   type LabelSetting,
+  LOOKS,
+  type LookId,
   LOOP_BARS,
   PLAY_MODES,
   type PlayMode,
@@ -45,6 +47,7 @@ export const settingsFrom = (stored: unknown): Settings => {
   const mode: PlayMode = oneOf(PLAY_MODES, stored.mode) ?? DEFAULTS.mode;
   const combi: CombiId = oneOf(COMBI_IDS, stored.combi) ?? DEFAULTS.combi;
   const labels: LabelSetting = oneOf(LABEL_SETTINGS, stored.labels) ?? DEFAULTS.labels;
+  const look: LookId = oneOf(LOOKS, stored.look) ?? DEFAULTS.look;
   const difficulty: Difficulty = oneOf(DIFFICULTIES, stored.difficulty) ?? DEFAULTS.difficulty;
   const schema: SchemaId = oneOf(SCHEMA_IDS, stored.schema) ?? DEFAULTS.schema;
   return {
@@ -54,6 +57,7 @@ export const settingsFrom = (stored: unknown): Settings => {
     mode,
     combi,
     labels,
+    look,
     german: Boolean(stored.german),
     difficulty,
     tempo: isTempo(stored.tempo) ? Math.round(stored.tempo) : STYLES[style].tempo,

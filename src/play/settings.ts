@@ -9,6 +9,10 @@ import type { TuningId } from '../theory/tuning';
 export const PLAY_MODES = ['twoHands', 'autoHarmony'] as const;
 export type PlayMode = (typeof PLAY_MODES)[number];
 
+// How the field is drawn: grown (wavy edges, tilted, organic) or built (straight, even, quiet)
+export const LOOKS = ['organic', 'precise'] as const;
+export type LookId = (typeof LOOKS)[number];
+
 // "Show me what you do": off, or one of the theory's label modes
 export const LABEL_SETTINGS = ['off', 'names', 'notes', 'solfege', 'degrees', 'functions'] as const;
 export type LabelSetting = 'off' | LabelMode;
@@ -49,6 +53,7 @@ export interface Settings {
   readonly mode: PlayMode;
   readonly combi: CombiId;
   readonly labels: LabelSetting;
+  readonly look: LookId;
   readonly german: boolean; // H instead of B
   readonly difficulty: Difficulty;
   readonly tempo: number; // bpm of the band
@@ -61,9 +66,10 @@ export const DEFAULTS: Settings = {
   signature: 0,
   style: 'classical',
   tuning: 'equal',
-  mode: 'twoHands',
+  mode: 'autoHarmony',
   combi: 'epiano',
   labels: 'off',
+  look: 'organic',
   german: false,
   difficulty: 'easy',
   tempo: STYLES.classical.tempo,

@@ -11,6 +11,7 @@ import {
   DIFFICULTIES,
   isTempo,
   LABEL_SETTINGS,
+  LOOKS,
   PLAY_MODES,
   SCHEMA_IDS,
   type Settings,
@@ -23,7 +24,7 @@ const idOf = <T extends string>(ids: readonly T[], value: string): T | undefined
 
 export type LinkSettings = Pick<
   Settings,
-  'signature' | 'style' | 'tuning' | 'mode' | 'combi' | 'labels' | 'difficulty' | 'tempo' | 'schema'
+  'signature' | 'style' | 'tuning' | 'mode' | 'combi' | 'labels' | 'look' | 'difficulty' | 'tempo' | 'schema'
 >;
 export interface LinkExtras {
   readonly song?: string; // the song's title (written as a slug)
@@ -108,6 +109,7 @@ const RULES: readonly Rule[] = [
   idRule('style', 'style', STYLE_IDS),
   idRule('tuning', 'tuning', TUNING_IDS),
   idRule('labels', 'labels', LABEL_SETTINGS),
+  idRule('look', 'look', LOOKS),
   idRule('mode', 'mode', PLAY_MODES),
   idRule('sound', 'combi', COMBI_IDS),
   idRule('level', 'difficulty', DIFFICULTIES),
@@ -191,13 +193,14 @@ export const settingsFromLink = (
 ): Settings => {
   const style = song?.style ?? link.style;
   const signature = song?.signature ?? link.signature;
-  const { tuning, labels, mode, combi, difficulty, schema, tempo } = link;
+  const { tuning, labels, look, mode, combi, difficulty, schema, tempo } = link;
   return {
     ...settings,
     ...(style === undefined ? {} : styleSettings(style, bandRunning)),
     ...(signature === undefined ? {} : { signature }),
     ...(tuning === undefined ? {} : { tuning }),
     ...(labels === undefined ? {} : { labels }),
+    ...(look === undefined ? {} : { look }),
     ...(mode === undefined ? {} : { mode }),
     ...(combi === undefined ? {} : { combi }),
     ...(difficulty === undefined ? {} : { difficulty }),
@@ -217,13 +220,15 @@ export const formatHash = (settings: Settings, extras: LinkExtras = {}): string 
   if (settings.signature !== DEFAULTS.signature) part('key', keyNameOf(settings.signature));
   if (settings.tuning !== DEFAULTS.tuning) part('tuning', settings.tuning);
   if (settings.labels !== DEFAULTS.labels) part('labels', settings.labels);
+  if (settings.look !== DEFAULTS.look) part('look', settings.look);
   if (settings.mode !== DEFAULTS.mode) part('mode', settings.mode);
   if (settings.combi !== DEFAULTS.combi) part('sound', settings.combi);
   if (settings.difficulty !== DEFAULTS.difficulty) part('level', settings.difficulty);
   if (extras.song !== undefined) part('song', slug(extras.song));
-  if (extras.band === true) part('band', 1);
+  // Band and radio play by default, so only switching them off is worth carrying in a link
+  if (extras.band === false) part('band', 0);
   if (settings.tempo !== STYLES[settings.style].tempo) part('tempo', settings.tempo);
   if (settings.schema !== DEFAULTS.schema) part('schema', settings.schema);
-  if (extras.radio === true) part('radio', 1);
+  if (extras.radio === false) part('radio', 0);
   return parts.length === 0 ? '' : `#${parts.join('&')}`;
 };

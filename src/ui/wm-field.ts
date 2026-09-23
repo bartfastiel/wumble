@@ -4,7 +4,6 @@ import { random } from '../audio/random';
 import { Field } from '../field/geometry';
 import { breatheMap, layoutMap, type MapSpot, spotAt } from '../map/geometry';
 import { Memory, pullOf } from '../map/pull';
-import { SILENT } from '../play/chord-voice';
 import type { PointerId } from '../play/pointer';
 import { SHAPE_SUFFIX } from '../theory/chord-maps';
 import { fitnessOf } from '../theory/fitness';
@@ -18,9 +17,11 @@ const DWELL_MS = 95; // resting chooses a chord, sweeping passes over it
 const MAP_SHARE = 0.26;
 const HEAD = 52;
 const APPLAUSE_SIZE = 2.2;
+const SLIDER_HEIGHT = 46; // the strip below the field: grab it anywhere and pull the octaves past
+const OPEN_ON = 65; // the field opens on the octave around F4, where most playing happens
 
 interface Grip {
-  readonly area: 'map' | 'field';
+  readonly area: 'map' | 'field' | 'slider';
   stripe: number | null;
   startY: number;
   y: number;
@@ -29,6 +30,8 @@ interface Grip {
   trail: [number, number, number][];
   pending: MapSpot | null;
   timer: number;
+  startX: number; // where the slide began
+  startFocus: number;
 }
 
 export class WmField extends HTMLElement {
@@ -47,6 +50,11 @@ export class WmField extends HTMLElement {
   // What floats over the field right now – the end-to-end tests read it
   get floating(): readonly Floater[] {
     return this.floaters;
+  }
+
+  // Where the field stands and where it is heading – the end-to-end tests read it
+  get geometry(): Field {
+    return this.field;
   }
   private readonly cleanups: (() => void)[] = [];
 
@@ -138,6 +146,12 @@ export class WmField extends HTMLElement {
     return Math.max(230, Math.min(340, this.canvas.getBoundingClientRect().width * MAP_SHARE));
   }
 
+  // The strip along the bottom of the field, where the octaves are pulled past
+  private get slider(): { left: number; right: number; top: number; bottom: number } {
+    const { width, height } = this.canvas.getBoundingClientRect();
+    return { left: this.split + 10, right: width - 16, top: height - SLIDER_HEIGHT, bottom: height - 8 };
+  }
+
   private resize(): void {
     const dpr = window.devicePixelRatio || 1;
     const width = this.clientWidth;
@@ -155,12 +169,15 @@ export class WmField extends HTMLElement {
     if (width === 0 || height === 0) return;
     const model = app.store.model();
     const split = this.split;
+    const fresh = this.field.stripes.length === 0;
+    this.field.look = app.store.get().look;
     this.field.layout(
-      { left: split + 10, right: width - 16, top: HEAD + 4, bottom: height - 10 },
+      { left: split + 10, right: width - 16, top: HEAD + 4, bottom: height - SLIDER_HEIGHT - 8 },
       model.tones,
       model.style.scale.length,
     );
-    this.spots = layoutMap(model.map, { width: split, height, top: HEAD });
+    if (fresh || this.field.settling > model.tones.length - 1) this.field.settling = this.field.octaveOf(OPEN_ON);
+    this.spots = layoutMap(model.map, { width: split, height, top: HEAD }, this.field.look);
     this.requestDraw();
   }
 
@@ -171,7 +188,10 @@ export class WmField extends HTMLElement {
       if (app === null) return;
       event.preventDefault();
       const { x, y } = this.local(event);
-      const area = x < this.split ? 'map' : 'field';
+      const slider = this.slider;
+      let area: Grip['area'] = 'field';
+      if (x < this.split) area = 'map';
+      else if (y >= slider.top) area = 'slider';
       const grip: Grip = {
         area,
         stripe: null,
@@ -182,11 +202,14 @@ export class WmField extends HTMLElement {
         trail: [],
         pending: null,
         timer: 0,
+        startX: x,
+        startFocus: this.field.settling,
       };
       this.grips.set(event.pointerId, grip);
       target.setPointerCapture(event.pointerId);
       if (area === 'map') this.chooseAt(grip, x, y, true);
-      else this.playAt(grip, x, y);
+      else if (area === 'field') this.playAt(grip, x, y);
+      else this.requestDraw();
     };
     const move = (event: PointerEvent): void => {
       const grip = this.grips.get(event.pointerId);
@@ -194,7 +217,8 @@ export class WmField extends HTMLElement {
       const { x, y } = this.local(event);
       grip.y = y;
       if (grip.area === 'map') this.chooseAt(grip, x, y, false);
-      else this.playAt(grip, x, y);
+      else if (grip.area === 'field') this.playAt(grip, x, y);
+      else this.slideTo(grip, x);
     };
     const up = (event: PointerEvent): void => {
       const grip = this.grips.get(event.pointerId);
@@ -202,6 +226,7 @@ export class WmField extends HTMLElement {
       window.clearTimeout(grip.timer);
       if (grip.pending !== null) this.choose(grip.pending);
       if (grip.area === 'field') this.app?.player.release(event.pointerId);
+      if (grip.area === 'slider') this.field.release();
       this.grips.delete(event.pointerId);
       this.requestDraw();
     };
@@ -220,6 +245,19 @@ export class WmField extends HTMLElement {
   private local(event: PointerEvent): { x: number; y: number } {
     const box = this.canvas.getBoundingClientRect();
     return { x: event.clientX - box.left, y: event.clientY - box.top };
+  }
+
+  // The strip is a map of the whole range: a finger drags the field past, tone for tone
+  private slideTo(grip: Grip, x: number): void {
+    const { left, right } = this.slider;
+    const perPixel = this.field.stripes.length / Math.max(1, right - left);
+    this.field.settling = grip.startFocus - (x - grip.startX) * perPixel;
+    this.requestDraw();
+  }
+
+  private sliding(): boolean {
+    for (const grip of this.grips.values()) if (grip.area === 'slider') return true;
+    return false;
   }
 
   private chooseAt(grip: Grip, x: number, y: number, immediate: boolean): void {
@@ -245,7 +283,7 @@ export class WmField extends HTMLElement {
   private choose(spot: MapSpot): void {
     const app = this.app;
     if (app === null) return;
-    const index = spot.chord === null ? SILENT : app.store.model().map.indexOf(spot.chord);
+    const index = app.store.model().map.indexOf(spot.chord);
     app.player.chooseChord(index);
     this.memory.remember(spot.chord);
     this.requestDraw();
@@ -254,8 +292,7 @@ export class WmField extends HTMLElement {
   private chosenSpot(): MapSpot | null {
     const app = this.app;
     if (app === null) return null;
-    const index = app.player.chord;
-    const chord = index === SILENT ? null : (app.store.model().map[index] ?? null);
+    const chord = app.store.model().map[app.player.chord] ?? null;
     return this.spots.find((spot) => spot.chord === chord) ?? null;
   }
 
@@ -301,9 +338,10 @@ export class WmField extends HTMLElement {
       const seconds = Math.min(0.05, (now - this.lastFrame) / 1000);
       this.lastFrame = now;
       app.learn.tick(now);
-      this.breathe(seconds);
+      const breathing = this.breathe(seconds);
       this.floaters = this.floaters.filter((floater) => now - floater.t0 < 900);
       const busy =
+        breathing ||
         this.grips.size > 0 ||
         app.player.lit.size > 0 ||
         this.floaters.length > 0 ||
@@ -320,26 +358,23 @@ export class WmField extends HTMLElement {
     });
   }
 
-  private breathe(seconds: number): void {
+  private breathe(seconds: number): boolean {
     const app = this.app;
-    if (app === null) return;
+    if (app === null) return false;
     const model = app.store.model();
-    const chord = app.player.chord === SILENT ? model.map[model.home] : model.map[app.player.chord];
-    if (chord !== undefined)
-      this.field.breathe(
-        model.tones.map((midi) => fitnessOf(pcOf(midi), chord, model.key.tonic, model.style)),
-        seconds,
-      );
+    const chord = model.map[app.player.chord];
+    const fitness = model.tones.map((midi) =>
+      chord === undefined ? (2 as const) : fitnessOf(pcOf(midi), chord, model.key.tonic, model.style),
+    );
+    const moved = this.field.breathe(fitness, seconds);
     const chosen = this.chosenSpot();
-    breatheMap(
+    const mapMoved = breatheMap(
       this.spots,
       chosen,
-      (spot) =>
-        spot.chord === null
-          ? 0.55
-          : pullOf(spot.chord, { from: chord ?? null, tonic: model.key.tonic, memory: this.memory }),
+      (spot) => pullOf(spot.chord, { from: chord ?? null, tonic: model.key.tonic, memory: this.memory }),
       seconds,
     );
+    return moved || mapMoved;
   }
 
   private draw(now: number): void {
@@ -349,7 +384,7 @@ export class WmField extends HTMLElement {
     const { width, height } = this.canvas.getBoundingClientRect();
     const model = app.store.model();
     const settings = app.store.get();
-    const chord = app.player.chord === SILENT ? model.map[model.home] : model.map[app.player.chord];
+    const chord = model.map[app.player.chord];
     const labels =
       settings.labels === 'off' ? null : fieldLabels(model, { mode: settings.labels, german: settings.german }).tones;
     const held: HeldStripe[] = [];
@@ -361,16 +396,12 @@ export class WmField extends HTMLElement {
     const names = new Map(
       this.spots.map((spot) => [
         spot,
-        spot.chord === null
-          ? { role: t('theory.role.silence'), chord: '' }
-          : {
-              role: t(`theory.role.${spot.chord.role}`),
-              chord: (model.chords[model.map.indexOf(spot.chord)]?.name ?? '') + SHAPE_SUFFIX[spot.chord.shape],
-            },
+        {
+          role: t(`theory.role.${spot.chord.role}`),
+          chord: (model.chords[model.map.indexOf(spot.chord)]?.name ?? '') + SHAPE_SUFFIX[spot.chord.shape],
+        },
       ]),
     );
-    const playing = app.band.bandChord();
-    const bandChord = playing === null ? null : (model.map[playing] ?? null);
     const learn: LearnScene | null =
       app.learn.song === null
         ? null
@@ -385,9 +416,19 @@ export class WmField extends HTMLElement {
               unit,
             };
           })();
+    const slider = this.slider;
     drawField(
       cx,
       {
+        look: settings.look,
+        slider: {
+          ...slider,
+          focus: this.field.focus,
+          settling: this.field.settling,
+          count: model.tones.length,
+          perOctave: model.style.scale.length,
+          held: this.sliding(),
+        },
         field: this.field,
         fitness: model.tones.map((midi) =>
           chord === undefined ? 2 : fitnessOf(pcOf(midi), chord, model.key.tonic, model.style),
@@ -397,7 +438,7 @@ export class WmField extends HTMLElement {
         held,
         spots: this.spots,
         chosen: this.chosenSpot(),
-        band: bandChord === null ? null : (this.spots.find((spot) => spot.chord === bandChord) ?? null),
+        accompanying: app.player.accompanying,
         names,
         lit: (index) => app.player.isLit(model.tones[index] ?? 0, now),
         ghosts: app.ghosts().map((ghost) => ghost.tone),

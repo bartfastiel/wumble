@@ -3,7 +3,6 @@ import { keyBySignature } from '../theory/keys';
 import { buildModel, chordAt, toneOf } from '../theory/model';
 import { mtof } from '../theory/pitch';
 import { chordFrequencies, melodyFrequency } from '../theory/tuning';
-import { SILENT } from './chord-voice';
 import { FakeClock, FakeEngine } from './__fixtures__/fakes';
 import { LIT_MS, Player, type PlayerListener } from './player';
 import { DEFAULTS, type Settings } from './settings';
@@ -14,7 +13,8 @@ const setup = (
 ): { player: Player; engine: FakeEngine; clock: FakeClock; store: Store } => {
   const engine = new FakeEngine();
   const clock = new FakeClock();
-  const store = createStore({ ...DEFAULTS, ...patch });
+  // Two hands unless a test asks for the field to think along
+  const store = createStore({ ...DEFAULTS, mode: 'twoHands', ...patch });
   return { player: new Player({ engine, store, clock }), engine, clock, store };
 };
 const cMajor = buildModel(keyBySignature(0), 'classical');
@@ -22,6 +22,7 @@ const c4 = cMajor.tones.indexOf(60);
 const e4 = cMajor.tones.indexOf(64);
 const g4 = cMajor.tones.indexOf(67);
 const tonic = cMajor.home;
+const other = (tonic + 1) % cMajor.chords.length;
 
 describe('Player: a tone is a tone', () => {
   it('sounds the melody tone alone and releases it with the pointer', () => {
@@ -32,7 +33,7 @@ describe('Player: a tone is a tone', () => {
     expect(engine.voices.map((voice) => voice.kind)).toEqual(['melody']);
     expect(engine.voices[0]?.freqs).toEqual([mtof(60)]);
     expect(engine.voices[0]?.at).toBe(1.5);
-    expect(player.pointers.get(1)).toEqual({ chord: SILENT, tone: c4, voices: [expect.anything()] });
+    expect(player.pointers.get(1)).toEqual({ chord: tonic, tone: c4, voices: [expect.anything()] });
     engine.time = 2;
     player.release(1);
     expect(engine.active()).toHaveLength(0);
@@ -81,16 +82,47 @@ describe('Player: the chord comes from the map', () => {
     expect(engine.active('chord')).toHaveLength(1); // nothing released it
   });
 
-  it('swaps one chord for the next and falls silent on the field of silence', () => {
+  it('swaps one chord for the next', () => {
     const { player, engine } = setup();
     player.chooseChord(tonic);
     engine.time = 1;
-    player.chooseChord(0);
+    player.chooseChord(other);
     expect(engine.ofKind('chord')).toHaveLength(2);
     expect(engine.active('chord')).toHaveLength(1);
-    player.chooseChord(SILENT);
-    expect(player.chord).toBe(SILENT);
+    expect(player.chord).toBe(other);
+  });
+
+  it('mutes the accompaniment when the chord that already sounds is chosen again', () => {
+    const { player, engine } = setup();
+    player.chooseChord(tonic);
+    expect(player.accompanying).toBe(true);
+    player.chooseChord(tonic);
+    expect(player.accompanying).toBe(false);
     expect(engine.active()).toHaveLength(0);
+    expect(player.chord).toBe(tonic); // still the chord the field measures against
+    player.chooseChord(tonic);
+    expect(player.accompanying).toBe(true);
+    expect(engine.active('chord')).toHaveLength(1);
+  });
+
+  it('keeps a muted accompaniment muted when the field or the band moves on', () => {
+    const { player, engine } = setup({ mode: 'autoHarmony' });
+    player.chooseChord(tonic);
+    player.chooseChord(tonic); // muted by hand
+    const before = engine.ofKind('chord').length;
+    player.press(1, e4); // the field picks a chord for the tone
+    player.chooseChord(other, false); // and so does the band
+    expect(player.accompanying).toBe(false);
+    expect(engine.ofKind('chord')).toHaveLength(before); // still nothing struck
+  });
+
+  it('brings the accompaniment back when another chord is chosen', () => {
+    const { player, engine } = setup();
+    player.chooseChord(tonic);
+    player.chooseChord(tonic); // muted
+    player.chooseChord(other);
+    expect(player.accompanying).toBe(true);
+    expect(engine.active('chord')).toHaveLength(1);
   });
 
   it('tunes the melody to the chord that sounds with it', () => {
@@ -111,13 +143,18 @@ describe('Player: the chord comes from the map', () => {
     expect(engine.ofKind('chord')).toHaveLength(1);
   });
 
-  it('forgets the chord when key or style change', () => {
-    const { player, store, engine } = setup();
-    player.chooseChord(tonic);
+  it('goes home when key or style change, because the map is a new one', () => {
+    const { player, store } = setup();
+    player.chooseChord(other);
     store.update({ style: 'blues' });
-    expect(player.chord).toBe(SILENT);
-    expect(engine.active()).toHaveLength(0);
+    expect(player.chord).toBe(store.model().home);
     expect(player.harmony.current).toBeNull();
+  });
+
+  it('starts on the tonic, so the field always has a chord to measure against', () => {
+    const { player } = setup();
+    expect(player.chord).toBe(cMajor.home);
+    expect(player.accompanying).toBe(true);
   });
 });
 
@@ -149,11 +186,13 @@ describe('Player: auto-harmony', () => {
     expect(engine.ofKind('chord')).toHaveLength(1);
   });
 
-  it('does not choose anything in two-hands mode', () => {
-    const { player, engine } = setup();
+  it('leaves the chord alone in two-hands mode', () => {
+    const { player, engine } = setup({ mode: 'twoHands' });
+    player.chooseChord(other);
+    const before = player.chord;
     player.press(1, c4);
-    expect(player.chord).toBe(SILENT);
-    expect(engine.ofKind('chord')).toHaveLength(0);
+    expect(player.chord).toBe(before);
+    expect(engine.ofKind('chord')).toHaveLength(1);
   });
 });
 
@@ -166,7 +205,7 @@ describe('Player: listeners and lit tones', () => {
     const off = player.subscribe(listener);
     engine.time = 3;
     player.press(1, g4);
-    expect(pressed).toHaveBeenCalledWith(expect.objectContaining({ id: 1, tone: g4, chord: SILENT, at: 3 }));
+    expect(pressed).toHaveBeenCalledWith(expect.objectContaining({ id: 1, tone: g4, chord: tonic, at: 3 }));
     player.release(1);
     expect(released).toHaveBeenCalledWith(expect.objectContaining({ id: 1, at: 3 }));
     off();

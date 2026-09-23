@@ -18,6 +18,11 @@ export class FakeEngine implements AudioEngine {
   readonly drums: { kind: DrumKind; at: number; velocity: number | undefined }[] = [];
   combi: CombiId | null = null;
 
+  fadedIn = 0; // seconds of the last fade-in
+
+  fadeIn(seconds: number): void {
+    this.fadedIn = seconds;
+  }
   ensure(): number {
     this.ensured += 1;
     return this.time;

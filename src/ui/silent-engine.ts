@@ -13,6 +13,7 @@ export const silentEngine = (): AudioEngine => {
   const now = (): number => performance.now() / 1000;
   return {
     ensure: now,
+    fadeIn: () => undefined,
     now,
     melody: () => silentVoice,
     chord: () => silentVoice,
