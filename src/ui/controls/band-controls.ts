@@ -3,7 +3,7 @@
 import { SCHEMATA, type SchemaId } from '../../band/schemata';
 import { t } from '../../i18n';
 import { LOOP_BARS, type LoopBars, SCHEMA_IDS } from '../../play/settings';
-import { choice, type Choice, type ChoiceItem } from '../widgets/choice';
+import { choice, type Choice, type ChoiceItem, type Describe } from '../widgets/choice';
 import { icon } from '../widgets/icons';
 import { pattern } from '../widgets/pattern';
 
@@ -18,20 +18,30 @@ const schemaArt = (id: SchemaId): Node => {
   return pattern({ values: bars.map(height), width: 62, height: 20 });
 };
 
-export const schemaTiles = (current: SchemaId, onPick: (id: SchemaId) => void): Choice<SchemaId> => {
+export const schemaTiles = (
+  current: SchemaId,
+  onPick: (id: SchemaId) => void,
+  describe?: Describe<SchemaId>,
+): Choice<SchemaId> => {
   const items: ChoiceItem<SchemaId>[] = SCHEMA_IDS.map((id) => ({
     value: id,
     label: t(`band.schema.${id}.name`),
+    hint: t(`band.schema.${id}.hint`),
     art: () => schemaArt(id),
   }));
-  return choice(items, current, onPick, 3);
+  return choice(items, current, onPick, 3, describe);
 };
 
-export const loopTiles = (current: LoopBars, onPick: (bars: LoopBars) => void): Choice<LoopBars> => {
+export const loopTiles = (
+  current: LoopBars,
+  onPick: (bars: LoopBars) => void,
+  describe?: Describe<LoopBars>,
+): Choice<LoopBars> => {
   const items: ChoiceItem<LoopBars>[] = LOOP_BARS.map((bars) => ({
     value: bars,
     label: t('band.loop.bars.other', { n: bars }),
+    hint: t('band.loop.title'),
     art: () => pattern({ values: Array.from({ length: bars }, () => 1), width: 44, height: 18, gap: 3 }),
   }));
-  return choice(items, current, onPick, 3);
+  return choice(items, current, onPick, 3, describe);
 };

@@ -52,7 +52,7 @@ test.describe('settings', () => {
     await expect(page.locator('.dial .read')).toHaveText('100');
     await page.keyboard.press('Escape');
     // The link is the URL: sharing writes it there and puts it on the clipboard
-    await page.locator('wm-header button[aria-label="Link teilen"]').click();
+    await page.locator('wm-header button[data-action=share]').click();
     expect(await page.evaluate(() => location.hash)).toBe('#band=0'); // the blues is the default now
   });
 });

@@ -27,6 +27,16 @@ shows the choice as a picture rather than as a list of words:
 
 The words are in the tooltips and in the accessible names, never on the screen. Whatever holds right now is lit.
 
+The buttons stand where what they change is: the bar has no strip of its own any more, but two plates. The left one
+sits over the chord map and carries what decides which chords there are and who plays them – key, style, the band,
+its accompaniment, the loop. The right one sits over the field and carries what decides how the tones sound and how
+the stripes read – the sound with its tunings, the view with the looks and labels. Songs, the link and help stand
+outside both, because they belong to neither hand.
+
+Every panel says what it is for, and while a finger is over a tile it says what that tile does. That line is taken
+out of the layout on purpose: a description that grows as the finger moves would push the panel wider and the tiles
+out from under the finger.
+
 The code follows the same split: `widgets/` holds pieces that know nothing about music – a button, a popover, tiles,
 a dial, a wheel, a switch, a pattern, an envelope – and `controls/` turns theory into what those pieces need. The
 header wires them together and owns no drawing of its own.

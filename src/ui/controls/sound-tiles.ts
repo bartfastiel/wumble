@@ -5,7 +5,7 @@ import { type Sound, type SoundId, SOUNDS } from '../../audio/sounds';
 import { t } from '../../i18n';
 import { COMBI_IDS } from '../../play/settings';
 import type { CombiId } from '../../audio/engine';
-import { choice, type Choice, type ChoiceItem } from '../widgets/choice';
+import { choice, type Choice, type ChoiceItem, type Describe } from '../widgets/choice';
 import { envelope } from '../widgets/envelope';
 import { icon, type IconName } from '../widgets/icons';
 
@@ -44,11 +44,16 @@ const soundArt = (id: CombiId): Node => {
   return holder;
 };
 
-export const soundTiles = (current: CombiId, onPick: (id: CombiId) => void): Choice<CombiId> => {
+export const soundTiles = (
+  current: CombiId,
+  onPick: (id: CombiId) => void,
+  describe?: Describe<CombiId>,
+): Choice<CombiId> => {
   const items: ChoiceItem<CombiId>[] = COMBI_IDS.map((id) => ({
     value: id,
     label: t(COMBIS[id].name),
+    hint: t(COMBIS[id].hint),
     art: () => soundArt(id),
   }));
-  return choice(items, current, onPick, 3);
+  return choice(items, current, onPick, 3, describe);
 };

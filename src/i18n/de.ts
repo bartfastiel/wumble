@@ -4,6 +4,7 @@ export const de = {
     version: 'Version {version}',
   },
   theory: {
+    international: 'Internationale Notennamen (B statt H)',
     major: '{tonic}-Dur',
     minor: '{tonic}-Moll',
     group: { stage: 'Bühne', school: 'Schule', nature: 'Natur' },
@@ -187,6 +188,19 @@ export const de = {
       done: 'Geschafft',
       applause: 'Applaus',
     },
+  },
+  bar: {
+    songs: { name: 'Lieder', text: 'Lieder zum Mitspielen, Notenblatt scannen, Echo und Publikum' },
+    key: { name: 'Tonart', text: 'Welche Tonart das Feld und die Karte benutzen' },
+    style: { name: 'Stil', text: 'Welche Tonleiter und welche Akkorde auf dem Feld liegen' },
+    sound: { name: 'Klang', text: 'Womit die drei Ebenen klingen, und wie die Töne gestimmt sind' },
+    band: { name: 'Band', text: 'Schlagzeug, Bass und Akkorde spielen mit' },
+    tempo: { name: 'Begleitung', text: 'Schema, Tempo, Schleife und Radio der Band' },
+    record: { name: 'Schleife', text: 'Ab dem nächsten Takt aufnehmen und als Schleife weiterlaufen lassen' },
+    view: { name: 'Ansicht', text: 'Erscheinungsbild, Beschriftung, Notennamen und Spielweise' },
+    share: { name: 'Link teilen', text: 'Adresse mit allem, was du eingestellt hast, in die Zwischenablage' },
+    help: { name: 'Hilfe', text: 'Was das Feld bedeutet und was alles mitspielt' },
+    echo: { name: 'Echo beenden', text: 'Das Echo hört auf, die Band spielt weiter' },
   },
   ui: {
     back: 'Zurück',

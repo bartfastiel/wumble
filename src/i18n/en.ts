@@ -4,6 +4,7 @@ export const en = {
     version: 'Version {version}',
   },
   theory: {
+    international: 'International note names (B, not H)',
     major: '{tonic} major',
     minor: '{tonic} minor',
     group: { stage: 'Stage', school: 'School', nature: 'Nature' },
@@ -187,6 +188,19 @@ export const en = {
       done: 'Done',
       applause: 'Applause',
     },
+  },
+  bar: {
+    songs: { name: 'Songs', text: 'Songs to play along, sheet music to scan, echo and audience' },
+    key: { name: 'Key', text: 'Which key the field and the map are in' },
+    style: { name: 'Style', text: 'Which scale and which chords lie on the field' },
+    sound: { name: 'Sound', text: 'What the three layers sound like, and how the tones are tuned' },
+    band: { name: 'Band', text: 'Drums, bass and chords play along' },
+    tempo: { name: 'Accompaniment', text: 'The schema, tempo, loop and radio of the band' },
+    record: { name: 'Loop', text: 'Record from the next bar and keep it running as a loop' },
+    view: { name: 'View', text: 'Look, labels, note names and play mode' },
+    share: { name: 'Share the link', text: 'The address with everything you have set, on the clipboard' },
+    help: { name: 'Help', text: 'What the field means and what else plays along' },
+    echo: { name: 'End the echo', text: 'The echo stops, the band plays on' },
   },
   ui: {
     back: 'Back',

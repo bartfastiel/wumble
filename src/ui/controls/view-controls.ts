@@ -7,11 +7,17 @@ import { chordLabel, toneLabel } from '../../theory/labels';
 import { buildModel } from '../../theory/model';
 import { pcOf } from '../../theory/pitch';
 import { centsOff, noteFrequency, TUNING_IDS, type TuningId } from '../../theory/tuning';
-import { choice, type Choice, type ChoiceItem } from '../widgets/choice';
+import { choice, type Choice, type ChoiceItem, type Describe } from '../widgets/choice';
 import { icon } from '../widgets/icons';
 import { pattern } from '../widgets/pattern';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
+
+// "Gewachsen – wellige Kanten, gefächert" is a name and a description in one line; the tiles want them apart
+const named = (text: string): { label: string; hint: string } => {
+  const [label, ...rest] = text.split(' – ');
+  return { label: label ?? text, hint: rest.join(' – ') };
+};
 const BARS = [
   { x: 6, w: 8, h: 14 },
   { x: 19, w: 12, h: 20 },
@@ -66,13 +72,17 @@ const lookArt = (id: LookId): SVGSVGElement => {
   return svg;
 };
 
-export const lookTiles = (current: LookId, onPick: (id: LookId) => void): Choice<LookId> => {
+export const lookTiles = (
+  current: LookId,
+  onPick: (id: LookId) => void,
+  describe?: Describe<LookId>,
+): Choice<LookId> => {
   const items: ChoiceItem<LookId>[] = LOOKS.map((id) => ({
     value: id,
-    label: t(`play.look.${id}`),
+    ...named(t(`play.look.${id}`)),
     art: () => lookArt(id),
   }));
-  return choice(items, current, onPick, 3);
+  return choice(items, current, onPick, 3, describe);
 };
 
 const signs = (className: string, texts: readonly string[]): SVGSVGElement => {
@@ -113,13 +123,15 @@ export const labelTiles = (
   current: LabelSetting,
   german: boolean,
   onPick: (setting: LabelSetting) => void,
+  describe?: Describe<LabelSetting>,
 ): Choice<LabelSetting> => {
   const items: ChoiceItem<LabelSetting>[] = LABEL_SETTINGS.map((setting) => ({
     value: setting,
     label: t(`play.labels.${setting}`),
+    hint: t('settings.labels'),
     art: () => labelArt(setting, german),
   }));
-  return choice(items, current, onPick, 3);
+  return choice(items, current, onPick, 3, describe);
 };
 
 // How far a tuning bends each of the twelve semitones – a flat row is equal temperament
@@ -133,30 +145,43 @@ const tuningArt = (id: TuningId): SVGSVGElement => {
   return pattern({ values, width: 58, height: 20 });
 };
 
-export const tuningTiles = (current: TuningId, onPick: (id: TuningId) => void): Choice<TuningId> => {
+export const tuningTiles = (
+  current: TuningId,
+  onPick: (id: TuningId) => void,
+  describe?: Describe<TuningId>,
+): Choice<TuningId> => {
   const items: ChoiceItem<TuningId>[] = TUNING_IDS.map((id) => ({
     value: id,
     label: t(`theory.tuning.${id}.name`),
+    hint: t(`theory.tuning.${id}.hint`),
     art: () => tuningArt(id),
   }));
-  return choice(items, current, onPick, 3);
+  return choice(items, current, onPick, 3, describe);
 };
 
 // Two hands, or one hand and the field finding the chords itself
-export const modeTiles = (current: PlayMode, onPick: (mode: PlayMode) => void): Choice<PlayMode> => {
+export const modeTiles = (
+  current: PlayMode,
+  onPick: (mode: PlayMode) => void,
+  describe?: Describe<PlayMode>,
+): Choice<PlayMode> => {
   const items: ChoiceItem<PlayMode>[] = PLAY_MODES.map((mode) => ({
     value: mode,
-    label: t(`play.mode.${mode}`),
+    ...named(t(`play.mode.${mode}`)),
     art: () => icon(mode === 'twoHands' ? 'hands' : 'onehand'),
   }));
-  return choice(items, current, onPick, 2);
+  return choice(items, current, onPick, 2, describe);
 };
 
 // B or H: the one letter that differs between the two spellings
-export const spellingTiles = (german: boolean, onPick: (german: boolean) => void): Choice<number> => {
+export const spellingTiles = (
+  german: boolean,
+  onPick: (german: boolean) => void,
+  describe?: Describe<number>,
+): Choice<number> => {
   const items: ChoiceItem<number>[] = [
-    { value: 0, label: t('settings.german'), art: () => signs('label-art', ['B♭', 'B']) },
-    { value: 1, label: t('settings.german'), art: () => signs('label-art', ['B', 'H']) },
+    { value: 0, label: 'B♭ B', hint: t('theory.international'), art: () => signs('label-art', ['B♭', 'B']) },
+    { value: 1, label: 'B H', hint: t('settings.german'), art: () => signs('label-art', ['B', 'H']) },
   ];
   return choice(
     items,
@@ -165,5 +190,6 @@ export const spellingTiles = (german: boolean, onPick: (german: boolean) => void
       onPick(value === 1);
     },
     2,
+    describe,
   );
 };

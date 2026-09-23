@@ -51,6 +51,20 @@ test.describe('band', () => {
     await expect(page.locator('wm-header button.loop')).toHaveAttribute('data-layers', '');
   });
 
+  test('the map promises the chord the schema will play next, and how far off it is', async ({ page }) => {
+    // Twelve-bar blues at 160 bpm: bars 1–4 are I, bar 5 is IV, so the subdominant is promised from the start
+    await openApp(page, '#band=1&schema=blues&tempo=160');
+    const ahead = (): Promise<{ role: string; progress: number } | null> =>
+      page.evaluate(() => window.__wumble.root.field.upcoming);
+    await expect.poll(async () => (await ahead())?.role).toBe('subdominant');
+    const early = (await ahead())?.progress ?? 1;
+    // the ring closes as the bars run out, and never past the change itself
+    await expect.poll(async () => (await ahead())?.progress ?? 0).toBeGreaterThan(early + 0.1);
+    const later = await ahead();
+    expect(later?.role).toBe('subdominant');
+    expect(later?.progress ?? 0).toBeLessThanOrEqual(1);
+  });
+
   test('a schema chooses on the map, as if a hand had done it', async ({ page }) => {
     // Twelve-bar blues at 160 bpm: bar 1 is I, bar 5 is IV – 1.5 s per bar
     await openApp(page, '#band=1&schema=blues&tempo=160');

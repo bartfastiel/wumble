@@ -10,7 +10,8 @@ import { fitnessOf } from '../theory/fitness';
 import { fieldLabels } from '../theory/labels';
 import { pcOf } from '../theory/pitch';
 import type { App } from './app';
-import { CLAP, drawField, type Floater, type HeldStripe, type LearnScene } from './field-draw';
+import { BarClock } from '../band/bar-clock';
+import { CLAP, drawField, type AheadScene, type Floater, type HeldStripe, type LearnScene } from './field-draw';
 import { t } from '../i18n';
 
 const DWELL_MS = 95; // resting chooses a chord, sweeping passes over it
@@ -22,6 +23,7 @@ const HEAD = 52;
 const APPLAUSE_SIZE = 2.2;
 const SLIDER_HEIGHT = 46; // the strip below the field: grab it anywhere and pull the octaves past
 const OPEN_ON = 65; // the field opens on the octave around F4, where most playing happens
+const LOOK_AHEAD_BARS = 8; // how far the map promises the schema's next chord
 
 interface Grip {
   readonly area: 'map' | 'field' | 'slider';
@@ -50,6 +52,12 @@ export class WmField extends HTMLElement {
   private lastFrame = 0;
   private floaters: Floater[] = [];
 
+  // What the schema will play next, as the last frame saw it – the end-to-end tests read it
+  get upcoming(): { role: string; progress: number } | null {
+    const ahead = this.lastAhead;
+    return ahead === null ? null : { role: ahead.spot.chord.role, progress: ahead.progress };
+  }
+
   // What floats over the field right now – the end-to-end tests read it
   get floating(): readonly Floater[] {
     return this.floaters;
@@ -60,6 +68,8 @@ export class WmField extends HTMLElement {
     return this.field;
   }
   private readonly cleanups: (() => void)[] = [];
+  private readonly bar = new BarClock(); // how far this bar has run, for what the schema will do next
+  private lastAhead: AheadScene | null = null;
 
   connectedCallback(): void {
     if (this.app === null) throw new Error('wm-field needs the app');
@@ -176,6 +186,8 @@ export class WmField extends HTMLElement {
     if (width === 0 || height === 0) return;
     const model = app.store.model();
     const split = this.split;
+    // The bar above follows the same split: what belongs to the chords sits over the map
+    document.documentElement.style.setProperty('--map', `${String(Math.round(split))}px`);
     const fresh = this.field.stripes.length === 0;
     this.field.look = app.store.get().look;
     this.field.layout(
@@ -294,6 +306,36 @@ export class WmField extends HTMLElement {
     app.player.chooseChord(index);
     this.memory.remember(spot.chord);
     this.requestDraw();
+  }
+
+  // What the schema will play next, once it is a schema and not the hand that leads. Nothing is shown while the
+  // band follows the play: there is no future to promise then.
+  private ahead(now: number): AheadScene | null {
+    this.lastAhead = this.lookAhead(now);
+    return this.lastAhead;
+  }
+
+  private lookAhead(now: number): AheadScene | null {
+    const app = this.app;
+    if (app === null) return null;
+    const { band } = app;
+    if (!band.running() || band.schema() === 'follow') {
+      this.bar.reset();
+      return null;
+    }
+    const { bar, step } = band.scheduler.position();
+    this.bar.mark(step, now);
+    // Look ahead until the chord changes: the ring then fills over the whole way there, not only over the last bar
+    const current = band.currentChord();
+    let bars = 1;
+    while (bars <= LOOK_AHEAD_BARS && band.chordForBar(bar + bars) === current) bars++;
+    if (bars > LOOK_AHEAD_BARS) return null; // nothing changes in sight
+    const next = band.chordForBar(bar + bars);
+    const chord = app.store.model().map[next] ?? null;
+    const spot = this.spots.find((candidate) => candidate.chord === chord);
+    if (spot === undefined) return null;
+    const left = bars - this.bar.progress(now); // bars still to run, the current one counted from where it is
+    return { spot, progress: Math.max(0, Math.min(1, 1 - left / bars)) };
   }
 
   private chosenSpot(): MapSpot | null {
@@ -428,6 +470,7 @@ export class WmField extends HTMLElement {
       cx,
       {
         look: settings.look,
+        ahead: this.ahead(now),
         slider: {
           ...slider,
           focus: this.field.focus,
