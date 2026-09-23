@@ -15,19 +15,19 @@ import {
 } from './settings';
 
 describe('DEFAULTS', () => {
-  it('start the app in C major, classical, equal, thinking along, e-piano, labels off, easy, 100 bpm', () => {
+  it('start the app on the twelve-bar blues in C, organ, polished, thinking along, labels off, easy, 100 bpm', () => {
     expect(DEFAULTS).toEqual({
       signature: 0,
-      style: 'classical',
+      style: 'blues',
       tuning: 'equal',
       mode: 'autoHarmony',
-      combi: 'epiano',
+      combi: 'organ',
       labels: 'off',
-      look: 'organic',
+      look: 'polished',
       german: false,
       difficulty: 'easy',
       tempo: 100,
-      schema: 'follow',
+      schema: 'blues',
       loopBars: 2,
       publicUrl: '',
     });
@@ -63,7 +63,7 @@ describe('tempo', () => {
 
 describe('styleSettings', () => {
   it('applies the style suggestions: sound, tempo and – for the harmonic series – the tuning', () => {
-    expect(styleSettings('blues')).toEqual({ style: 'blues', combi: 'organ', tempo: 96 });
+    expect(styleSettings('blues')).toEqual({ style: 'blues', combi: 'organ', tempo: 100 });
     expect(styleSettings('harmonicSeries')).toEqual({
       style: 'harmonicSeries',
       combi: 'church',

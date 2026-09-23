@@ -31,14 +31,14 @@ describe('createStore', () => {
     const store = createStore();
     const model = store.model();
     expect(model.key.signature).toBe(0);
-    expect(model.style).toBe(STYLES.classical);
+    expect(model.style).toBe(STYLES.blues); // the app opens on the blues
     expect(store.model()).toBe(model);
     store.update({ tuning: 'just', labels: 'names' });
     expect(store.model()).toBe(model);
-    store.update({ style: 'blues' });
-    const blues = store.model();
-    expect(blues).not.toBe(model);
-    expect(blues.style).toBe(STYLES.blues);
+    store.update({ style: 'classical' });
+    const classical = store.model();
+    expect(classical).not.toBe(model);
+    expect(classical.style).toBe(STYLES.classical);
     store.update({ signature: 3 });
     expect(store.model().key.signature).toBe(3);
   });

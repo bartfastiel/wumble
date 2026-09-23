@@ -126,12 +126,10 @@ describe('wm-app', () => {
     expect(root.querySelector('wm-header h1')?.textContent).toBe('Freies Spiel · C-Dur');
     expect(location.hash).toBe('#labels=names');
     click('button[data-section=style]');
-    const blues = [...document.querySelectorAll<HTMLButtonElement>('.pop .tile')].find(
-      (tile) => tile.title === 'Blues',
-    );
-    blues?.click();
-    expect(app.store.get()).toMatchObject({ style: 'blues', combi: 'organ', tempo: 96 });
-    expect(app.band.tempo()).toBe(96);
+    const jazz = [...document.querySelectorAll<HTMLButtonElement>('.pop .tile')].find((tile) => tile.title === 'Jazz');
+    jazz?.click();
+    expect(app.store.get()).toMatchObject({ style: 'jazz', combi: 'jazzTrio' });
+    expect(app.band.tempo()).toBe(app.store.get().tempo);
   });
 
   it('picks a key on the circle of fifths and shows its sign on the button', () => {
@@ -155,7 +153,7 @@ describe('wm-app', () => {
     expect(app.learn.song?.title).toBe('Alle meine Entchen');
     expect(root.openPanel).toBeNull();
     expect(root.querySelector('wm-header h1')?.textContent).toBe('Alle meine Entchen · 1/27');
-    expect(location.hash).toBe('#sound=piano&song=alle-meine-entchen');
+    expect(location.hash).toBe('#style=classical&sound=piano&song=alle-meine-entchen');
     for (const placed of app.learn.placed) {
       if (placed.spot === null) throw new Error('note off the field');
       app.player.press(1, placed.spot.tone);
@@ -185,6 +183,9 @@ describe('wm-app', () => {
     const { app } = mount();
     app.applyLink('#key=A&labels=names');
     expect(app.store.get()).toMatchObject({ signature: 3, labels: 'names' });
+    // The polished look holds its own cool light; the other looks take the hue of the key
+    expect(document.documentElement.style.getPropertyValue('--hue')).toBe('216');
+    app.applyLink('#key=A&look=organic');
     expect(document.documentElement.style.getPropertyValue('--hue')).toBe('355');
     location.hash = '#song=alle-meine-entchen';
     window.dispatchEvent(new Event('hashchange'));
@@ -233,12 +234,14 @@ describe('wm-app', () => {
 
   it('tells the audience the tone, with or without a chord under it', () => {
     const { app } = mount();
-    app.store.update({ mode: 'twoHands' }); // the field must not pick a chord behind our back
+    // Two hands on the classical map: this is about what the room hears, not about the style of the day
+    app.store.update({ mode: 'twoHands', style: 'classical' });
     const told: [string, string][] = [];
     app.room.tone = (name, chord) => told.push([name, chord]);
     Object.defineProperty(app.room, 'isOpen', { get: () => true });
-    app.player.chooseChord(app.player.chord); // first tap: the chord sounds
-    app.player.chooseChord(app.player.chord); // second tap: muted, the chord stays chosen
+    // Tap the sounding chord until the accompaniment is off – that is what the room must hear in the tone alone
+    if (app.player.accompanying) app.player.chooseChord(app.player.chord);
+    expect(app.player.accompanying).toBe(false);
     app.player.press(1, app.player.model.tones.indexOf(67));
     app.player.release(1);
     app.player.chooseChord(app.player.model.home);

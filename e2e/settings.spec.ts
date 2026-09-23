@@ -23,7 +23,8 @@ test.describe('settings', () => {
     await expect(page.locator('wm-header h1')).toHaveText('Freies Spiel · A-Dur ♯♯♯');
     const settings = await page.evaluate(() => window.__wumble.app.store.get());
     expect(settings).toMatchObject({ signature: 3, labels: 'names', tuning: 'just' });
-    expect(await page.evaluate(() => document.documentElement.style.getPropertyValue('--hue'))).toBe('355');
+    // The polished look holds its own cool light; the grown one takes the hue of the key
+    expect(await page.evaluate(() => document.documentElement.style.getPropertyValue('--hue'))).toBe('216');
     // the key button wears the key it chose
     await expect(page.locator('wm-header button[data-section=key] .sign')).toHaveText('A');
   });
@@ -48,10 +49,10 @@ test.describe('settings', () => {
     await tile(page, 'Klassisch').click();
     await tile(page, 'Blues').click();
     await open(page, 'tempo');
-    await expect(page.locator('.dial .read')).toHaveText('96');
+    await expect(page.locator('.dial .read')).toHaveText('100');
     await page.keyboard.press('Escape');
     // The link is the URL: sharing writes it there and puts it on the clipboard
     await page.locator('wm-header button[aria-label="Link teilen"]').click();
-    expect(await page.evaluate(() => location.hash)).toBe('#style=blues&sound=organ&band=0');
+    expect(await page.evaluate(() => location.hash)).toBe('#band=0'); // the blues is the default now
   });
 });

@@ -1,6 +1,6 @@
 # A third look: white lacquer
 
-Date: 2026-09-23 · Status: proposed, extends 2026-09-23-two-looks-grown-and-built
+Date: 2026-09-23 · Status: accepted, extends 2026-09-23-two-looks-grown-and-built
 
 ## Context
 
@@ -31,6 +31,9 @@ branches.
 
 Brightness is also the most robust channel there is. It survives a phone in sunlight, a projector and a photograph,
 and it needs no colour vision at all.
+
+The app opens in it, on the twelve-bar blues: a groove that carries itself, a map that moves on its own, and the
+look that shows what the field means with the least ornament.
 
 ## Rejected
 

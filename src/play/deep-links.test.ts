@@ -147,7 +147,8 @@ describe('formatHash', () => {
 
   it('writes the look only when it differs from the default', () => {
     expect(formatHash({ ...DEFAULTS, look: 'precise' })).toBe('#look=precise');
-    expect(formatHash({ ...DEFAULTS, look: 'organic' })).toBe('');
+    expect(formatHash({ ...DEFAULTS, look: 'organic' })).toBe('#look=organic');
+    expect(formatHash({ ...DEFAULTS, look: 'polished' })).toBe('');
   });
 
   it('writes the key by name and the extras', () => {

@@ -2,14 +2,23 @@ import { expect, test } from './fixtures';
 import { openApp } from './helpers';
 
 test.describe('deep links', () => {
-  test('#blues switches the style and its sound', async ({ page }) => {
-    await openApp(page, '#blues');
-    const chords = await page.evaluate(() => window.__wumble.app.store.model().chords.map((chord) => chord.label));
-    expect(chords).toContain('C7'); // the blues sits on its tonic seventh
-    expect(chords).toContain('F7'); // and the subdominant is a seventh chord too
-    expect(chords).toContain('G7');
+  test('a style link switches the style and its sound', async ({ page }) => {
+    // The app opens on the blues: seventh chords on the blues scale, played on the organ
+    await openApp(page);
+    const blues = await page.evaluate(() => window.__wumble.app.store.model().chords.map((chord) => chord.label));
+    expect(blues).toContain('C7'); // the blues sits on its tonic seventh
+    expect(blues).toContain('F7'); // and the subdominant is a seventh chord too
+    expect(blues).toContain('G7');
     expect(await page.evaluate(() => window.__wumble.app.store.get().combi)).toBe('organ');
-    expect(await page.evaluate(() => location.hash)).toBe('#style=blues&sound=organ');
+    expect(await page.evaluate(() => location.hash)).toBe('');
+    // #classical leads away from it, sound and all
+    await page.goto('./#classical');
+    await page.reload();
+    const classical = await page.evaluate(() => window.__wumble.app.store.model().chords.map((c) => c.label));
+    expect(classical).toContain('C'); // plain triads instead of the blues sevenths
+    expect(classical).toContain('G');
+    expect(await page.evaluate(() => window.__wumble.app.store.get().combi)).toBe('piano');
+    expect(await page.evaluate(() => location.hash)).toBe('#style=classical&sound=piano');
   });
 
   test('#key=A&labels=names sets the key and the labels', async ({ page }) => {

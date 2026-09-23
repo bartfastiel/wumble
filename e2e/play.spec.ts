@@ -3,7 +3,7 @@ import { openApp, stripePoint, tonePoint } from './helpers';
 
 test.describe('free play', () => {
   test('a tap sounds the tone it landed on', async ({ page }) => {
-    await openApp(page);
+    await openApp(page, '#style=classical');
     const point = await tonePoint(page, 64); // E4
     await page.mouse.move(point.x, point.y);
     await page.mouse.down();
@@ -21,7 +21,7 @@ test.describe('free play', () => {
   });
 
   test('sliding onto another stripe is a glissando', async ({ page }) => {
-    await openApp(page);
+    await openApp(page, '#style=classical');
     const from = await tonePoint(page, 64);
     const to = await tonePoint(page, 67);
     await page.mouse.move(from.x, from.y);

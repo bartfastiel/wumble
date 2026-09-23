@@ -18,7 +18,7 @@ test.describe('band', () => {
   });
 
   test('records a loop layer from the next bar start', async ({ page }) => {
-    await openApp(page, '#tempo=100');
+    await openApp(page, '#style=classical&tempo=100'); // the major field, where 64 and 65 are next to each other
     await page.evaluate(() => {
       window.__wumble.app.store.update({ loopBars: 1 });
     });

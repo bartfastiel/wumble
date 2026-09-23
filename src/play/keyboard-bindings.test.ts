@@ -22,7 +22,7 @@ const PER_OCTAVE = cMajor.style.scale.length;
 
 const setup = (options: KeyboardOptions = {}): { player: Player; engine: FakeEngine; unbind: () => void } => {
   const engine = new FakeEngine();
-  const store = createStore({ ...DEFAULTS, mode: 'twoHands' });
+  const store = createStore({ ...DEFAULTS, mode: 'twoHands', style: 'classical' });
   const player = new Player({ engine, store, clock: new FakeClock() });
   return { player, engine, unbind: bindKeyboard(document, player, options) };
 };

@@ -25,7 +25,8 @@ stripe tells you how well it fits.
 Open the link, or download `wumble.html` from a [release](https://github.com/bartfastiel/wumble/releases) and
 double-click it – everything, samples included, is in that one file.
 
-Every visit opens on a welcome page. Its button says **Play** – that click starts the band, the radio and the
+It opens on the twelve-bar blues in C at 100 bpm, polished, with the band and the radio playing – press Play and
+there is music. Every visit opens on a welcome page. Its button says **Play** – that click starts the band, the radio and the
 accompaniment, and brings the sound up from silence over a few seconds.
 
 **Left hand: the chord map.** One spot per chord of the style. Vertical is pull: what lies above leads home, what lies

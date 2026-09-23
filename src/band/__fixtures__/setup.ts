@@ -22,7 +22,8 @@ export interface Setup {
   setChordSource(chord: number | (() => number)): void;
 }
 
-export const createSetup = (styleId: StyleId = 'classical', schema: SchemaId = 'follow'): Setup => {
+// `tempo` is for the golden recordings: they were taken at a beat that must not move when a style changes its own.
+export const createSetup = (styleId: StyleId = 'classical', schema: SchemaId = 'follow', tempo?: number): Setup => {
   const time = createFakeTime();
   const engine = createRecordingEngine(time.clock);
   let model = buildModel(keyBySignature(0), styleId);
@@ -40,7 +41,7 @@ export const createSetup = (styleId: StyleId = 'classical', schema: SchemaId = '
     onBeat: () => beats.push(time.clock.now()),
     onChord: (chord) => chords.push(chord),
   });
-  band.setTempo(STYLES[styleId].tempo);
+  band.setTempo(tempo ?? STYLES[styleId].tempo);
   band.setSchema(schema);
   const player = createPlayer({
     engine: () => band.output(),
