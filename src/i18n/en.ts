@@ -108,6 +108,10 @@ export const en = {
     title: 'Band',
     hint: 'The 🥁 button in the header lets drums, bass and chords play along – in the groove of the style. Where the chords come from:',
     groove: { blues: 'Blues', rock: 'Rock', techno: 'Techno', jazz: 'Jazz', pop: 'Pop', calm: 'Calm' },
+    lead: {
+      auto: { name: 'Thinking along', text: 'You play tones only, the field finds the chords to them' },
+      hands: { name: 'Your own hand', text: 'You tap the chords on the map, the band follows you' },
+    },
     schema: {
       follow: { name: 'Follows the play', hint: 'song, auto harmony or the last held chord field' },
       blues: { name: '12-bar blues', hint: 'I I I I · IV IV I I · V IV I V' },
@@ -196,8 +200,10 @@ export const en = {
     style: { name: 'Style', text: 'Which scale and which chords lie on the field' },
     sound: { name: 'Sound', text: 'What the three layers sound like, and how the tones are tuned' },
     band: { name: 'Band', text: 'Drums, bass and chords play along' },
-    tempo: { name: 'Accompaniment', text: 'The schema, tempo, loop and radio of the band' },
+    tempo: { name: 'Accompaniment', text: 'Who chooses the chords – you, the field or a schema – and at what tempo' },
     record: { name: 'Loop', text: 'Record from the next bar and keep it running as a loop' },
+    loop: { name: 'Loop', text: 'How long a recording runs, and what is looping right now' },
+    radio: { name: 'Radio', text: 'The field plays melody phrases over the chord – until you take over' },
     view: { name: 'View', text: 'Look, labels, note names and play mode' },
     share: { name: 'Share the link', text: 'The address with everything you have set, on the clipboard' },
     help: { name: 'Help', text: 'What the field means and what else plays along' },

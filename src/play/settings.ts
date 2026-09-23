@@ -68,7 +68,8 @@ export const DEFAULTS: Settings = {
   signature: 0,
   style: 'blues',
   tuning: 'equal',
-  mode: 'autoHarmony',
+  // The schema leads the chords, so the field must not also choose them: two hands on one harmony is a fight
+  mode: 'twoHands',
   combi: STYLES.blues.combi,
   labels: 'off',
   look: 'polished',

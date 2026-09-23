@@ -108,6 +108,10 @@ export const de = {
     title: 'Band',
     hint: 'Der Knopf 🥁 in der Kopfzeile lässt Schlagzeug, Bass und Akkorde mitspielen – im Groove des Stils. Woher die Akkorde kommen:',
     groove: { blues: 'Blues', rock: 'Rock', techno: 'Techno', jazz: 'Jazz', pop: 'Pop', calm: 'Ruhig' },
+    lead: {
+      auto: { name: 'Mitdenken', text: 'Du spielst nur Töne, das Feld sucht die Akkorde dazu' },
+      hands: { name: 'Selbst wählen', text: 'Du tippst die Akkorde auf der Karte, die Band folgt dir' },
+    },
     schema: {
       follow: { name: 'Folgt dem Spiel', hint: 'Lied, Mitdenken oder das zuletzt gehaltene Akkordfeld' },
       blues: { name: '12-Takt-Blues', hint: 'I I I I · IV IV I I · V IV I V' },
@@ -196,8 +200,10 @@ export const de = {
     style: { name: 'Stil', text: 'Welche Tonleiter und welche Akkorde auf dem Feld liegen' },
     sound: { name: 'Klang', text: 'Womit die drei Ebenen klingen, und wie die Töne gestimmt sind' },
     band: { name: 'Band', text: 'Schlagzeug, Bass und Akkorde spielen mit' },
-    tempo: { name: 'Begleitung', text: 'Schema, Tempo, Schleife und Radio der Band' },
+    tempo: { name: 'Begleitung', text: 'Wer die Akkorde wählt – du, das Feld oder ein Schema – und in welchem Tempo' },
     record: { name: 'Schleife', text: 'Ab dem nächsten Takt aufnehmen und als Schleife weiterlaufen lassen' },
+    loop: { name: 'Schleife', text: 'Wie lang eine Aufnahme läuft, und was gerade als Schleife mitspielt' },
+    radio: { name: 'Radio', text: 'Das Feld spielt Melodiephrasen zum Akkord – bis du selbst einsteigst' },
     view: { name: 'Ansicht', text: 'Erscheinungsbild, Beschriftung, Notennamen und Spielweise' },
     share: { name: 'Link teilen', text: 'Adresse mit allem, was du eingestellt hast, in die Zwischenablage' },
     help: { name: 'Hilfe', text: 'Was das Feld bedeutet und was alles mitspielt' },

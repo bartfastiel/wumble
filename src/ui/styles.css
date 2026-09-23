@@ -100,6 +100,19 @@ header .gap {
   background: var(--line);
 }
 
+/* Every line drawing, wherever it hangs: a size of its own and strokes rather than fills. Without this a bare
+   <svg> in a panel stretches to the width of its container and paints itself black. */
+.icon-art {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* `hidden` has to win over the grid the buttons are laid out with */
 .ibtn[hidden] {
   display: none;
@@ -175,6 +188,13 @@ header .gap {
 
 .ibtn.band.beat {
   transform: scale(1.14);
+}
+
+/* The radio: lit while it is playing phrases of its own */
+.ibtn.radio.on {
+  border-color: hsl(212 70% 70% / 0.4);
+  background: hsl(212 70% 60% / 0.14);
+  color: var(--lit);
 }
 
 /* Loop: the dot carries the number of layers, armed it pulses, recording it burns */
@@ -372,6 +392,22 @@ header .gap {
 
 .tile.on .envelope {
   stroke: var(--lit);
+}
+
+/* A schema as a silhouette: up to the dominant, down to the subdominant, the line is home */
+.tile .contour rect {
+  fill: var(--ink);
+}
+
+.tile.on .contour rect {
+  fill: var(--lit);
+}
+
+.tile .contour .home {
+  stroke: var(--ink);
+  stroke-width: 0.8;
+  opacity: 0.22;
+  stroke-dasharray: 2 2;
 }
 
 /* Already spoken for: another player is on this sound */
@@ -748,6 +784,12 @@ label.opt .swatch {
   font: inherit;
   font-size: 18px;
   cursor: pointer;
+}
+
+.list button:has(.icon-art) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .list button:hover {

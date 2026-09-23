@@ -1,13 +1,13 @@
 // How the field looks and what it says: the three looks as little portraits of themselves, the labels as the label
 // they would write on a stripe, the tunings as how far they bend the twelve semitones away from the even grid.
 import { t } from '../../i18n';
-import { LABEL_SETTINGS, type LabelSetting, LOOKS, type LookId, PLAY_MODES, type PlayMode } from '../../play/settings';
+import { LABEL_SETTINGS, type LabelSetting, LOOKS, type LookId } from '../../play/settings';
 import { keyBySignature } from '../../theory/keys';
 import { chordLabel, toneLabel } from '../../theory/labels';
 import { buildModel } from '../../theory/model';
 import { pcOf } from '../../theory/pitch';
 import { centsOff, noteFrequency, TUNING_IDS, type TuningId } from '../../theory/tuning';
-import { choice, type Choice, type ChoiceItem, type Describe } from '../widgets/choice';
+import { choice, type Choice, type ChoiceItem, type Describe, shortName } from '../widgets/choice';
 import { icon } from '../widgets/icons';
 import { pattern } from '../widgets/pattern';
 
@@ -80,6 +80,7 @@ export const lookTiles = (
   const items: ChoiceItem<LookId>[] = LOOKS.map((id) => ({
     value: id,
     ...named(t(`play.look.${id}`)),
+    caption: shortName(t(`play.look.${id}`)),
     art: () => lookArt(id),
   }));
   return choice(items, current, onPick, 3, describe);
@@ -129,6 +130,7 @@ export const labelTiles = (
     value: setting,
     label: t(`play.labels.${setting}`),
     hint: t('settings.labels'),
+    caption: shortName(t(`play.labels.${setting}`)),
     art: () => labelArt(setting, german),
   }));
   return choice(items, current, onPick, 3, describe);
@@ -154,23 +156,10 @@ export const tuningTiles = (
     value: id,
     label: t(`theory.tuning.${id}.name`),
     hint: t(`theory.tuning.${id}.hint`),
+    caption: shortName(t(`theory.tuning.${id}.name`)),
     art: () => tuningArt(id),
   }));
   return choice(items, current, onPick, 3, describe);
-};
-
-// Two hands, or one hand and the field finding the chords itself
-export const modeTiles = (
-  current: PlayMode,
-  onPick: (mode: PlayMode) => void,
-  describe?: Describe<PlayMode>,
-): Choice<PlayMode> => {
-  const items: ChoiceItem<PlayMode>[] = PLAY_MODES.map((mode) => ({
-    value: mode,
-    ...named(t(`play.mode.${mode}`)),
-    art: () => icon(mode === 'twoHands' ? 'hands' : 'onehand'),
-  }));
-  return choice(items, current, onPick, 2, describe);
 };
 
 // B or H: the one letter that differs between the two spellings

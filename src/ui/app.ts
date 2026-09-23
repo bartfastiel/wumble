@@ -231,9 +231,15 @@ export const createApp = (options: AppOptions): App => {
 
   const startSong = (song: Song): void => {
     echo.stop();
-    store.update({ signature: song.k, ...styleSettings(song.style, band.running()) });
+    // A song is played, not accompanied: the band and the radio step aside so the way through it is the only thing
+    // sounding besides the hand
+    band.stop();
+    radio.setOn(false);
+    // A song carries its own chords, note by note: the field must not also go looking for them
+    store.update({ signature: song.k, mode: 'twoHands', ...styleSettings(song.style, false) });
     player.harmony.reset();
     learn.start(song, store.get().difficulty, now());
+    followSong();
     room.songStarted({ title: song.title, bpm: song.bpm, signature: song.k, notes: song.notes }, store.model().hue);
     emit('title');
     emit('draw');
@@ -293,6 +299,13 @@ export const createApp = (options: AppOptions): App => {
     });
   };
 
+  // The chord of the tone the thread is on: a song changes harmony exactly where it says it does, and the field
+  // is measured against that chord from the moment the way arrives there.
+  const followSong = (): void => {
+    const spot = learn.placed[learn.pos]?.spot ?? null;
+    if (spot !== null && spot.chord !== player.chord) player.chooseChord(spot.chord, false);
+  };
+
   // The hand takes over: the radio hushes for two bars, and a schema stops choosing for the same while
   const humanLeads = (): void => {
     radio.pause();
@@ -306,6 +319,7 @@ export const createApp = (options: AppOptions): App => {
       if (learn.song !== null) {
         // Only the tone counts: which chord lies under it is the other hand's free choice
         learn.press(id, { chord, tone }, now(), true);
+        followSong();
         emit('title');
       } else if (room.isOpen) tellAudience(tone, chord);
       if (band.running()) {

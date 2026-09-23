@@ -12,6 +12,9 @@ export interface ChoiceItem<V> {
 // What the finger is over, so a panel can put words to the picture without writing them on it
 export type Describe<V> = (item: ChoiceItem<V> | null) => void;
 
+// The short name inside a longer one: "Notennamen (C, D, E …)" and "Gewachsen – wellige Kanten" both have one
+export const shortName = (text: string): string => text.split(/ [–(]/)[0]?.trim() ?? text;
+
 export interface Choice<V> {
   readonly element: HTMLDivElement;
   set(value: V): void;

@@ -5,6 +5,7 @@
 import { keyBySignature } from '../theory/keys';
 import { buildModel, type Model } from '../theory/model';
 import { DOT_MOVE_MS, FLOATER_MS, type RingGroup, visibleGroups } from './geometry';
+import { threadFrom, type ThreadStep } from './thread';
 import { type FieldSpot, type PlacedNote, placeNotes, sameSpot } from './learn-spot';
 import {
   awardPoints,
@@ -148,6 +149,11 @@ export class LearnSession {
 
   visibility(now: number): number {
     return this.run === null ? 1 : learnVisibility(this.run.level, this.run.toneStartedAt, now);
+  }
+
+  // The way ahead as the UI draws it: where the hand is, and where it goes from there
+  thread(): readonly ThreadStep[] {
+    return this.run === null ? [] : threadFrom(this.run.placed, this.run.pos, this.run.level);
   }
 
   // The dot groups to draw for the current position

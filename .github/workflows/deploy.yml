@@ -1,13 +1,12 @@
-# Deployment via SSH to the server. There, Caddy serves the directory /mnt/frag-daniel/wumble read-only under
-# https://<WUMBLE_HOST>/<path>/ (repo frag-daniel, infra/Caddyfile.prod); without a path the server answers 404.
+# Deployment via SSH to the server. There, Caddy serves /mnt/frag-daniel/wumble/app read-only as the site itself
+# (repo frag-daniel, infra/Caddyfile.prod), and the preview directories next to it under their own path.
 #
-#   production  https://<host>/<WUMBLE_PATH>/                 ← dist/ from every push to main
+#   production  https://<host>/                               ← dist/ from every push to main
 #   preview     https://<host>/<WUMBLE_PREVIEW_PATH>/pr-<nr>/ ← dist/ per pull request, removed on close
 #
-# Production and previews live under separate paths: the production path stays secret (secret WUMBLE_PATH), the
-# preview path appears in PR comments and environment URLs and is therefore a repository variable
+# The preview path appears in PR comments and environment URLs and is therefore a repository variable
 # (WUMBLE_PREVIEW_PATH) – as a secret GitHub would mask it to *** in the environment URL.
-# Secrets: DEPLOY_HOST, DEPLOY_USER (default root), DEPLOY_SSH_KEY, WUMBLE_PATH.
+# Secrets: DEPLOY_HOST, DEPLOY_USER (default root), DEPLOY_SSH_KEY.
 # Variables: WUMBLE_PREVIEW_PATH, WUMBLE_HOST (optional).
 name: Deploy
 
@@ -37,7 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-      WUMBLE_PATH: ${{ secrets.WUMBLE_PATH }}
       WUMBLE_PREVIEW_PATH: ${{ vars.WUMBLE_PREVIEW_PATH }}
       WUMBLE_HOST: ${{ vars.WUMBLE_HOST || 'wumble.wer-ist-daniel-schwarz.de' }}
     outputs:
@@ -49,10 +47,10 @@ jobs:
         run: |
           production=false
           preview=false
-          if [ -n "$DEPLOY_HOST" ] && [ -n "$WUMBLE_PATH" ]; then
+          if [ -n "$DEPLOY_HOST" ]; then
             production=true
           else
-            echo "::notice::DEPLOY_HOST/WUMBLE_PATH not set – no production deployment."
+            echo "::notice::DEPLOY_HOST not set – no production deployment."
           fi
           if [ -n "$DEPLOY_HOST" ] && [ -n "$WUMBLE_PREVIEW_PATH" ]; then
             preview=true
@@ -75,7 +73,6 @@ jobs:
       DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
       DEPLOY_USER: ${{ secrets.DEPLOY_USER || 'root' }}
       DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-      WUMBLE_PATH: ${{ secrets.WUMBLE_PATH }}
       WUMBLE_HOST: ${{ vars.WUMBLE_HOST || 'wumble.wer-ist-daniel-schwarz.de' }}
     steps:
       - uses: actions/checkout@v7
@@ -91,8 +88,9 @@ jobs:
       - name: Upload
         run: |
           T="$DEPLOY_USER@$DEPLOY_HOST"
-          DEST="$SERVER_DIR/$WUMBLE_PATH"
-          ssh "$T" "mkdir -p '$DEST' && printf 'User-agent: *\nDisallow: /\n' > '$SERVER_DIR/robots.txt'"
+          DEST="$SERVER_DIR/app"
+          # The page is no longer hidden behind a path, so the robots.txt that kept it out of the indexes goes too
+          ssh "$T" "mkdir -p '$DEST' && rm -f '$SERVER_DIR/robots.txt'"
           .github/scripts/upload-dir.sh dist "$T" "$DEST"
           scp -q dist/relay/relay.mjs "$T:$SERVER_DIR/relay.mjs.new"
           ssh "$T" "mv -f '$SERVER_DIR/relay.mjs.new' '$SERVER_DIR/relay.mjs'"
@@ -101,8 +99,8 @@ jobs:
       - name: Live check (informational)
         continue-on-error: true
         run: |
-          curl -fsS --retry 3 --retry-delay 5 "https://$WUMBLE_HOST/$WUMBLE_PATH/" | grep -q '<title>Wumble' \
-            && echo "Live at https://$WUMBLE_HOST/…/" \
+          curl -fsS --retry 3 --retry-delay 5 "https://$WUMBLE_HOST/" | grep -q '<title>Wumble' \
+            && echo "Live at https://$WUMBLE_HOST/" \
             || echo "Not reachable yet – is the server deployment (frag-daniel) still running?"
 
   preview:

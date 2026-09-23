@@ -11,6 +11,7 @@ import { fieldLabels } from '../theory/labels';
 import { pcOf } from '../theory/pitch';
 import type { App } from './app';
 import { BarClock } from '../band/bar-clock';
+import { threadRise } from '../learn/thread';
 import { CLAP, drawField, type AheadScene, type Floater, type HeldStripe, type LearnScene } from './field-draw';
 import { t } from '../i18n';
 
@@ -71,7 +72,11 @@ export class WmField extends HTMLElement {
   private readonly cleanups: (() => void)[] = [];
   private readonly bar = new BarClock(); // how far this bar has run, for what the schema will do next
   private lastAhead: AheadScene | null = null;
+  private aheadTarget: { chord: number; whole: number } | null = null; // what the ring is counting down to
   private opensOn = OPEN_ON;
+  private mapShape = ''; // style, look and size the current spots were laid out for
+  private threadAt = -1; // the position the thread was last drawn for
+  private threadShift = 0; // 0…1 of a step still to slide down after the song moved on
 
   connectedCallback(): void {
     if (this.app === null) throw new Error('wm-field needs the app');
@@ -205,7 +210,13 @@ export class WmField extends HTMLElement {
       model.style.scale.length,
     );
     if (fresh || this.field.settling > model.tones.length - 1) this.field.settling = this.field.octaveOf(this.opensOn);
-    this.spots = layoutMap(model.map, { width: split, height, top: HEAD }, this.field.look);
+    // The map's shape comes from the style and the space, never from the key: laying it out again on a change of
+    // key would throw away the sizes it has grown to and make the whole left hand jump.
+    const shape = [model.styleId, this.field.look, Math.round(split), Math.round(height)].join('|');
+    if (shape !== this.mapShape) {
+      this.spots = layoutMap(model.map, { width: split, height, top: HEAD }, this.field.look);
+      this.mapShape = shape;
+    }
     this.requestDraw();
   }
 
@@ -331,6 +342,7 @@ export class WmField extends HTMLElement {
     const { band } = app;
     if (!band.running() || band.schema() === 'follow') {
       this.bar.reset();
+      this.aheadTarget = null;
       return null;
     }
     const { bar, step } = band.scheduler.position();
@@ -344,8 +356,14 @@ export class WmField extends HTMLElement {
     const chord = app.store.model().map[next] ?? null;
     const spot = this.spots.find((candidate) => candidate.chord === chord);
     if (spot === undefined) return null;
-    const left = bars - this.bar.progress(now); // bars still to run, the current one counted from where it is
-    return { spot, progress: Math.max(0, Math.min(1, 1 - left / bars)) };
+    // Bars still to run, the current one counted from where it is. The ring measures them against the whole way,
+    // fixed when the chord first came into sight – measured against what is left, it would start over every bar.
+    const left = bars - this.bar.progress(now);
+    const target = this.aheadTarget;
+    const fresh = target?.chord !== next || left > target.whole + 0.01;
+    if (fresh) this.aheadTarget = { chord: next, whole: Math.max(0.001, left) };
+    const whole = this.aheadTarget?.whole ?? left;
+    return { spot, progress: Math.max(0, Math.min(1, 1 - left / whole)) };
   }
 
   // The tones guests are holding, as stripes of this field – they play the same key, so the tones line up
@@ -426,6 +444,13 @@ export class WmField extends HTMLElement {
     });
   }
 
+  // The thread easing down after a tone was hit; it keeps the canvas drawing while it moves
+  private slideThread(seconds: number): boolean {
+    if (this.threadShift <= 0) return false;
+    this.threadShift = Math.max(0, this.threadShift - seconds * 6);
+    return true;
+  }
+
   private breathe(seconds: number): boolean {
     const app = this.app;
     if (app === null) return false;
@@ -435,6 +460,7 @@ export class WmField extends HTMLElement {
       chord === undefined ? (2 as const) : fitnessOf(pcOf(midi), chord, model.key.tonic, model.style),
     );
     const moved = this.field.breathe(fitness, seconds);
+    const sliding = this.slideThread(seconds);
     const chosen = this.chosenSpot();
     const mapMoved = breatheMap(
       this.spots,
@@ -442,7 +468,7 @@ export class WmField extends HTMLElement {
       (spot) => pullOf(spot.chord, { from: chord ?? null, tonic: model.key.tonic, memory: this.memory }),
       seconds,
     );
-    return moved || mapMoved;
+    return moved || mapMoved || sliding;
   }
 
   private draw(now: number): void {
@@ -461,12 +487,17 @@ export class WmField extends HTMLElement {
         const stripe = this.field.stripes[grip.stripe];
         if (stripe !== undefined) held.push({ stripe, brightness: grip.brightness, vibrato: grip.vibrato, y: grip.y });
       }
+    // The chord symbol names a key; the role does not. With the labels off, the map says Tonika and Subdominante
+    // and stays exactly the same in every key – which is the point of a field that abstracts the key away.
+    const naming = settings.labels !== 'off';
     const names = new Map(
       this.spots.map((spot) => [
         spot,
         {
           role: t(`theory.role.${spot.chord.role}`),
-          chord: (model.chords[model.map.indexOf(spot.chord)]?.name ?? '') + SHAPE_SUFFIX[spot.chord.shape],
+          chord: naming
+            ? (model.chords[model.map.indexOf(spot.chord)]?.name ?? '') + SHAPE_SUFFIX[spot.chord.shape]
+            : '',
         },
       ]),
     );
@@ -474,14 +505,23 @@ export class WmField extends HTMLElement {
       app.learn.song === null
         ? null
         : (() => {
-            const unit = this.unit();
-            const groups = app.learn.groups(unit);
+            const steps = app.learn.thread();
+            const rises = threadRise(steps);
+            // The way slides down by the leg just played, rather than jumping to the next tone
+            if (app.learn.pos !== this.threadAt) {
+              this.threadShift = this.threadAt < 0 ? 0 : 1;
+              this.threadAt = app.learn.pos;
+            }
+            const leg = (rises[1] ?? 1) - (rises[0] ?? 0);
+            const shift = this.threadShift * leg;
             return {
-              groups,
-              spots: groups.map((group) => app.learn.placed[group.pos]?.spot?.tone ?? null),
-              current: app.learn.pos,
+              thread: steps.flatMap((step, i) =>
+                step.spot === null
+                  ? []
+                  : [{ stripe: step.spot.tone, rise: (rises[i] ?? 0) + shift, beats: step.beats }],
+              ),
               visibility: app.learn.visibility(now),
-              unit,
+              unit: this.unit(),
             };
           })();
     const slider = this.slider;
