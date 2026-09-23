@@ -130,6 +130,16 @@ describe('Field: sliding the focus', () => {
     expect(field.focus).toBe(target);
   });
 
+  it('reports movement until the focus sits exactly on the octave, never a hair beside it', () => {
+    const field = settled(fieldOf(model.tones, 21));
+    field.slide(6);
+    field.release();
+    let frames = 0;
+    while (field.breathe(EVEN, 0.016) && frames < 2000) frames++;
+    expect(frames).toBeLessThan(2000);
+    expect(field.focus).toBe(field.settling); // whoever stops drawing here stops on the snap
+  });
+
   it('never slides past the ends of the field', () => {
     const field = fieldOf(model.tones, 21);
     field.slide(-500);

@@ -137,7 +137,7 @@ export class Field {
     const weights = this.stripes.map((_, i) => FITNESS_WEIGHT[fitness[i] ?? 2] * focusWeight(i - this.focus, reach));
     const total = weights.reduce((sum, w) => sum + w, 0) || 1;
     const speed = Math.min(1, seconds * 5);
-    let moved = Math.abs(drift) > STILL;
+    let moved = this.focus !== this.target; // keep going until the focus sits exactly where it snapped
     this.stripes.forEach((stripe, i) => {
       const target = (weights[i] ?? 1) / total;
       const step = (target - stripe.share) * speed;
