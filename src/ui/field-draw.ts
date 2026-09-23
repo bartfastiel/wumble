@@ -46,6 +46,8 @@ export interface AheadScene {
 
 export interface FieldScene {
   readonly look: Look;
+  readonly detailWidth: number; // below this width a stripe is drawn as a plain bar
+  readonly trimmings: boolean; // whether there is room for shadows and the glance along a stripe
   readonly ahead: AheadScene | null;
   readonly slider: SliderScene;
   readonly field: Field;
@@ -206,13 +208,7 @@ const sheen = (
   const width = field.edgeAt(i + 1, (top + bottom) / 2) - field.edgeAt(i, (top + bottom) / 2);
   const line = Math.max(1, width * 0.1);
   const offset = Math.max(2, width * 0.2);
-  const gradient = cx.createLinearGradient(0, top, 0, bottom);
-  gradient.addColorStop(0, `${light}0)`);
-  gradient.addColorStop(0.22, `${light}${String(0.3 * strength)})`);
-  gradient.addColorStop(0.55, `${light}${String(0.52 * strength)})`);
-  gradient.addColorStop(0.86, `${light}${String(0.14 * strength)})`);
-  gradient.addColorStop(1, `${light}0)`);
-  cx.strokeStyle = gradient;
+  cx.strokeStyle = `${light}${String(0.4 * strength)})`;
   cx.lineWidth = line;
   cx.lineCap = 'round';
   cx.beginPath();
@@ -235,24 +231,49 @@ const sheen = (
 
 // Lacquer on a face, the same on both sides of the screen: a lit edge along the top, the body of the colour,
 // and a foot that falls away. The rim is what makes it read as a surface rather than a fill.
-const faceGradient = (
-  cx: CanvasRenderingContext2D,
-  colour: Oklch,
-  x: number,
-  top: number,
-  bottom: number,
-  ink: Ink,
-  middle: number,
-): CanvasGradient => {
+// Gradients are the most expensive thing on this canvas: Canvas builds every one of them from scratch, and one per
+// stripe per frame is sixty a frame. So they are built once in unit space (0…1 from top to bottom) and kept; the
+// shape stretches them when it is filled, because a gradient is read through the transform in force at fill time
+// while the path was already laid down in world coordinates.
+const faces = new Map<string, CanvasGradient>();
+const flats = new Map<string, string>();
+
+// The colour on its own, cached: cssOf does three powers and a matrix, and a stripe asks for it every frame
+const flatOf = (colour: Oklch): string => {
+  const key = `${colour.l.toFixed(3)},${colour.c.toFixed(3)},${colour.h.toFixed(1)}`;
+  const known = flats.get(key);
+  if (known !== undefined) return known;
+  const css = cssOf(colour);
+  if (flats.size > 900) flats.clear();
+  flats.set(key, css);
+  return css;
+};
+
+const faceGradient = (cx: CanvasRenderingContext2D, colour: Oklch, ink: Ink, middle: number): CanvasGradient => {
+  const key = `${colour.l.toFixed(3)},${colour.c.toFixed(3)},${colour.h.toFixed(1)},${String(middle)},${String(ink.rim)}`;
+  const known = faces.get(key);
+  if (known !== undefined) return known;
   const [up, down] = ink.gloss;
-  const gradient = cx.createLinearGradient(x, top, x, bottom);
+  const gradient = cx.createLinearGradient(0, 0, 0, 1);
   if (ink.rim > 0) {
     gradient.addColorStop(0, cssOf(shade(colour, up + ink.rim, 0.6, 6)));
     gradient.addColorStop(0.035, cssOf(shade(colour, up, 0.92, 4)));
   } else gradient.addColorStop(0, cssOf(shade(colour, up, 0.92, 4)));
   gradient.addColorStop(middle, cssOf(colour));
   gradient.addColorStop(1, cssOf(shade(colour, down, 0.8, -5)));
+  if (faces.size > 600) faces.clear(); // a key change or a resize makes a fresh set; the old one is dead weight
+  faces.set(key, gradient);
   return gradient;
+};
+
+// Fills the path that is already laid down with a unit gradient stretched over `top`…`bottom`
+const fillFace = (cx: CanvasRenderingContext2D, gradient: CanvasGradient, top: number, bottom: number): void => {
+  const height = Math.max(1, bottom - top);
+  cx.save();
+  cx.transform(1, 0, 0, height, 0, top);
+  cx.fillStyle = gradient;
+  cx.fill();
+  cx.restore();
 };
 
 // The shadow a face casts on the ground behind it – what makes the surface sit above the page, not in it
@@ -326,29 +347,63 @@ const drawStripeLabel = (
   cx.fillText(label, (field.edgeAt(i, y) + field.edgeAt(i + 1, y)) / 2, y);
 };
 
-const drawStripe = (cx: CanvasRenderingContext2D, scene: FieldScene, i: number, stripe: Stripe): void => {
-  const { field, labels } = scene;
-  const { grip, glow, base, colour } = stateOf(scene, i, stripe);
-  const middle = (stripe.top + stripe.bottom) / 2;
-  const x = (field.edgeAt(i, middle) + field.edgeAt(i + 1, middle)) / 2;
-  const gradient = faceGradient(cx, colour, x, stripe.top, stripe.bottom, INK[scene.look], 0.58);
-
-  cx.globalAlpha = base || glow ? 1 : 0.78;
+// A stripe that is too narrow for anyone to see the lacquer on it is drawn as a plain bar: at three pixels across,
+// the gloss, the glance and the shadow are all smaller than a pixel and each costs what it costs on the widest one.
+const fillStripe = (
+  cx: CanvasRenderingContext2D,
+  scene: FieldScene,
+  i: number,
+  stripe: Stripe,
+  state: StripeState,
+  detailed: boolean,
+): void => {
+  const { grip, glow, colour } = state;
+  const ink = INK[scene.look];
   cx.save();
   if (glow) {
     cx.shadowColor = cssOf(shade(colour, 0.2, 1.4));
     cx.shadowBlur = grip === undefined ? 12 : 16 + grip.brightness * 28 + grip.vibrato * 18;
-  } else castLift(cx, INK[scene.look]);
-  stripePath(cx, field, i, stripe, grip === undefined ? 3.2 : 2, scene.look);
-  cx.fillStyle = gradient;
-  cx.fill();
-  if (glow) cx.fill(); // a second pass deepens the glow
+  } else if (detailed && scene.trimmings) castLift(cx, ink);
+  stripePath(cx, scene.field, i, stripe, grip === undefined ? 3.2 : 2, scene.look);
+  if (!detailed) {
+    cx.fillStyle = flatOf(colour);
+    cx.fill();
+    cx.restore();
+    return;
+  }
+  const gradient = faceGradient(cx, colour, ink, 0.58);
+  fillFace(cx, gradient, stripe.top, stripe.bottom);
+  if (glow) fillFace(cx, gradient, stripe.top, stripe.bottom); // a second pass deepens the glow
   cx.restore();
+};
+
+// The line around a stripe and the glance along it – only where there is room for both
+const outlineStripe = (
+  cx: CanvasRenderingContext2D,
+  scene: FieldScene,
+  i: number,
+  stripe: Stripe,
+  { grip, base, colour }: StripeState,
+): void => {
   cx.lineWidth = grip === undefined ? 1.2 : 2.4;
-  cx.strokeStyle = grip === undefined ? INK[scene.look].edge : cssOf(shade(colour, -0.36, 0.5));
+  cx.strokeStyle = grip === undefined ? INK[scene.look].edge : flatOf(shade(colour, -0.36, 0.5));
   cx.stroke();
+  if (!scene.trimmings) return;
   const held = grip === undefined ? 0 : 0.25;
-  sheen(cx, field, i, stripe, base ? 0.62 : 0.17 + held, scene.look);
+  sheen(cx, scene.field, i, stripe, base ? 0.62 : 0.17 + held, scene.look);
+};
+
+const drawStripe = (cx: CanvasRenderingContext2D, scene: FieldScene, i: number, stripe: Stripe): void => {
+  const { field, labels } = scene;
+  const state = stateOf(scene, i, stripe);
+  const { glow, base, colour } = state;
+  const middle = (stripe.top + stripe.bottom) / 2;
+  const width = field.edgeAt(i + 1, middle) - field.edgeAt(i, middle);
+  const detailed = width >= scene.detailWidth || base || glow;
+
+  cx.globalAlpha = base || glow ? 1 : 0.78;
+  fillStripe(cx, scene, i, stripe, state, detailed);
+  if (detailed) outlineStripe(cx, scene, i, stripe, state);
   if (base) drawTonicSeam(cx, field, i, stripe, scene.look);
   cx.globalAlpha = 1;
 
@@ -478,11 +533,7 @@ const drawSpotGlance = (
   cx.save();
   cx.clip();
   const light = INK[look].sheen;
-  const glance = cx.createLinearGradient(spot.x - radius, spot.y - radius, spot.x - radius * 0.1, spot.y + radius);
-  glance.addColorStop(0, `${light}0)`);
-  glance.addColorStop(0.42, `${light}${String(chosen ? 0.5 : 0.26)})`);
-  glance.addColorStop(1, `${light}0)`);
-  cx.strokeStyle = glance;
+  cx.strokeStyle = `${light}${String(chosen ? 0.42 : 0.22)})`;
   cx.lineWidth = Math.max(2, radius * (isStraight(look) ? 0.1 : 0.17));
   cx.beginPath();
   if (isStraight(look)) {
@@ -536,21 +587,20 @@ const drawSpot = (cx: CanvasRenderingContext2D, scene: FieldScene, spot: MapSpot
   const radius = spot.radius;
 
   spotPath(cx, spot, radius, scene.look);
-  const gradient = faceGradient(cx, colour, spot.x, spot.y - radius, spot.y + radius, INK[scene.look], 0.6);
+  const gradient = faceGradient(cx, colour, INK[scene.look], 0.6);
   cx.save();
   if (chosen && !muted) {
     cx.shadowColor = cssOf(shade(colour, 0.12, 1.1));
     cx.shadowBlur = 26;
-  } else if (!muted) castLift(cx, INK[scene.look]);
+  } else if (!muted && scene.trimmings) castLift(cx, INK[scene.look]);
   cx.globalAlpha = muted ? 0.16 : 1;
-  cx.fillStyle = gradient;
-  cx.fill();
+  fillFace(cx, gradient, spot.y - radius, spot.y + radius);
   cx.restore();
   cx.globalAlpha = 1;
   cx.lineWidth = muted ? 2.6 : 1.4;
   cx.strokeStyle = muted ? cssOf(shade(colour, 0.05, 1)) : INK[scene.look].edge;
   cx.stroke();
-  if (!muted) drawSpotGlance(cx, spot, radius, chosen, scene.look);
+  if (!muted && scene.trimmings) drawSpotGlance(cx, spot, radius, chosen, scene.look);
 
   if (spot.chord.step === 0 && spot.chord.side === 0) {
     cx.strokeStyle = `${INK[scene.look].homeRing}0.85)`;

@@ -12,6 +12,7 @@ import { pcOf } from '../theory/pitch';
 import type { App } from './app';
 import { BarClock } from '../band/bar-clock';
 import { threadRise } from '../learn/thread';
+import { Quality } from './quality';
 import { CLAP, drawField, type AheadScene, type Floater, type HeldStripe, type LearnScene } from './field-draw';
 import { t } from '../i18n';
 
@@ -71,6 +72,7 @@ export class WmField extends HTMLElement {
   }
   private readonly cleanups: (() => void)[] = [];
   private readonly bar = new BarClock(); // how far this bar has run, for what the schema will do next
+  private readonly quality = new Quality({ ceiling: window.devicePixelRatio || 1 });
   private lastAhead: AheadScene | null = null;
   private aheadTarget: { chord: number; whole: number } | null = null; // what the ring is counting down to
   private opensOn = OPEN_ON;
@@ -82,7 +84,9 @@ export class WmField extends HTMLElement {
     if (this.app === null) throw new Error('wm-field needs the app');
     const app = this.app;
     if (this.childElementCount === 0) this.append(this.canvas);
-    this.context = this.canvas.getContext('2d');
+    // The field paints its own background over every pixel, so the canvas needs no alpha channel – that saves the
+    // compositor a blend of the whole surface on every frame.
+    this.context = this.canvas.getContext('2d', { alpha: false });
     this.resize();
     this.bindPointers();
     this.cleanups.push(
@@ -177,7 +181,8 @@ export class WmField extends HTMLElement {
   }
 
   private resize(): void {
-    const dpr = window.devicePixelRatio || 1;
+    // Not the device's full pixel ratio but what it can paint in time: see quality.ts
+    const dpr = this.quality.scale;
     const width = this.clientWidth;
     const height = this.clientHeight;
     this.canvas.width = Math.round(width * dpr);
@@ -421,7 +426,10 @@ export class WmField extends HTMLElement {
   private frame(now: number): void {
     const app = this.app;
     if (app !== null) {
-      const seconds = Math.min(0.05, (now - this.lastFrame) / 1000);
+      // The gap since the last frame is what the drawing actually costs: the canvas calls return long before the
+      // pixels exist, so timing draw() itself measures nothing.
+      const gap = now - this.lastFrame;
+      const seconds = Math.min(0.05, gap / 1000);
       this.lastFrame = now;
       app.learn.tick(now);
       const breathing = this.breathe(seconds);
@@ -437,6 +445,8 @@ export class WmField extends HTMLElement {
       if (this.needsDraw || busy) {
         this.draw(now);
         this.needsDraw = false;
+        // What the last frame cost decides what the next one may cost: a canvas that cannot keep up gives up pixels
+        if (gap > 0 && gap < 500 && this.quality.sample(gap)) this.resize();
       }
     }
     this.frameHandle = requestAnimationFrame((next) => {
@@ -529,6 +539,8 @@ export class WmField extends HTMLElement {
       cx,
       {
         look: settings.look,
+        detailWidth: this.quality.detailWidth,
+        trimmings: this.quality.detail,
         ahead: this.ahead(now),
         slider: {
           ...slider,

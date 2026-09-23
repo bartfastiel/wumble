@@ -107,7 +107,8 @@ flowchart LR
 ```
 
 Pure modules below, thin components above, no runtime dependencies. The whole playing surface is one canvas with one
-draw call per frame. The single file `dist/wumble.html` is a second build output of the same sources. The e2e build
+draw call per frame; it measures the gap between its frames and steps the rendering scale down before it lets the
+picture lag, so an older phone gets a softer field rather than a late one. The single file `dist/wumble.html` is a second build output of the same sources. The e2e build
 (`vite build --mode e2e`) exposes the app as `window.__wumble` for Playwright; the production build does not. Golden
 reference values live in `src/**/__fixtures__`.
 
