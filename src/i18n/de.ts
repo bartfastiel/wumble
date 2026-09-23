@@ -91,6 +91,7 @@ export const de = {
     look: {
       organic: 'Gewachsen – wellige Kanten, gefächert',
       precise: 'Gebaut – gerade Kanten, ruhig',
+      polished: 'Poliert – weiß, gerade, kühles Licht',
     },
     labels: {
       off: 'Aus',
@@ -300,7 +301,7 @@ export const de = {
     },
     look: {
       lead: 'Erscheinungsbild',
-      text: ' (Einstellungen): „Gewachsen“ ist das Feld mit welligen Kanten, gefächert und ein wenig unruhig. „Gebaut“ stellt alles gerade: aufrechte Balken, gleiche Radien, die Karte im Raster, Graphit mit einem warmen Akzent. Die Bedeutung ändert sich nicht – Breite heißt weiter Passung, senkrecht weiter Zug.',
+      text: ' (Einstellungen): „Gewachsen“ ist das Feld mit welligen Kanten, gefächert und ein wenig unruhig. „Gebaut“ stellt alles gerade: aufrechte Balken, gleiche Radien, die Karte im Raster, Graphit mit einem warmen Akzent. „Poliert“ ist dieselbe gerade Form in weißem Lack unter kühlem Licht: die Passung liest sich als Helligkeit, der gewählte Akkord leuchtet hellblau. Die Bedeutung ändert sich nicht – Breite heißt weiter Passung, senkrecht weiter Zug.',
     },
     styles: {
       lead: 'Stile',

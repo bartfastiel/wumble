@@ -10,7 +10,7 @@ export const PLAY_MODES = ['twoHands', 'autoHarmony'] as const;
 export type PlayMode = (typeof PLAY_MODES)[number];
 
 // How the field is drawn: grown (wavy edges, tilted, organic) or built (straight, even, quiet)
-export const LOOKS = ['organic', 'precise'] as const;
+export const LOOKS = ['organic', 'precise', 'polished'] as const;
 export type LookId = (typeof LOOKS)[number];
 
 // "Show me what you do": off, or one of the theory's label modes

@@ -36,6 +36,11 @@ const FITNESS_CHROMA: readonly [number, number, number, number] = [0.135, 0.1, 0
 // The built look says the same with less: one warm accent against graphite, and no nudge per pitch class
 const PRECISE_HUE: readonly [number, number, number, number] = [68, 78, 210, 244];
 const PRECISE_CHROMA: readonly [number, number, number, number] = [0.115, 0.075, 0.016, 0.01];
+// The polished look: white lacquer under a cool lamp. Fitness reads as brightness – what carries is bright,
+// what pulls is deep – and the trace of blue is the light on the surface, not a colour of its own.
+const POLISHED_LIGHT: readonly [number, number, number, number] = [0.968, 0.895, 0.645, 0.375];
+const POLISHED_CHROMA: readonly [number, number, number, number] = [0.012, 0.018, 0.026, 0.036];
+const POLISHED_HUE = 236;
 export const CENTRE_MIDI = 65;
 
 export const registerTilt = (midi: number): number => Math.max(-1.2, Math.min(1.2, (midi - CENTRE_MIDI) / 24));
@@ -53,8 +58,15 @@ export const toneColour = (
   midi: number,
   { held = false, lift = 0, base = false, look = 'organic' }: ToneColourOptions = {},
 ): Oklch => {
-  const precise = look === 'precise';
   const tilt = registerTilt(midi);
+  if (look === 'polished') {
+    return {
+      l: POLISHED_LIGHT[fitness] + tilt * 0.028 + lift - (base || held ? 0 : 0.035),
+      c: POLISHED_CHROMA[fitness] * (base || held ? 1.5 : 1),
+      h: POLISHED_HUE,
+    };
+  }
+  const precise = look === 'precise';
   // a touch of pitch class, enough to tell two stripes apart, not enough to be colourful – the built look drops it
   const nudge = precise ? 0 : (((((pc * 7) % 12) + 12) % 12) - 5.5) * 1.5;
   const dim = base || held ? 0 : 0.07;

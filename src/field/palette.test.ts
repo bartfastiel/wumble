@@ -95,6 +95,32 @@ describe('toneColour', () => {
   });
 });
 
+describe('toneColour in the polished look', () => {
+  it('says fitness with brightness alone: what carries is bright, what pulls is deep', () => {
+    const light = FITNESSES.map((fitness) => toneColour(fitness, pcOf(60), 60, { look: 'polished' }));
+    for (let i = 1; i < light.length; i++) expect(light[i]?.l).toBeLessThan(light[i - 1]?.l ?? 0);
+    expect(light[0]?.l).toBeGreaterThan(0.9); // white lacquer
+  });
+
+  it('keeps one cool hue and almost no colour, whatever the tone', () => {
+    for (const midi of [36, 60, 84, 108]) {
+      for (const fitness of FITNESSES) {
+        const colour = toneColour(fitness, pcOf(midi), midi, { look: 'polished' });
+        expect(colour.h).toBe(toneColour(0, pcOf(60), 60, { look: 'polished' }).h);
+        expect(colour.c).toBeLessThan(0.06);
+        expect(() => rgb(colour)).not.toThrow();
+      }
+    }
+  });
+
+  it('brightens a held tone instead of colouring it', () => {
+    const calm = toneColour(0, pcOf(65), 65, { look: 'polished' });
+    const held = toneColour(0, pcOf(65), 65, { look: 'polished', held: true, lift: 0.02 });
+    expect(held.l).toBeGreaterThan(calm.l);
+    expect(held.h).toBe(calm.h);
+  });
+});
+
 describe('shade', () => {
   it('lightens, darkens and turns the hue, never leaving the range', () => {
     const colour = { l: 0.5, c: 0.1, h: 100 };

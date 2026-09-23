@@ -17,7 +17,7 @@ import { WmScan } from './wm-scan';
 import { WmSettings } from './wm-settings';
 import { hasWebAudio, silentEngine } from './silent-engine';
 import { relayOverride } from './test-hook';
-import { applyTheme } from './theme';
+import { applyTheme, pageHue } from './theme';
 
 export type AnyPanel = PanelName | ExtraPanel;
 
@@ -79,7 +79,7 @@ export class WmApp extends HTMLElement {
     };
     this.append(this.header, this.field, ...this.panels.values(), this.listener, this.done, this.welcome);
     this.listen(app);
-    applyTheme(app.store.model().hue);
+    applyTheme(pageHue(app.store.model().hue, app.store.get().look));
     app.applyLink(location.hash);
   }
 
@@ -141,7 +141,7 @@ export class WmApp extends HTMLElement {
         this.field.applaud();
       }),
       app.on('settings', () => {
-        applyTheme(app.store.model().hue);
+        applyTheme(pageHue(app.store.model().hue, app.store.get().look));
       }),
       bindKeyboard(document, app.player, {
         ignore: () => this.openPanel !== null || !this.done.hidden || !this.welcome.hidden,

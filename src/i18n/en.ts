@@ -91,6 +91,7 @@ export const en = {
     look: {
       organic: 'Grown – wavy edges, fanned out',
       precise: 'Built – straight edges, quiet',
+      polished: 'Polished – white, straight, cool light',
     },
     labels: {
       off: 'Off',
@@ -300,7 +301,7 @@ export const en = {
     },
     look: {
       lead: 'Look',
-      text: ' (settings): "grown" is the field with waved edges, fanned out and a little restless. "Built" makes everything straight: upright bars, even radii, the map in a grid, graphite with one warm accent. What it means does not change – width is still fitness, vertical is still pull.',
+      text: ' (settings): "grown" is the field with waved edges, fanned out and a little restless. "Built" makes everything straight: upright bars, even radii, the map in a grid, graphite with one warm accent. "Polished" is the same straight shape in white lacquer under a cool lamp: fitness reads as brightness and the chosen chord glows pale blue. What it means does not change – width is still fitness, vertical is still pull.',
     },
     styles: {
       lead: 'Styles',

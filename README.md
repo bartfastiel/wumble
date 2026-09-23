@@ -44,8 +44,9 @@ screen the map steps aside and the focus draws in: fewer tones lie wide, and tho
 **Below: the range.** A strip across the width of the field. Grab it anywhere and pull – the octaves travel with the
 finger, the middle grows wide, the edges narrow. Let go and it settles into the nearest octave.
 
-The whole surface comes in two looks (settings): _grown_, with waved edges and a fanned-out tilt, or _built_, with
-upright bars, even radii and the map in a grid. Same meaning, different temperament.
+The whole surface comes in three looks (settings): _grown_, with waved edges and a fanned-out tilt, _built_, with
+upright bars, even radii and the map in a grid, or _polished_, the same straight shape in white lacquer under a cool
+lamp, where fitness reads as brightness and the chosen chord glows pale blue. Same meaning, different temperament.
 
 **And the rest.** The **keyboard** plays along – the two letter rows are fifteen tones around the middle of the field,
 the digits choose a chord. **Band** (🥁) adds drums, bass and chords in the groove of the style; ● records a loop from
