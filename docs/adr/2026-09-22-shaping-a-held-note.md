@@ -1,5 +1,7 @@
 # Shaping a held note, without letting it go out of tune
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 A held note that cannot be changed is a button, not an instrument. A violinist shapes a note

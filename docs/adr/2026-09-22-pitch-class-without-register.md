@@ -1,5 +1,7 @@
 # A pitch class has no register
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 With a transposing keyboard, changing from C to B made everything sound almost an octave

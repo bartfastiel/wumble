@@ -1,5 +1,7 @@
 # A chord is a state, not an event
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 When a chord is only struck and then decays, the player has to keep re-striking it to have

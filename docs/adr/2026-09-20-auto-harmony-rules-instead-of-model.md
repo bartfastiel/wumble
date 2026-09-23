@@ -17,3 +17,11 @@ weights, greedy with duration and beat position.
 
 Explainable, testable, no model and no training data. Match rate against notated chords ≈ 86 % on children's songs;
 deviations are musically defensible.
+
+## Rejected
+
+_A trained model._ It would need training data, a download and a black box in the browser – and it could not
+explain a single one of its choices, which is what the field is for.
+
+_Waiting for the next note before deciding._ Correct harmonization needs context in both directions, but live
+there is no future: waiting means the chord arrives after the melody.

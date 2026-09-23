@@ -15,3 +15,10 @@ Doubtful songs are dropped.
 ## Consequences
 
 Fewer, but correct songs. Data checks are unit tests.
+
+## Rejected
+
+_Melodies from memory._ Fast, and wrong often enough that the field would teach mistakes.
+
+_Licensing a few well-known songs._ A cost and a contract for a project whose point is that anyone may fork
+it.

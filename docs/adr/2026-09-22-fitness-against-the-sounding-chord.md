@@ -1,5 +1,7 @@
 # Fitness is measured against the sounding chord
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 The field has to show which notes work right now. The obvious approach — mark the notes of the

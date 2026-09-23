@@ -1,5 +1,7 @@
 # Width carries fitness
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 The four ranks have to reach the player without being read. Colour alone is weak for this:

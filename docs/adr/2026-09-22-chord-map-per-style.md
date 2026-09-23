@@ -1,5 +1,7 @@
 # Every style gets its own chord map
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 A single harmonic layout for all styles forces every scale into functional major-minor

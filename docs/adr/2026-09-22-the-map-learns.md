@@ -1,5 +1,7 @@
 # The map learns from what is played
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 Rules can say which chord is a plausible next step — common tones, falling fifths, the way home.

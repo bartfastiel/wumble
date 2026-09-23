@@ -1,5 +1,7 @@
 # The map names functions, not chords
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 A player who learns that the second field is "G" has learned one key. A player who learns it is

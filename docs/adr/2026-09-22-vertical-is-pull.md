@@ -1,5 +1,7 @@
 # Vertical is pull, horizontal is substitution
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 The chord map needs an arrangement a beginner can read without being taught, and it must

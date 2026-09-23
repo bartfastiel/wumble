@@ -15,3 +15,10 @@ from GitHub Actions; production, `next` and PR previews under separate path toke
 ## Consequences
 
 No new DNS entry, no cost, seconds of downtime only on Caddy changes. The main site stays untouched.
+
+## Rejected
+
+_A separate host or a static hosting service._ Another bill, another set of credentials, another place to keep
+current – for a page that is a few hundred kilobytes.
+
+_A public link with an index entry._ The app is shown to people who get the link, not to a search engine.

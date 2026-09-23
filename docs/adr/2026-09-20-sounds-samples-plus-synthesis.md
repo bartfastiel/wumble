@@ -16,3 +16,11 @@ bass/chord/melody. MIDI out stays parked.
 ## Consequences
 
 A reproducible tool downloads and converts the sources (ffmpeg, pitch check via YIN). Attribution is mandatory (CC BY).
+
+## Rejected
+
+_Synthesis only._ A synthesized grand piano gives itself away in the first second, and the school styles live
+from a believable instrument.
+
+_VST plugins through a backend._ They do not run in a browser, and a host would add latency to every note –
+the one thing an instrument cannot have.

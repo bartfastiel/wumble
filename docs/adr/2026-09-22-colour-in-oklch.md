@@ -1,5 +1,7 @@
 # Colour in OKLCH, and every channel means something
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 An early version gave every pitch class its own hue from the circle of fifths. It looked

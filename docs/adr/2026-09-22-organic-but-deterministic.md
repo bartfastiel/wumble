@@ -1,5 +1,7 @@
 # Organic shapes, deterministic layout
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 Straight vertical dividers are easy to play and dull to look at. Fully organic arrangements are

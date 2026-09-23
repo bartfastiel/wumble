@@ -1,5 +1,7 @@
 # Dwelling chooses, sweeping passes through
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 Subdominant and dominant follow each other constantly and have no tone in common. On the map

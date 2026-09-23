@@ -1,5 +1,7 @@
 # Two hands, two jobs
 
+Date: 2026-09-22 · Status: accepted
+
 ## Context
 
 A player needs both a melody and something underneath it. One hand can do both only by
