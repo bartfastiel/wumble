@@ -23,12 +23,16 @@ The second generation lives in `next/`, beside the first, until it can replace i
 - **Violin:** its timbre is a small network (15 721 weights) trained on the CC0 solo violin of VSCO 2: from pitch,
   dynamics and the time since the bow started it predicts 60 partials and 40 noise bands. Loudness therefore changes
   the colour of the tone, not only its level, and a note can do what no recording of it did.
-- **Expression, exaggerated on purpose for now:** pressure is the bow's weight on devices that report it, sliding up
-  and down the key draws harder or lighter everywhere, a rocking finger is vibrato up to 45 cents, gliding onto a
-  neighbour is legato, and the phone gives a small tick for each of these. Without pressure, where a key is struck
-  sets how the note begins.
-- **Keys:** the right hand only, the blues scale of C and its octave – seven keys, septimally tuned, the carrying
-  tones widest.
+- **The pitch never moves.** A key sounds exactly its tone in the chosen tuning – no vibrato in pitch, no bending,
+  no glide. Everything a finger does lives in loudness and colour.
+- **Expression, exaggerated on purpose for now:** pressure is the bow's weight on devices that report it (a light tap
+  plays lightly, a firm one firmly, pressing in swells the note, and easing off counts for more than pressing in,
+  because a flattened fingertip relaxes only part of the way back); sliding up and down the key draws harder or
+  lighter everywhere; a rocking finger makes the tone pulse in strength; gliding onto a neighbour is legato; the phone
+  gives a small tick for each of these. Without pressure, where a key is struck sets how the note begins.
+- **Keys:** the right hand only, every tone of the blues scale of C across the violin's range (G3 to C7, 21 keys),
+  septimally tuned. The key of the music decides each key's width and brightness: what carries over the tonic's chord
+  is wide and white, what pulls narrow and slate, and the tonic carries a blue seam.
 
 ## Why
 
@@ -43,6 +47,9 @@ bow, not for the force of a strike, which no browser reports.
 
 _Samples for the violin._ They cannot change colour with dynamics or develop while held. They stay right for
 instruments that cannot be shaped after the strike, such as the piano.
+
+_Vibrato and bending in pitch._ Built first, with up to 45 cents under a rocking finger, and heard as frightening
+rather than expressive: an instrument whose keys can sound out of tune has lost the one promise the field makes.
 
 _A large generative model in the browser._ Too heavy for the audio thread of a phone, and the free ones carry
 non-commercial licences.

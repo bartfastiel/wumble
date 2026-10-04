@@ -1,5 +1,6 @@
 // The whole picture in one draw call: a full-screen triangle whose fragment shader paints the keys as white lacquer,
-// the fingers as light pressed into it, and the sound as a glow along the edges.
+// the fingers as light pressed into it, and the sound as a glow along the edges. The key of the music shows in the
+// lacquer: what carries is nearly white, what pulls falls away into slate, and the tonic carries a blue seam.
 //
 // The resolution regulates itself: when frames arrive late, it renders fewer pixels rather than fewer frames.
 
@@ -7,6 +8,7 @@ export interface SceneKey {
   readonly left: number; // 0 … 1 of the width
   readonly right: number;
   readonly fitness: number; // 0 carries … 3 pulls
+  readonly tonic: boolean;
   readonly glow: number; // 0 … 1, how loud it sounds
 }
 
@@ -14,16 +16,17 @@ export interface SceneTouch {
   readonly x: number; // 0 … 1
   readonly y: number; // 0 … 1, 0 at the top
   readonly dynamics: number;
-  readonly bendCents: number;
+  readonly tremor: number; // -1 … 1, the swing of a rocking finger
 }
 
 export interface Scene {
   readonly keys: readonly SceneKey[];
   readonly touches: readonly SceneTouch[];
+  readonly gap: number; // between two keys, 0 … 1 of the width
   readonly time: number; // seconds
 }
 
-const MAX_KEYS = 8;
+const MAX_KEYS = 32;
 const MAX_TOUCHES = 8;
 // GLSL needs the array sizes as literals
 const KEYS_GLSL = String(MAX_KEYS);
@@ -41,15 +44,19 @@ uniform vec2 u_res;
 uniform float u_scale;   // device pixels per layout pixel
 uniform float u_time;
 uniform int u_keyCount;
-uniform vec4 u_keys[${KEYS_GLSL}];     // left, right, fitness, glow
+uniform vec4 u_keys[${KEYS_GLSL}];     // left, right, fitness (+10 for the tonic), glow
 uniform int u_touchCount;
-uniform vec4 u_touches[${TOUCHES_GLSL}]; // x, y, dynamics, bend
+uniform float u_halfGap;
+uniform float u_bottom;  // device pixels kept free below the keys, for the status line
+uniform vec4 u_touches[${TOUCHES_GLSL}]; // x, y, dynamics, tremor
 out vec4 colour;
 
 const vec3 NIGHT = vec3(0.043, 0.055, 0.078);
 const vec3 DUSK = vec3(0.090, 0.110, 0.150);
 const vec3 LACQUER = vec3(0.965, 0.970, 0.980);
 const vec3 SHADE = vec3(0.800, 0.825, 0.865);
+const vec3 SLATE = vec3(0.560, 0.610, 0.680);
+const vec3 SEAM = vec3(0.180, 0.420, 0.950);
 const vec3 LIGHT = vec3(0.420, 0.640, 1.000);
 
 float roundedBox(vec2 p, vec2 extent, float r) {
@@ -70,42 +77,48 @@ void main() {
   int k = u_keyCount - 1;
   for (int i = 0; i < ${KEYS_GLSL}; i++) {
     if (i >= u_keyCount) break;
-    if (uv.x < u_keys[i].y + 0.006) { k = i; break; }
+    if (uv.x < u_keys[i].y + u_halfGap) { k = i; break; }
   }
   vec4 key = u_keys[k];
   vec2 lo = vec2(key.x * u_res.x, margin);
-  vec2 hi = vec2(key.y * u_res.x, u_res.y - margin - 18.0 * s); // room for the status line
-  float d = roundedBox(px - (lo + hi) * 0.5, (hi - lo) * 0.5, 16.0 * s);
-  float inside = clamp(0.5 - d / s, 0.0, 1.0);
+  vec2 hi = vec2(key.y * u_res.x, u_res.y - u_bottom);
+  float corner = min(16.0 * s, (hi.x - lo.x) * 0.45);
+  float d = roundedBox(px - (lo + hi) * 0.5, (hi - lo) * 0.5, corner);
+  float inside = clamp(0.5 - d / max(s, 1.0), 0.0, 1.0);
   float glow = key.w;
+  float tonic = step(9.5, key.z);
+  float fitness = key.z - 10.0 * tonic;
 
-  // Lacquer: brighter where it carries, a breath of slate where it pulls; a highlight near the top, a bevel round it
+  // Lacquer: nearly white where it carries, falling into slate where it pulls; a highlight near the top, a bevel round it
   float depth = (px.y - lo.y) / (hi.y - lo.y);
-  vec3 lacquer = mix(LACQUER, SHADE, 0.10 + 0.35 * depth * depth) * (1.0 - 0.035 * key.z);
+  vec3 lacquer = mix(mix(LACQUER, SLATE, fitness / 3.0 * 0.62), SHADE, 0.08 + 0.30 * depth * depth);
   lacquer += 0.10 * exp(-pow((px.y - lo.y - 46.0 * s) / (26.0 * s), 2.0));
   float bevel = smoothstep(-14.0 * s, 0.0, d);
   lacquer *= 1.0 - 0.16 * bevel;
   lacquer = mix(lacquer, LACQUER + LIGHT * 0.25, glow * 0.22);
   lacquer += LIGHT * bevel * glow * 0.65;
+  // The tonic's seam: a fine blue line down the middle, fading towards both ends
+  float seam = smoothstep(1.6 * s, 0.4 * s, abs(px.x - (lo.x + hi.x) * 0.5)) * smoothstep(0.0, 0.12, depth) * smoothstep(1.0, 0.85, depth);
+  lacquer = mix(lacquer, SEAM, seam * tonic * 0.85);
 
   vec3 spill = vec3(0.0);
   for (int t = 0; t < ${TOUCHES_GLSL}; t++) {
     if (t >= u_touchCount) break;
     vec4 f = u_touches[t];
     float dyn = clamp(f.z, 0.0, 1.2);
-    float bend = f.w / 45.0;
-    // The light follows the vibrato: it wavers sideways with the bend
-    vec2 at = vec2(f.x * u_res.x + bend * 22.0 * s, f.y * u_res.y);
+    float tremor = f.w;
+    vec2 at = vec2(f.x * u_res.x, f.y * u_res.y);
     float r = length(px - at);
-    float radius = (34.0 + 150.0 * dyn) * s;
+    // The pool of light breathes with the swing of a rocking finger
+    float radius = (28.0 + 110.0 * dyn) * s * (1.0 + 0.12 * tremor);
     // The finger presses into the lacquer: the deeper the pressure, the wider and darker the hollow
     float hollow = exp(-pow(r / radius, 2.0)) * (0.06 + 0.30 * dyn);
     lacquer *= 1.0 - hollow;
     // and light gathers in the hollow
     lacquer += LIGHT * exp(-pow(r / (radius * 0.55), 2.0)) * (0.25 + 0.75 * dyn);
-    // Rings run outwards while the note is bent – the vibrato made visible
+    // Rings run outwards while the finger rocks – the pulse of the tone made visible
     float rings = 0.5 + 0.5 * sin(r / (9.0 * s) - u_time * 9.0);
-    lacquer += LIGHT * rings * abs(bend) * 0.35 * exp(-r / (radius * 1.4));
+    lacquer += LIGHT * rings * abs(tremor) * 0.35 * exp(-r / (radius * 1.4));
     spill += LIGHT * exp(-r / (radius * 0.9)) * (0.10 + 0.25 * dyn);
   }
 
@@ -135,7 +148,17 @@ const build = (gl: WebGL2RenderingContext): Program => {
   if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(program) ?? 'link');
   gl.useProgram(program);
   gl.bindVertexArray(gl.createVertexArray());
-  const names = ['u_res', 'u_scale', 'u_time', 'u_keyCount', 'u_keys', 'u_touchCount', 'u_touches'];
+  const names = [
+    'u_res',
+    'u_scale',
+    'u_time',
+    'u_keyCount',
+    'u_keys',
+    'u_halfGap',
+    'u_bottom',
+    'u_touchCount',
+    'u_touches',
+  ];
   return { gl, locations: Object.fromEntries(names.map((n) => [n, gl.getUniformLocation(program, n)])) };
 };
 
@@ -227,11 +250,11 @@ export class Renderer {
 
     this.keys.fill(0);
     scene.keys.slice(0, MAX_KEYS).forEach((k, i) => {
-      this.keys.set([k.left, k.right, k.fitness, k.glow], i * 4);
+      this.keys.set([k.left, k.right, k.fitness + (k.tonic ? 10 : 0), k.glow], i * 4);
     });
     this.touches.fill(0);
     scene.touches.slice(0, MAX_TOUCHES).forEach((t, i) => {
-      this.touches.set([t.x, t.y, t.dynamics, t.bendCents], i * 4);
+      this.touches.set([t.x, t.y, t.dynamics, t.tremor], i * 4);
     });
     gl.uniform2f(locations.u_res ?? null, width, height);
     // Sizes in the shader are layout pixels of a medium tablet, shrunk on a phone so a finger's light stays near it
@@ -240,6 +263,8 @@ export class Renderer {
     gl.uniform1f(locations.u_time ?? null, scene.time);
     gl.uniform1i(locations.u_keyCount ?? null, Math.min(MAX_KEYS, scene.keys.length));
     gl.uniform4fv(locations.u_keys ?? null, this.keys);
+    gl.uniform1f(locations.u_halfGap ?? null, scene.gap / 2);
+    gl.uniform1f(locations.u_bottom ?? null, 26 * scale);
     gl.uniform1i(locations.u_touchCount ?? null, Math.min(MAX_TOUCHES, scene.touches.length));
     gl.uniform4fv(locations.u_touches ?? null, this.touches);
     gl.drawArrays(gl.TRIANGLES, 0, 3);

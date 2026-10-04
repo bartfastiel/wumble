@@ -4,7 +4,7 @@ import './next.css';
 import { locale, t } from '../i18n';
 import { readMeter, VOICES, writeVoice } from './engine/layout';
 import { Finger, PressureSense, type Expression, type Haptic, type Sample } from './play/expression';
-import { bluesKeys } from './play/keys';
+import { GAP, bluesKeys } from './play/keys';
 import { VoicePool } from './play/voice-pool';
 import { startEngine, type Engine } from './platform/audio';
 import { Renderer, type SceneTouch } from './platform/renderer';
@@ -43,7 +43,7 @@ element('#hints', HTMLElement).replaceChildren(
 );
 start.textContent = t('next.start');
 
-const keys = bluesKeys(60);
+const keys = bluesKeys();
 const sense = new PressureSense();
 const pool = new VoicePool();
 const held = new Map<number, Held>();
@@ -75,7 +75,6 @@ const send = (state: Held, gate: boolean): void => {
     note: state.note,
     midi: e.tone,
     dynamics: e.dynamics,
-    bendCents: e.bendCents,
   });
   voiceKey[state.voice] = e.key;
   engine.commit();
@@ -156,11 +155,18 @@ const frame = (now: number): void => {
     x: h.x,
     y: h.y,
     dynamics: Math.max(0, h.expression.dynamics),
-    bendCents: h.expression.bendCents,
+    tremor: h.expression.tremor,
   }));
   renderer.draw(
     {
-      keys: keys.map((k, i) => ({ left: k.left, right: k.right, fitness: k.fitness, glow: glow[i] ?? 0 })),
+      keys: keys.map((k, i) => ({
+        left: k.left,
+        right: k.right,
+        fitness: k.fitness,
+        tonic: k.tonic,
+        glow: glow[i] ?? 0,
+      })),
+      gap: GAP,
       touches,
       time: now / 1000,
     },

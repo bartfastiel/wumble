@@ -17,8 +17,8 @@ import {
 describe('control block', () => {
   it('places a voice at its stride', () => {
     const controls = defaultControls();
-    writeVoice(controls, 2, { gate: true, note: 7, midi: 63.5, dynamics: 0.75, bendCents: -12 });
-    expect([...controls.slice(2 * VOICE_STRIDE, 3 * VOICE_STRIDE)]).toEqual([1, 7, 63.5, 0.75, -12]);
+    writeVoice(controls, 2, { gate: true, note: 7, midi: 63.5, dynamics: 0.75 });
+    expect([...controls.slice(2 * VOICE_STRIDE, 3 * VOICE_STRIDE)]).toEqual([1, 7, 63.5, 0.75]);
     expect(controls[0]).toBe(0);
   });
 
@@ -33,9 +33,9 @@ describe('control block', () => {
 describe('meter block', () => {
   it('reads a voice and the peak', () => {
     const meters = new Float32Array(METER_LEN);
-    meters.set([0.5, 0.25, 10, 1], 4);
+    meters.set([0.5, 0.25, 1], 3);
     meters[METER_LEN - 1] = 0.75;
-    expect(readMeter(meters, 1)).toEqual({ level: 0.5, dynamics: 0.25, bendCents: 10, active: true });
+    expect(readMeter(meters, 1)).toEqual({ level: 0.5, dynamics: 0.25, active: true });
     expect(readMeter(meters, 0).active).toBe(false);
     expect(peakOf(meters)).toBe(0.75);
   });
@@ -45,7 +45,7 @@ describe('seqlock', () => {
   it('hands over a consistent copy', () => {
     const shared = sharedControls(new SharedArrayBuffer(SHARED_CONTROL_BYTES));
     const controls = defaultControls();
-    writeVoice(controls, 0, { gate: true, note: 1, midi: 60, dynamics: 0.5, bendCents: 0 });
+    writeVoice(controls, 0, { gate: true, note: 1, midi: 60, dynamics: 0.5 });
     publish(shared, controls);
     const into = new Float32Array(CONTROL_LEN);
     expect(snapshot(shared, into)).toBe(true);

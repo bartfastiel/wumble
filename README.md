@@ -120,7 +120,8 @@ reference values live in `src/**/__fixtures__`.
 Next to the app, `next/` grows its successor: one WebGL 2 canvas drawn by a single fragment shader, and a synth written
 in Rust (`synth/`), compiled to WebAssembly and run inside an AudioWorklet. Its first instrument is a violin whose
 timbre is a small learned model (`synth/model/`): 60 partials and 40 noise bands predicted from pitch, dynamics and
-the time since the bow started, so a held note can swell, fade and waver like a bowed one. Pointer events go straight
+the time since the bow started, so a held note can swell and fade like a bowed one – always exactly at its key's
+pitch. Pointer events go straight
 into memory shared with the audio thread (a seqlock, `src/next/engine/layout.ts`); this needs cross-origin isolation,
 which the server sends. `cargo test` in `synth/` checks the Rust network against the Python reference.
 

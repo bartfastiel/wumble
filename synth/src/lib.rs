@@ -15,10 +15,10 @@ use reverb::Reverb;
 use voice::{Sine, Target, Voice};
 
 pub const VOICES: usize = 8;
-pub const VOICE_STRIDE: usize = 5; // gate, note, midi, dynamics, bend in cents
+pub const VOICE_STRIDE: usize = 4; // gate, note, midi, dynamics
 pub const GLOBALS: usize = VOICES * VOICE_STRIDE; // volume, reverb
 pub const CONTROL_LEN: usize = GLOBALS + 2;
-pub const METER_STRIDE: usize = 4; // level, dynamics, bend in cents, active
+pub const METER_STRIDE: usize = 3; // level, dynamics, active
 pub const METER_LEN: usize = VOICES * METER_STRIDE + 1; // + output peak
 pub const BLOCK: usize = 128;
 
@@ -74,7 +74,7 @@ impl Engine {
     fn read_controls(&mut self) {
         for (v, voice) in self.voices.iter_mut().enumerate() {
             let c = &self.controls[v * VOICE_STRIDE..(v + 1) * VOICE_STRIDE];
-            voice.set(Target { gate: c[0] > 0.5, note: c[1] as u32, midi: c[2], dynamics: c[3], bend_cents: c[4] });
+            voice.set(Target { gate: c[0] > 0.5, note: c[1] as u32, midi: c[2], dynamics: c[3] });
         }
     }
 
@@ -104,8 +104,7 @@ impl Engine {
             let out = &mut self.meters[v * METER_STRIDE..(v + 1) * METER_STRIDE];
             out[0] = m.level * volume;
             out[1] = m.dynamics;
-            out[2] = m.bend_cents;
-            out[3] = if m.active { 1.0 } else { 0.0 };
+            out[2] = if m.active { 1.0 } else { 0.0 };
         }
         self.meters[VOICES * METER_STRIDE] = peak;
     }
@@ -165,9 +164,9 @@ mod tests {
 
     const RATE: f32 = 48000.0;
 
-    fn play(engine: &mut Engine, voice: usize, note: u32, midi: f32, dynamics: f32, bend: f32, gate: bool) {
+    fn play(engine: &mut Engine, voice: usize, note: u32, midi: f32, dynamics: f32, gate: bool) {
         let c = &mut engine.controls[voice * VOICE_STRIDE..(voice + 1) * VOICE_STRIDE];
-        c.copy_from_slice(&[if gate { 1.0 } else { 0.0 }, note as f32, midi, dynamics, bend]);
+        c.copy_from_slice(&[if gate { 1.0 } else { 0.0 }, note as f32, midi, dynamics]);
     }
 
     fn run(engine: &mut Engine, seconds: f32) -> Vec<f32> {
@@ -183,16 +182,18 @@ mod tests {
         (x.iter().map(|v| v * v).sum::<f32>() / x.len() as f32).sqrt()
     }
 
-    // Fundamental by autocorrelation over a plausible violin range
+    // Fundamental by autocorrelation over a plausible violin range, the peak refined between lags
     fn pitch(x: &[f32]) -> f32 {
+        let r = |lag: usize| x.iter().zip(&x[lag..]).map(|(p, q)| p * q).sum::<f32>();
         let (lo, hi) = ((RATE / 2000.0) as usize, (RATE / 150.0) as usize);
-        let best = (lo..hi)
-            .max_by(|a, b| {
-                let r = |lag: usize| x.iter().zip(&x[lag..]).map(|(p, q)| p * q).sum::<f32>();
-                r(*a).total_cmp(&r(*b))
-            })
-            .unwrap();
-        RATE / best as f32
+        let best = (lo..hi).max_by(|a, b| r(*a).total_cmp(&r(*b))).unwrap();
+        let (a, b, c) = (r(best - 1), r(best), r(best + 1));
+        let shift = 0.5 * (a - c) / (a - 2.0 * b + c);
+        RATE / (best as f32 + shift)
+    }
+
+    fn cents(measured: f32, expected: f32) -> f32 {
+        1200.0 * (measured / expected).log2()
     }
 
     #[test]
@@ -206,14 +207,14 @@ mod tests {
     fn a_note_sounds_at_its_pitch_and_dies_after_release() {
         let mut engine = Engine::new(RATE);
         engine.controls[GLOBALS + 1] = 0.0; // dry, for the pitch
-        play(&mut engine, 0, 1, 69.0, 0.7, 0.0, true);
+        play(&mut engine, 0, 1, 69.0, 0.7, true);
         let held = run(&mut engine, 0.8);
         let tail = &held[held.len() - 8192..];
         assert!(rms(tail) > 0.02, "rms {}", rms(tail));
-        assert!((pitch(tail) - 440.0).abs() < 6.0, "pitch {}", pitch(tail));
+        assert!(cents(pitch(tail), 440.0).abs() < 3.0, "pitch {}", pitch(tail));
         assert!(held.iter().all(|x| x.is_finite() && x.abs() <= 1.0));
 
-        play(&mut engine, 0, 1, 69.0, 0.7, 0.0, false);
+        play(&mut engine, 0, 1, 69.0, 0.7, false);
         run(&mut engine, 2.0);
         assert_eq!(engine.active_voices(), 0);
     }
@@ -222,7 +223,7 @@ mod tests {
     fn pressing_harder_is_louder() {
         let level = |dynamics: f32| {
             let mut engine = Engine::new(RATE);
-            play(&mut engine, 0, 1, 67.0, dynamics, 0.0, true);
+            play(&mut engine, 0, 1, 67.0, dynamics, true);
             let out = run(&mut engine, 0.6);
             rms(&out[out.len() - 4800..])
         };
@@ -231,21 +232,36 @@ mod tests {
     }
 
     #[test]
-    fn a_bend_moves_the_pitch() {
+    fn swelling_and_fading_never_move_the_pitch() {
         let mut engine = Engine::new(RATE);
         engine.controls[GLOBALS + 1] = 0.0;
-        play(&mut engine, 0, 1, 69.0, 0.7, 50.0, true);
-        let out = run(&mut engine, 0.6);
+        for (i, dynamics) in [0.1, 1.1, 0.0, 0.8].into_iter().enumerate() {
+            play(&mut engine, 0, 1, 69.0, dynamics, true);
+            let out = run(&mut engine, 0.4);
+            let p = pitch(&out[out.len() - 8192..]);
+            assert!(cents(p, 440.0).abs() < 3.0, "step {i}: pitch {p}");
+        }
+    }
+
+    #[test]
+    fn legato_lands_exactly_on_the_next_key() {
+        let mut engine = Engine::new(RATE);
+        engine.controls[GLOBALS + 1] = 0.0;
+        play(&mut engine, 0, 1, 69.0, 0.7, true);
+        run(&mut engine, 0.4);
+        play(&mut engine, 0, 1, 72.0, 0.7, true); // same stroke, the next key
+        let out = run(&mut engine, 0.5);
+        let expected = 440.0 * 2f32.powf(3.0 / 12.0);
         let p = pitch(&out[out.len() - 8192..]);
-        let expected = 440.0 * 2f32.powf(50.0 / 1200.0);
-        assert!((p - expected).abs() < 7.0, "pitch {p}, expected {expected}");
+
+        assert!(cents(p, expected).abs() < 3.0, "pitch {p}, expected {expected}");
     }
 
     #[test]
     fn eight_fingers_stay_finite_and_below_full_scale() {
         let mut engine = Engine::new(RATE);
         for v in 0..VOICES {
-            play(&mut engine, v, v as u32 + 1, 60.0 + 3.0 * v as f32, 1.1, 30.0, true);
+            play(&mut engine, v, v as u32 + 1, 60.0 + 3.0 * v as f32, 1.1, true);
         }
         let out = run(&mut engine, 0.5);
         assert!(out.iter().all(|x| x.is_finite() && x.abs() <= 1.0));

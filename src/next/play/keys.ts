@@ -1,7 +1,8 @@
-// The keys of the right hand: one octave of the blues scale and the octave above, tuned justly against the tonic.
+// The keys of the right hand: every tone of the scale across the violin's range, tuned justly against the tonic.
 //
-// A key is a vertical stripe. Its width says how well its tone carries over the tonic's seventh chord – the same
-// rule as in the first generation (`theory/fitness`): a wide key is easier to hit, so the hand lands on what fits.
+// A key is a vertical stripe. The key of the music decides how wide and how bright it is – the same rule as in the
+// first generation (`theory/fitness`): what carries over the tonic's chord is wide and white, what pulls is narrow and
+// falls into slate. A wide key is easier to hit, so the hand lands on what fits.
 import { fitnessOf, type Fitness } from '../../theory/fitness';
 import { tonicChordOf } from '../../theory/chord-maps';
 import { mtof, pcOf, type PitchClass } from '../../theory/pitch';
@@ -9,38 +10,53 @@ import { STYLES } from '../../theory/styles';
 
 export interface Key {
   readonly midi: number; // the equal-tempered key, for names
-  readonly tone: number; // the sounding pitch as a fractional MIDI number
+  readonly tone: number; // the sounding pitch as a fractional MIDI number – the only pitch this key ever sounds
   readonly fitness: Fitness;
+  readonly tonic: boolean;
   readonly left: number; // 0…1 of the playing width
   readonly right: number;
 }
 
-const WIDTH_OF: Readonly<Record<Fitness, number>> = { 0: 1.45, 1: 1.2, 2: 1, 3: 0.8 };
-export const GAP = 0.012; // between two keys, as a share of the playing width
+export interface Range {
+  readonly tonic: number; // MIDI number of a tonic, any octave
+  readonly low: number; // lowest MIDI number that may sound
+  readonly high: number; // highest
+}
+
+// The violin from its open G string up to three octaves above middle C
+export const VIOLIN: Range = { tonic: 60, low: 55, high: 96 };
+
+const WIDTH_OF: Readonly<Record<Fitness, number>> = { 0: 1.5, 1: 1.2, 2: 1, 3: 0.75 };
+export const GAP = 0.006; // between two keys, as a share of the playing width
 
 const ratioOf = (semitone: PitchClass): number => STYLES.blues.ratios[semitone] ?? 2 ** (semitone / 12);
 
-// Fractional MIDI number of a just interval above the equal-tempered tonic
+// Fractional MIDI number of a just interval above (or below) the equal-tempered tonic
 export const justTone = (tonicMidi: number, semitones: number): number => {
   const octaves = Math.floor(semitones / 12);
   const ratio = ratioOf(pcOf(semitones)) * 2 ** octaves;
   return 69 + 12 * Math.log2((mtof(tonicMidi) * ratio) / 440);
 };
 
-export const bluesKeys = (tonicMidi = 60): readonly Key[] => {
-  const tonic = pcOf(tonicMidi);
+export const bluesKeys = (range: Range = VIOLIN): readonly Key[] => {
+  const tonic = pcOf(range.tonic);
   const chord = tonicChordOf('blues');
-  const steps = [...STYLES.blues.scale, 12];
-  const weights = steps.map((s) => WIDTH_OF[fitnessOf(pcOf(tonic + s), chord, tonic, STYLES.blues)]);
+  const inScale = new Set(STYLES.blues.scale.map((s) => pcOf(tonic + s)));
+  const tones: number[] = [];
+  for (let midi = range.low; midi <= range.high; midi++) if (inScale.has(pcOf(midi))) tones.push(midi);
+
+  const fitness = tones.map((midi) => fitnessOf(pcOf(midi), chord, tonic, STYLES.blues));
+  const weights = fitness.map((f) => WIDTH_OF[f]);
   const total = weights.reduce((a, b) => a + b, 0);
-  const usable = 1 - GAP * (steps.length + 1);
+  const usable = 1 - GAP * (tones.length + 1);
   let x = GAP;
-  return steps.map((s, i) => {
+  return tones.map((midi, i) => {
     const width = ((weights[i] ?? 1) / total) * usable;
     const key: Key = {
-      midi: tonicMidi + s,
-      tone: justTone(tonicMidi, s),
-      fitness: fitnessOf(pcOf(tonic + s), chord, tonic, STYLES.blues),
+      midi,
+      tone: justTone(range.tonic, midi - range.tonic),
+      fitness: fitness[i] ?? 2,
+      tonic: pcOf(midi) === tonic,
       left: x,
       right: x + width,
     };

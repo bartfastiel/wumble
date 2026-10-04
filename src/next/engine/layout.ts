@@ -5,10 +5,10 @@
 // half-written – a new note number with the old pitch would be heard for one block.
 
 export const VOICES = 8;
-export const VOICE_STRIDE = 5; // gate, note, midi, dynamics, bend in cents
+export const VOICE_STRIDE = 4; // gate, note, midi, dynamics
 export const GLOBALS = VOICES * VOICE_STRIDE; // volume, reverb
 export const CONTROL_LEN = GLOBALS + 2;
-export const METER_STRIDE = 4; // level, dynamics, bend in cents, active
+export const METER_STRIDE = 3; // level, dynamics, active
 export const METER_LEN = VOICES * METER_STRIDE + 1; // + output peak
 
 export interface VoiceTarget {
@@ -16,21 +16,16 @@ export interface VoiceTarget {
   readonly note: number;
   readonly midi: number;
   readonly dynamics: number;
-  readonly bendCents: number;
 }
 
 export interface VoiceMeter {
   readonly level: number;
   readonly dynamics: number;
-  readonly bendCents: number;
   readonly active: boolean;
 }
 
 export const writeVoice = (controls: Float32Array, voice: number, target: VoiceTarget): void => {
-  controls.set(
-    [target.gate ? 1 : 0, target.note, target.midi, target.dynamics, target.bendCents],
-    voice * VOICE_STRIDE,
-  );
+  controls.set([target.gate ? 1 : 0, target.note, target.midi, target.dynamics], voice * VOICE_STRIDE);
 };
 
 export const readMeter = (meters: Float32Array, voice: number): VoiceMeter => {
@@ -38,8 +33,7 @@ export const readMeter = (meters: Float32Array, voice: number): VoiceMeter => {
   return {
     level: meters[at] ?? 0,
     dynamics: meters[at + 1] ?? 0,
-    bendCents: meters[at + 2] ?? 0,
-    active: (meters[at + 3] ?? 0) > 0.5,
+    active: (meters[at + 2] ?? 0) > 0.5,
   };
 };
 

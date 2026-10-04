@@ -124,6 +124,9 @@ body {
   bottom: calc(4px + env(safe-area-inset-bottom, 0px));
   text-align: center;
   font-size: 0.72rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--muted);
   pointer-events: none;
 }

@@ -1,4 +1,6 @@
 //! One bowed note: the model's levels turned into partials and noise, shaped by what the finger does.
+//!
+//! The pitch is always exactly the key's: expression lives in loudness and colour, never in intonation.
 
 use crate::model::{Controls, Frame, Model, PARTIALS};
 use crate::noise::{Noise, Shaper, HOP};
@@ -7,9 +9,7 @@ const TABLE: usize = 4096;
 const HIGHEST_PARTIAL: f32 = 18000.0; // as in training
 const ATTACK: f32 = 0.012; // seconds: only against a click, the bow's own attack is in the model
 const RELEASE: f32 = 0.16; // seconds, time constant of the bow leaving the string
-const GLIDE: f32 = 0.045; // seconds, legato from one key to the next
 const DYNAMICS_SMOOTHING: f32 = 0.02;
-const BEND_SMOOTHING: f32 = 0.006;
 // The model spans about 10 dB between piano and forte; the instrument exaggerates that on purpose
 pub const EXTRA_RANGE_DB: f32 = 16.0;
 
@@ -20,7 +20,6 @@ pub struct Target {
     pub note: u32, // a new number starts a new bow stroke
     pub midi: f32,
     pub dynamics: f32,
-    pub bend_cents: f32,
 }
 
 /// What a voice reports back for the picture.
@@ -28,7 +27,6 @@ pub struct Target {
 pub struct Meter {
     pub level: f32,
     pub dynamics: f32,
-    pub bend_cents: f32,
     pub active: bool,
 }
 
@@ -63,7 +61,6 @@ pub struct Voice {
     active: bool,
     midi: f32,
     dynamics: f32,
-    bend: f32,
     seconds: f32,
     envelope: f32,
     phase: [f32; PARTIALS],
@@ -84,7 +81,6 @@ impl Voice {
             active: false,
             midi: 69.0,
             dynamics: 0.5,
-            bend: 0.0,
             seconds: 0.0,
             envelope: 0.0,
             phase: [0.0; PARTIALS],
@@ -112,7 +108,6 @@ impl Voice {
         self.active = true;
         self.seconds = 0.0;
         self.dynamics = target.dynamics;
-        self.bend = target.bend_cents;
         self.midi = target.midi;
         if restart {
             self.envelope = 0.0;
@@ -128,7 +123,7 @@ impl Voice {
     }
 
     pub fn meter(&self) -> Meter {
-        Meter { level: self.level, dynamics: self.dynamics, bend_cents: self.bend, active: self.active }
+        Meter { level: self.level, dynamics: self.dynamics, active: self.active }
     }
 
     pub fn is_active(&self) -> bool {
@@ -152,10 +147,10 @@ impl Voice {
         let n = out.len();
         let seconds = n as f32 / rate;
         let follow = |time: f32| 1.0 - (-seconds / time).exp();
-        self.midi += (self.target.midi - self.midi) * follow(GLIDE);
+        // Legato onto another key: the bow keeps going, the pitch moves at once – phases run on, so nothing clicks
+        self.midi = self.target.midi;
         self.dynamics += (self.target.dynamics - self.dynamics) * follow(DYNAMICS_SMOOTHING);
-        self.bend += (self.target.bend_cents - self.bend) * follow(BEND_SMOOTHING);
-        let midi = self.midi + self.bend / 100.0;
+        let midi = self.midi;
         let f0 = 440.0 * ((midi - 69.0) / 12.0).exp2();
         let count = ((HIGHEST_PARTIAL.min(rate / 2.0 - 500.0) / f0) as usize).clamp(1, PARTIALS);
 
