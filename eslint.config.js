@@ -6,7 +6,7 @@ import sonarjs from 'eslint-plugin-sonarjs';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
-  { ignores: ['dist/**', 'coverage/**', 'playwright-report/**', 'test-results/**'] },
+  { ignores: ['dist/**', 'coverage/**', 'playwright-report/**', 'test-results/**', 'synth/**'] },
   eslint.configs.recommended,
   tseslint.configs.strictTypeChecked,
   tseslint.configs.stylisticTypeChecked,

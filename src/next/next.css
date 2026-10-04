@@ -1,0 +1,129 @@
+:root {
+  --night: #0b0e14;
+  --lacquer: #f6f7fa;
+  --ink: #1b2130;
+  --muted: #9aa6b8;
+  --light: #6ba3ff;
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--night);
+  color: var(--lacquer);
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+#field {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  display: block;
+}
+
+#welcome {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(11 14 20 / 0.72);
+  backdrop-filter: blur(6px);
+}
+
+#welcome[hidden] {
+  display: none;
+}
+
+#welcome .card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 26rem;
+}
+
+#title {
+  margin: 0;
+  font-size: 2.4rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+#subtitle {
+  margin: -10px 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+#hints {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+#hints li::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--light);
+  vertical-align: middle;
+}
+
+#start {
+  justify-self: start;
+  padding: 14px 34px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--lacquer);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow:
+    inset 0 -3px 0 rgb(0 0 0 / 0.12),
+    0 8px 30px rgb(107 163 255 / 0.25);
+  cursor: pointer;
+}
+
+#start:focus-visible {
+  outline: 2px solid var(--light);
+  outline-offset: 3px;
+}
+
+#start:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+#status {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(4px + env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+  pointer-events: none;
+}

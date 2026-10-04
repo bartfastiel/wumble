@@ -5,3 +5,5 @@ test-results/
 playwright-report/
 package-lock.json
 src/**/__fixtures__/*.json
+synth/target/
+synth/pkg/
