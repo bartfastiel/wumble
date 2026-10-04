@@ -114,7 +114,7 @@ impl Reader<'_> {
     fn take(&mut self, count: usize) -> Vec<f32> {
         let (head, rest) = self.bytes.split_at(count * 4);
         self.bytes = rest;
-        head.chunks_exact(4).map(|c| f32::from_le_bytes([c[0], c[1], c[2], c[3]])).collect()
+        head.as_chunks::<4>().0.iter().map(|c| f32::from_le_bytes(*c)).collect()
     }
 }
 
@@ -195,7 +195,7 @@ impl Model {
         }
 
         let mut input = [0.0f32; NOISE_INPUTS * FEATURES];
-        for (block, chunk) in input.chunks_exact_mut(NOISE_INPUTS).enumerate() {
+        for (block, chunk) in input.as_chunks_mut::<NOISE_INPUTS>().0.iter_mut().enumerate() {
             for (i, value) in chunk.iter_mut().enumerate() {
                 *value = features[i][block];
             }
@@ -234,7 +234,7 @@ mod tests {
     const REFERENCE: &[u8] = include_bytes!("../model/violin-reference.bin");
 
     fn floats(bytes: &[u8]) -> Vec<f32> {
-        bytes.chunks_exact(4).map(|c| f32::from_le_bytes([c[0], c[1], c[2], c[3]])).collect()
+        bytes.as_chunks::<4>().0.iter().map(|c| f32::from_le_bytes(*c)).collect()
     }
 
     #[test]
