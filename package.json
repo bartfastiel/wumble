@@ -9,8 +9,9 @@
     "node": ">=24"
   },
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "npm run build:synth && vite",
+    "build": "npm run build:synth && vite build",
+    "build:synth": "node tools/build-synth.mjs",
     "build:relay": "tsc -p tsconfig.relay.json && node -e \"require('fs').renameSync('dist/relay/relay.js', 'dist/relay/relay.mjs')\"",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
     "lint": "eslint .",

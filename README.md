@@ -72,12 +72,13 @@ The URL fragment carries every setting as a shareable link.
 
 ## Development
 
-Node 24, `npm ci`, then:
+Node 24 and Rust with the WebAssembly target (`rustup target add wasm32-unknown-unknown`), `npm ci`, then:
 
 | Script                      | Purpose                                                                          |
 | --------------------------- | -------------------------------------------------------------------------------- |
 | `npm run dev`               | Dev server (Vite)                                                                |
 | `npm run build` / `preview` | Production build to `dist/` and a local preview of it                            |
+| `npm run build:synth`       | The Rust synth (`synth/`) to `synth/pkg/synth.wasm`; part of `dev` and `build`   |
 | `npm run lint` / `lint:fix` | ESLint (typescript-eslint strict, SonarJS)                                       |
 | `npm run format`            | Prettier                                                                         |
 | `npm run typecheck`         | `tsc --noEmit`                                                                   |
@@ -114,6 +115,16 @@ picture lag, so an older phone gets a softer field rather than a late one. The s
 (`vite build --mode e2e`) exposes the app as `window.__wumble` for Playwright; the production build does not. Golden
 reference values live in `src/**/__fixtures__`.
 
+### The second generation: `next/`
+
+Next to the app, `next/` grows its successor: one WebGL 2 canvas drawn by a single fragment shader, and a synth written
+in Rust (`synth/`), compiled to WebAssembly and run inside an AudioWorklet. Its first instrument is a violin whose
+timbre is a small learned model (`synth/model/`): 60 partials and 40 noise bands predicted from pitch, dynamics and
+the time since the bow started, so a held note can swell and fade like a bowed one – always exactly at its key's
+pitch. Pointer events go straight
+into memory shared with the audio thread (a seqlock, `src/next/engine/layout.ts`); this needs cross-origin isolation,
+which the server sends. `cargo test` in `synth/` checks the Rust network against the Python reference.
+
 ## Quality
 
 Logic lives in pure TypeScript modules without DOM or audio (theory, tuning, harmonization, scheduler, scan, QR, clock
@@ -133,7 +144,8 @@ The sampler uses royalty-free recordings only:
   source: [sfzinstruments/SalamanderGrandPiano](https://github.com/sfzinstruments/SalamanderGrandPiano) – piano.
 - **VSCO 2 Community Edition** by Versilian Studios (Sam Gossner, Simon Dalzell),
   [CC0](https://creativecommons.org/publicdomain/zero/1.0/), source: [sgossner/VSCO-2-CE](https://github.com/sgossner/VSCO-2-CE)
-  – solo violin, violin section, solo double bass and church organ "Rode" (sampled by Simon Dalzell / Ivy Audio).
+  – solo violin, violin section, solo double bass and church organ "Rode" (sampled by Simon Dalzell / Ivy Audio). The
+  violin model of `next/` was trained on its solo violin; only the weights are shipped.
 
 Melodies and lyrics are traditional or by composers who died before 1925; every one of them is checked against a
 score and, programmatically, against the scale and range of its style. The songs for singing together are public

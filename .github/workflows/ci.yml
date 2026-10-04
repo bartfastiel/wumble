@@ -57,6 +57,20 @@ jobs:
           name: coverage
           path: coverage/lcov.info
 
+  synth:
+    name: Synth
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Rust
+        run: rustup component add rustfmt clippy
+      - run: cargo fmt --check
+        working-directory: synth
+      - run: cargo clippy --release --all-targets -- -D warnings
+        working-directory: synth
+      - run: cargo test --release
+        working-directory: synth
+
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -66,6 +80,8 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - name: Rust for the synth
+        run: rustup target add wasm32-unknown-unknown
       - run: npm ci
       - run: npm run build
       - run: npm run size
@@ -85,6 +101,8 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - name: Rust for the synth
+        run: rustup target add wasm32-unknown-unknown
       - run: npm ci
       - name: Determine Playwright version
         id: playwright

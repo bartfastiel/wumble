@@ -80,6 +80,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - run: rustup target add wasm32-unknown-unknown
       - run: npm ci
       - run: npm run build
       - run: npm run build:relay # after the app build – vite empties dist/
@@ -125,6 +126,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - run: rustup target add wasm32-unknown-unknown
       - run: npm ci && npm run build
       - name: SSH key
         run: .github/scripts/ssh-setup.sh

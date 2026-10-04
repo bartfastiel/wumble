@@ -53,16 +53,18 @@ test.describe('free play', () => {
     await openApp(page, '', { quiet: true });
     const box = await page.locator('wm-field canvas').boundingBox();
     if (box === null) throw new Error('canvas not visible');
-    const shape = await page.evaluate(() => {
-      const field = window.__wumble.root.field.geometry;
-      const xs = field.edges.map((edge) => edge.x);
-      const widths = xs.slice(1).map((x, i) => x - (xs[i] ?? 0));
-      return { map: xs[0] ?? 0, widest: Math.max(...widths) };
-    });
+    const shape = (): Promise<{ map: number; widest: number }> =>
+      page.evaluate(() => {
+        const field = window.__wumble.root.field.geometry;
+        const xs = field.edges.map((edge) => edge.x);
+        const widths = xs.slice(1).map((x, i) => x - (xs[i] ?? 0));
+        return { map: xs[0] ?? 0, widest: Math.max(...widths) };
+      });
     // the chord map steps aside: most of a narrow screen belongs to the stripes
-    expect(shape.map).toBeLessThan(box.width * 0.4);
-    // and what is left still carries a stripe wide enough to aim at
-    expect(shape.widest).toBeGreaterThan(14);
+    expect((await shape()).map).toBeLessThan(box.width * 0.4);
+    // and what is left still carries a stripe wide enough to aim at – once the stripes have grown into their widths,
+    // which on a slow runner takes a few frames after the first paint
+    await expect.poll(async () => (await shape()).widest).toBeGreaterThan(14);
     const point = await tonePoint(page, 65); // F4, in the middle of the view
     await page.mouse.click(point.x, point.y);
     expect(await page.evaluate(() => window.__wumble.app.player.pointers.size)).toBe(0);
