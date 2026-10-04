@@ -11,6 +11,7 @@ import {
   readMeter,
   sharedControls,
   snapshot,
+  writeColour,
   writeVoice,
 } from './layout';
 
@@ -27,6 +28,14 @@ describe('control block', () => {
     expect(controls).toHaveLength(CONTROL_LEN);
     expect(controls[GLOBALS]).toBe(1);
     expect(controls[GLOBALS + 1]).toBeCloseTo(0.35);
+  });
+});
+
+describe('colour', () => {
+  it('sits behind volume and reverb', () => {
+    const controls = defaultControls();
+    writeColour(controls, { brightness: -0.5, wah: 0.25, wahPosition: 0.75 });
+    expect([...controls.slice(GLOBALS, GLOBALS + 5)]).toEqual([1, controls[GLOBALS + 1], -0.5, 0.25, 0.75]);
   });
 });
 

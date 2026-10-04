@@ -8,16 +8,18 @@ pub mod model;
 pub mod noise;
 pub mod reverb;
 pub mod voice;
+pub mod wah;
 
 use model::Model;
 use noise::Shaper;
 use reverb::Reverb;
-use voice::{Sine, Target, Voice};
+use voice::{Context, Sine, Target, Voice};
+use wah::Wah;
 
 pub const VOICES: usize = 8;
 pub const VOICE_STRIDE: usize = 6; // gate, note, midi, dynamics, vibrato rate, vibrato depth
-pub const GLOBALS: usize = VOICES * VOICE_STRIDE; // volume, reverb
-pub const CONTROL_LEN: usize = GLOBALS + 2;
+pub const GLOBALS: usize = VOICES * VOICE_STRIDE; // volume, reverb, brightness, wah amount, wah position
+pub const CONTROL_LEN: usize = GLOBALS + 5;
 pub const METER_STRIDE: usize = 4; // level, dynamics, active, vibrato phase
 pub const METER_LEN: usize = VOICES * METER_STRIDE + 1; // + output peak
 pub const BLOCK: usize = 128;
@@ -32,6 +34,7 @@ pub struct Engine {
     sine: Sine,
     voices: Vec<Voice>,
     reverb: Reverb,
+    wah: Wah,
     pub controls: [f32; CONTROL_LEN],
     pub meters: [f32; METER_LEN],
     mono: [f32; BLOCK],
@@ -60,6 +63,7 @@ impl Engine {
             sine: Sine::new(),
             voices: (0..VOICES).map(Voice::new).collect(),
             reverb: Reverb::new(rate),
+            wah: Wah::new(rate),
             controls,
             meters: [0.0; METER_LEN],
             mono: [0.0; BLOCK],
@@ -91,9 +95,17 @@ impl Engine {
         self.read_controls();
         let mono = &mut self.mono[..n];
         mono.fill(0.0);
+        let context = Context {
+            model: &self.model,
+            shaper: &self.shaper,
+            sine: &self.sine,
+            rate: self.rate,
+            brightness: self.controls[GLOBALS + 2].clamp(-1.0, 1.0),
+        };
         for voice in &mut self.voices {
-            voice.render(&self.model, &self.shaper, &self.sine, self.rate, mono, &mut self.scratch);
+            voice.render(&context, mono, &mut self.scratch);
         }
+        self.wah.render(mono, self.controls[GLOBALS + 3], self.controls[GLOBALS + 4]);
         let volume = self.controls[GLOBALS] * OUTPUT_GAIN;
         let wet = self.controls[GLOBALS + 1];
         self.reverb.render(mono, &mut self.wet_left[..n], &mut self.wet_right[..n], wet);
@@ -280,6 +292,22 @@ mod tests {
         let p = pitch(&out[out.len() - 8192..]);
 
         assert!(cents(p, expected).abs() < 3.0, "pitch {p}, expected {expected}");
+    }
+
+    #[test]
+    fn the_bow_at_the_bridge_is_brighter_and_never_moves_the_pitch() {
+        let centroid = |brightness: f32| {
+            let mut engine = Engine::new(RATE);
+            engine.controls[GLOBALS + 1] = 0.0;
+            engine.controls[GLOBALS + 2] = brightness;
+            play(&mut engine, 0, 1, 69.0, 0.6, true);
+            let out = run(&mut engine, 0.6);
+            let tail = &out[out.len() - 8192..];
+            assert!(cents(pitch(tail), 440.0).abs() < 3.0);
+            // zero crossings per second rise with the weight of the upper partials
+            tail.windows(2).filter(|w| w[0] * w[1] < 0.0).count()
+        };
+        assert!(centroid(1.0) > centroid(-1.0));
     }
 
     #[test]

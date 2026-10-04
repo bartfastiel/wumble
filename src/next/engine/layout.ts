@@ -6,8 +6,8 @@
 
 export const VOICES = 8;
 export const VOICE_STRIDE = 6; // gate, note, midi, dynamics, vibrato rate, vibrato depth
-export const GLOBALS = VOICES * VOICE_STRIDE; // volume, reverb
-export const CONTROL_LEN = GLOBALS + 2;
+export const GLOBALS = VOICES * VOICE_STRIDE; // volume, reverb, brightness, wah amount, wah position
+export const CONTROL_LEN = GLOBALS + 5;
 export const METER_STRIDE = 4; // level, dynamics, active, vibrato phase
 export const METER_LEN = VOICES * METER_STRIDE + 1; // + output peak
 
@@ -42,6 +42,16 @@ export const readMeter = (meters: Float32Array, voice: number): VoiceMeter => {
     active: (meters[at + 2] ?? 0) > 0.5,
     vibratoPhase: meters[at + 3] ?? 0,
   };
+};
+
+export interface Colour {
+  readonly brightness: number; // -1 over the fingerboard … 1 at the bridge
+  readonly wah: number; // 0 … 1
+  readonly wahPosition: number; // -1 dark … 1 bright
+}
+
+export const writeColour = (controls: Float32Array, colour: Colour): void => {
+  controls.set([colour.brightness, colour.wah, colour.wahPosition], GLOBALS + 2);
 };
 
 export const peakOf = (meters: Float32Array): number => meters[VOICES * METER_STRIDE] ?? 0;

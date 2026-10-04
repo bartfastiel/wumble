@@ -18,6 +18,15 @@ const VIBRATO_CENTS: f32 = 15.0; // swing of the pitch either side of the key at
 const VIBRATO_DYNAMICS: f32 = 0.08; // swing of the dynamics at full depth
 const VIBRATO_SMOOTHING: f32 = 0.05;
 
+/// What every voice shares while it renders a block.
+pub struct Context<'a> {
+    pub model: &'a Model,
+    pub shaper: &'a Shaper,
+    pub sine: &'a Sine,
+    pub rate: f32,
+    pub brightness: f32, // -1 over the fingerboard … 1 at the bridge
+}
+
 /// What the page asks of a voice.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Target {
@@ -60,6 +69,23 @@ impl Sine {
 impl Default for Sine {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+// Where the bow meets the string: over the fingerboard the upper partials fade, at the bridge they stand out. The
+// overall energy stays the same, so this is colour, not volume.
+fn tilt_towards_the_bridge(frame: &mut Frame, count: usize, brightness: f32) {
+    if brightness.abs() < 1e-3 {
+        return;
+    }
+    let before: f32 = frame.partials[..count].iter().map(|a| a * a).sum();
+    for (k, a) in frame.partials[..count].iter_mut().enumerate() {
+        *a *= ((k + 1) as f32).powf(0.8 * brightness);
+    }
+    let after: f32 = frame.partials[..count].iter().map(|a| a * a).sum();
+    if after > 0.0 {
+        let scale = (before / after).sqrt();
+        frame.partials[..count].iter_mut().for_each(|a| *a *= scale);
     }
 }
 
@@ -145,15 +171,8 @@ impl Voice {
     }
 
     /// Adds the next `out.len()` samples to `out`. `scratch` needs room for twice as many samples.
-    pub fn render(
-        &mut self,
-        model: &Model,
-        shaper: &Shaper,
-        sine: &Sine,
-        rate: f32,
-        out: &mut [f32],
-        scratch: &mut [f32],
-    ) {
+    pub fn render(&mut self, context: &Context, out: &mut [f32], scratch: &mut [f32]) {
+        let Context { model, shaper, sine, rate, brightness } = *context;
         if !self.active {
             self.level = 0.0;
             return;
@@ -178,6 +197,7 @@ impl Voice {
         if self.until_frame < n {
             let controls = Controls { midi, dynamics, seconds: self.seconds };
             model.eval(controls, count, &mut self.frame);
+            tilt_towards_the_bridge(&mut self.frame, count, brightness);
             let gain = 10f32.powf((dynamics - 0.5) * EXTRA_RANGE_DB / 20.0);
             for k in 0..PARTIALS {
                 self.step[k] = (self.frame.partials[k] * gain - self.amp[k]) / HOP as f32;
@@ -220,7 +240,8 @@ impl Voice {
         }
         self.ramp_left -= ramp;
 
-        let gain = 10f32.powf((dynamics - 0.5) * EXTRA_RANGE_DB / 20.0);
+        // nearer the bridge the bow grates a little more
+        let gain = 10f32.powf(((dynamics - 0.5) * EXTRA_RANGE_DB + brightness * 6.0) / 20.0);
         self.noise.render(shaper, &self.frame.noise_db, gain, own, envelope);
 
         let mut sum = 0.0f32;

@@ -373,6 +373,7 @@ export const de = {
     slide: 'Auf der Taste hoch- und runterstreichen: lauter und leiser',
     rock: 'Den Finger hin und her wiegen: Vibrato – je schneller, desto schneller',
     legato: 'Zur Nachbartaste gleiten: gebunden',
+    tilt: 'Handy vor- und zurückkippen: Wah-Wah · seitlich kippen: Bogen zum Steg · anheben: lauter · schütteln: Akzente',
     start: 'Spielen',
     loading: 'Die Geige wird gestimmt …',
     failed: 'Der Ton ließ sich nicht starten: {reason}',
@@ -381,6 +382,7 @@ export const de = {
     pressure: 'Druck erkannt',
     noPressure: 'kein Drucksensor',
     shared: 'geteilter Speicher',
+    motion: 'Bewegung an',
     messages: 'Nachrichten',
   },
 } as const;

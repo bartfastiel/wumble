@@ -2,10 +2,11 @@
 // WebAssembly. Pointer events go straight to the audio thread – never through a frame or a render cycle.
 import './next.css';
 import { locale, t } from '../i18n';
-import { readMeter, VOICES, writeVoice } from './engine/layout';
+import { readMeter, VOICES, writeColour, writeVoice } from './engine/layout';
 import { Finger, PressureSense, type Expression, type Haptic, type Sample } from './play/expression';
 import { GAP, bluesKeys } from './play/keys';
 import { VoicePool } from './play/voice-pool';
+import { MotionTracker, STILL, type Motion } from './play/motion';
 import { startEngine, type Engine } from './platform/audio';
 import { Renderer, type SceneTouch } from './platform/renderer';
 import { exposeForTests } from './platform/test-hook';
@@ -35,7 +36,7 @@ const status = element('#status', HTMLElement);
 element('#title', HTMLElement).textContent = t('next.title');
 element('#subtitle', HTMLElement).textContent = t('next.subtitle');
 element('#hints', HTMLElement).replaceChildren(
-  ...(['next.press', 'next.slide', 'next.rock', 'next.legato'] as const).map((key) => {
+  ...(['next.press', 'next.slide', 'next.rock', 'next.legato', 'next.tilt'] as const).map((key) => {
     const item = document.createElement('li');
     item.textContent = t(key);
     return item;
@@ -52,6 +53,9 @@ const glow: number[] = keys.map(() => 0);
 const renderer = new Renderer(canvas);
 let engine: Engine | undefined;
 let notes = 0;
+const tracker = new MotionTracker();
+let motion: Motion = STILL;
+let moving = false;
 
 const vibrate = (haptic: Haptic | undefined): void => {
   if (haptic !== undefined && 'vibrate' in navigator) navigator.vibrate(HAPTIC_MS[haptic]);
@@ -74,7 +78,7 @@ const send = (state: Held, gate: boolean): void => {
     gate,
     note: state.note,
     midi: e.tone,
-    dynamics: e.dynamics,
+    dynamics: Math.min(1.15, Math.max(-0.1, e.dynamics + motion.swell + motion.accent)),
     vibratoRate: e.vibrato.rate,
     vibratoDepth: e.vibrato.depth,
   });
@@ -87,6 +91,7 @@ canvas.addEventListener('pointerdown', (event) => {
   event.preventDefault();
   canvas.setPointerCapture(event.pointerId);
   const sample = sampleOf(event);
+  if (held.size === 0) tracker.rezero(); // a new phrase: this posture is neutral
   const finger = new Finger(keys, sense, sample);
   const expression = finger.start(sample);
   const state: Held = {
@@ -138,6 +143,7 @@ const showStatus = (): void => {
   const parts = [
     t('next.latency', { ms: Math.round(engine.latencyMs()) }),
     sense.supported ? t('next.pressure') : t('next.noPressure'),
+    ...(moving ? [t('next.motion')] : []),
     engine.shared ? t('next.shared') : t('next.messages'),
   ];
   status.textContent = parts.join(' · ');
@@ -181,7 +187,33 @@ requestAnimationFrame(frame);
 
 if (!renderer.available) status.textContent = t('next.noGraphics');
 
+// The hand holding the device: tilt, lift and shake shape every sounding note
+const onMotion = (event: DeviceMotionEvent): void => {
+  const g = event.accelerationIncludingGravity;
+  if (g?.x == null || g.y == null || g.z == null) return;
+  const a = event.acceleration;
+  moving = true;
+  motion = tracker.update({
+    time: event.timeStamp,
+    gravity: [g.x, g.y, g.z],
+    linear: a?.x == null || a.y == null || a.z == null ? null : [a.x, a.y, a.z],
+  });
+  if (!engine) return;
+  writeColour(engine.controls, motion);
+  for (const state of held.values()) send(state, true);
+  if (held.size === 0) engine.commit();
+};
+
+// Some browsers (iOS, newer Chrome) ask before they hand out motion, and only from a gesture. Listening costs nothing
+// where no events come.
+const askForMotion = (): void => {
+  window.addEventListener('devicemotion', onMotion);
+  const ask = (DeviceMotionEvent as unknown as { requestPermission?: () => Promise<string> }).requestPermission;
+  if (typeof ask === 'function') ask.call(DeviceMotionEvent).catch(() => undefined);
+};
+
 start.addEventListener('click', () => {
+  if ('DeviceMotionEvent' in window) askForMotion();
   start.disabled = true;
   start.textContent = t('next.loading');
   startEngine()

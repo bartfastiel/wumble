@@ -373,6 +373,7 @@ export const en = {
     slide: 'Slide up and down the key: louder and softer',
     rock: 'Rock your finger back and forth: vibrato – the faster, the faster',
     legato: 'Glide to the next key: legato',
+    tilt: 'Tilt the phone forward and back: wah · sideways: bow towards the bridge · lift: louder · shake: accents',
     start: 'Play',
     loading: 'Tuning the violin …',
     failed: 'The sound could not start: {reason}',
@@ -381,6 +382,7 @@ export const en = {
     pressure: 'Pressure detected',
     noPressure: 'no pressure sensor',
     shared: 'shared memory',
+    motion: 'motion on',
     messages: 'messages',
   },
 } as const;
