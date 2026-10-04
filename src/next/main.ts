@@ -158,6 +158,7 @@ const frame = (now: number): void => {
     y: h.y,
     dynamics: Math.max(0, h.expression.dynamics),
     vibrato: h.expression.vibrato.depth,
+    vibratoPhase: meters ? readMeter(meters, h.voice).vibratoPhase : 0,
   }));
   renderer.draw(
     {

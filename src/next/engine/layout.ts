@@ -8,7 +8,7 @@ export const VOICES = 8;
 export const VOICE_STRIDE = 6; // gate, note, midi, dynamics, vibrato rate, vibrato depth
 export const GLOBALS = VOICES * VOICE_STRIDE; // volume, reverb
 export const CONTROL_LEN = GLOBALS + 2;
-export const METER_STRIDE = 3; // level, dynamics, active
+export const METER_STRIDE = 4; // level, dynamics, active, vibrato phase
 export const METER_LEN = VOICES * METER_STRIDE + 1; // + output peak
 
 export interface VoiceTarget {
@@ -24,6 +24,7 @@ export interface VoiceMeter {
   readonly level: number;
   readonly dynamics: number;
   readonly active: boolean;
+  readonly vibratoPhase: number; // 0 … 1
 }
 
 export const writeVoice = (controls: Float32Array, voice: number, target: VoiceTarget): void => {
@@ -39,6 +40,7 @@ export const readMeter = (meters: Float32Array, voice: number): VoiceMeter => {
     level: meters[at] ?? 0,
     dynamics: meters[at + 1] ?? 0,
     active: (meters[at + 2] ?? 0) > 0.5,
+    vibratoPhase: meters[at + 3] ?? 0,
   };
 };
 

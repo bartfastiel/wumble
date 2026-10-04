@@ -33,9 +33,9 @@ describe('control block', () => {
 describe('meter block', () => {
   it('reads a voice and the peak', () => {
     const meters = new Float32Array(METER_LEN);
-    meters.set([0.5, 0.25, 1], 3);
+    meters.set([0.5, 0.25, 1, 0.75], 4);
     meters[METER_LEN - 1] = 0.75;
-    expect(readMeter(meters, 1)).toEqual({ level: 0.5, dynamics: 0.25, active: true });
+    expect(readMeter(meters, 1)).toEqual({ level: 0.5, dynamics: 0.25, active: true, vibratoPhase: 0.75 });
     expect(readMeter(meters, 0).active).toBe(false);
     expect(peakOf(meters)).toBe(0.75);
   });

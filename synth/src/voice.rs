@@ -34,6 +34,7 @@ pub struct Target {
 pub struct Meter {
     pub level: f32,
     pub dynamics: f32,
+    pub vibrato_phase: f32, // 0 … 1, so the picture swings with the sound
     pub active: bool,
 }
 
@@ -136,7 +137,7 @@ impl Voice {
     }
 
     pub fn meter(&self) -> Meter {
-        Meter { level: self.level, dynamics: self.dynamics, active: self.active }
+        Meter { level: self.level, dynamics: self.dynamics, vibrato_phase: self.vibrato_phase, active: self.active }
     }
 
     pub fn is_active(&self) -> bool {

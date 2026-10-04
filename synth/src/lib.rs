@@ -18,7 +18,7 @@ pub const VOICES: usize = 8;
 pub const VOICE_STRIDE: usize = 6; // gate, note, midi, dynamics, vibrato rate, vibrato depth
 pub const GLOBALS: usize = VOICES * VOICE_STRIDE; // volume, reverb
 pub const CONTROL_LEN: usize = GLOBALS + 2;
-pub const METER_STRIDE: usize = 3; // level, dynamics, active
+pub const METER_STRIDE: usize = 4; // level, dynamics, active, vibrato phase
 pub const METER_LEN: usize = VOICES * METER_STRIDE + 1; // + output peak
 pub const BLOCK: usize = 128;
 
@@ -112,6 +112,7 @@ impl Engine {
             out[0] = m.level * volume;
             out[1] = m.dynamics;
             out[2] = if m.active { 1.0 } else { 0.0 };
+            out[3] = m.vibrato_phase;
         }
         self.meters[VOICES * METER_STRIDE] = peak;
     }
