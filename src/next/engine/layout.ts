@@ -5,7 +5,7 @@
 // half-written – a new note number with the old pitch would be heard for one block.
 
 export const VOICES = 8;
-export const VOICE_STRIDE = 4; // gate, note, midi, dynamics
+export const VOICE_STRIDE = 6; // gate, note, midi, dynamics, vibrato rate, vibrato depth
 export const GLOBALS = VOICES * VOICE_STRIDE; // volume, reverb
 export const CONTROL_LEN = GLOBALS + 2;
 export const METER_STRIDE = 3; // level, dynamics, active
@@ -16,6 +16,8 @@ export interface VoiceTarget {
   readonly note: number;
   readonly midi: number;
   readonly dynamics: number;
+  readonly vibratoRate: number; // Hz
+  readonly vibratoDepth: number; // 0 … 1
 }
 
 export interface VoiceMeter {
@@ -25,7 +27,10 @@ export interface VoiceMeter {
 }
 
 export const writeVoice = (controls: Float32Array, voice: number, target: VoiceTarget): void => {
-  controls.set([target.gate ? 1 : 0, target.note, target.midi, target.dynamics], voice * VOICE_STRIDE);
+  controls.set(
+    [target.gate ? 1 : 0, target.note, target.midi, target.dynamics, target.vibratoRate, target.vibratoDepth],
+    voice * VOICE_STRIDE,
+  );
 };
 
 export const readMeter = (meters: Float32Array, voice: number): VoiceMeter => {

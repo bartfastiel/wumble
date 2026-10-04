@@ -1,6 +1,8 @@
 //! One bowed note: the model's levels turned into partials and noise, shaped by what the finger does.
 //!
-//! The pitch is always exactly the key's: expression lives in loudness and colour, never in intonation.
+//! The pitch is always centred exactly on the key's: nothing drifts or bends. The one movement it makes is vibrato,
+//! as on a real violin – an even swing around that centre, at the rate the finger suggests, with the swell of strength
+//! and brightness that comes with it as the partials pass through the body's resonances.
 
 use crate::model::{Controls, Frame, Model, PARTIALS};
 use crate::noise::{Noise, Shaper, HOP};
@@ -12,6 +14,9 @@ const RELEASE: f32 = 0.16; // seconds, time constant of the bow leaving the stri
 const DYNAMICS_SMOOTHING: f32 = 0.02;
 // The model spans about 10 dB between piano and forte; the instrument exaggerates that on purpose
 pub const EXTRA_RANGE_DB: f32 = 16.0;
+const VIBRATO_CENTS: f32 = 15.0; // swing of the pitch either side of the key at full depth
+const VIBRATO_DYNAMICS: f32 = 0.08; // swing of the dynamics at full depth
+const VIBRATO_SMOOTHING: f32 = 0.05;
 
 /// What the page asks of a voice.
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
@@ -20,6 +25,8 @@ pub struct Target {
     pub note: u32, // a new number starts a new bow stroke
     pub midi: f32,
     pub dynamics: f32,
+    pub vibrato_rate: f32,  // Hz
+    pub vibrato_depth: f32, // 0 … 1
 }
 
 /// What a voice reports back for the picture.
@@ -61,6 +68,9 @@ pub struct Voice {
     active: bool,
     midi: f32,
     dynamics: f32,
+    vibrato_rate: f32,
+    vibrato_depth: f32,
+    vibrato_phase: f32,
     seconds: f32,
     envelope: f32,
     phase: [f32; PARTIALS],
@@ -81,6 +91,9 @@ impl Voice {
             active: false,
             midi: 69.0,
             dynamics: 0.5,
+            vibrato_rate: 0.0,
+            vibrato_depth: 0.0,
+            vibrato_phase: 0.0,
             seconds: 0.0,
             envelope: 0.0,
             phase: [0.0; PARTIALS],
@@ -150,14 +163,21 @@ impl Voice {
         // Legato onto another key: the bow keeps going, the pitch moves at once – phases run on, so nothing clicks
         self.midi = self.target.midi;
         self.dynamics += (self.target.dynamics - self.dynamics) * follow(DYNAMICS_SMOOTHING);
-        let midi = self.midi;
+        self.vibrato_depth += (self.target.vibrato_depth - self.vibrato_depth) * follow(VIBRATO_SMOOTHING);
+        if self.target.vibrato_rate > 0.0 {
+            self.vibrato_rate = self.target.vibrato_rate;
+        }
+        self.vibrato_phase = (self.vibrato_phase + self.vibrato_rate * seconds).fract();
+        let swing = (core::f32::consts::TAU * self.vibrato_phase).sin() * self.vibrato_depth;
+        let dynamics = self.dynamics + swing * VIBRATO_DYNAMICS;
+        let midi = self.midi + swing * VIBRATO_CENTS / 100.0;
         let f0 = 440.0 * ((midi - 69.0) / 12.0).exp2();
         let count = ((HIGHEST_PARTIAL.min(rate / 2.0 - 500.0) / f0) as usize).clamp(1, PARTIALS);
 
         if self.until_frame < n {
-            let controls = Controls { midi, dynamics: self.dynamics, seconds: self.seconds };
+            let controls = Controls { midi, dynamics, seconds: self.seconds };
             model.eval(controls, count, &mut self.frame);
-            let gain = 10f32.powf((self.dynamics - 0.5) * EXTRA_RANGE_DB / 20.0);
+            let gain = 10f32.powf((dynamics - 0.5) * EXTRA_RANGE_DB / 20.0);
             for k in 0..PARTIALS {
                 self.step[k] = (self.frame.partials[k] * gain - self.amp[k]) / HOP as f32;
             }
@@ -199,7 +219,7 @@ impl Voice {
         }
         self.ramp_left -= ramp;
 
-        let gain = 10f32.powf((self.dynamics - 0.5) * EXTRA_RANGE_DB / 20.0);
+        let gain = 10f32.powf((dynamics - 0.5) * EXTRA_RANGE_DB / 20.0);
         self.noise.render(shaper, &self.frame.noise_db, gain, own, envelope);
 
         let mut sum = 0.0f32;

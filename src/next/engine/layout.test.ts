@@ -17,8 +17,8 @@ import {
 describe('control block', () => {
   it('places a voice at its stride', () => {
     const controls = defaultControls();
-    writeVoice(controls, 2, { gate: true, note: 7, midi: 63.5, dynamics: 0.75 });
-    expect([...controls.slice(2 * VOICE_STRIDE, 3 * VOICE_STRIDE)]).toEqual([1, 7, 63.5, 0.75]);
+    writeVoice(controls, 2, { gate: true, note: 7, midi: 63.5, dynamics: 0.75, vibratoRate: 6, vibratoDepth: 0.5 });
+    expect([...controls.slice(2 * VOICE_STRIDE, 3 * VOICE_STRIDE)]).toEqual([1, 7, 63.5, 0.75, 6, 0.5]);
     expect(controls[0]).toBe(0);
   });
 
@@ -45,7 +45,7 @@ describe('seqlock', () => {
   it('hands over a consistent copy', () => {
     const shared = sharedControls(new SharedArrayBuffer(SHARED_CONTROL_BYTES));
     const controls = defaultControls();
-    writeVoice(controls, 0, { gate: true, note: 1, midi: 60, dynamics: 0.5 });
+    writeVoice(controls, 0, { gate: true, note: 1, midi: 60, dynamics: 0.5, vibratoRate: 0, vibratoDepth: 0 });
     publish(shared, controls);
     const into = new Float32Array(CONTROL_LEN);
     expect(snapshot(shared, into)).toBe(true);

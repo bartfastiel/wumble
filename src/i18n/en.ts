@@ -371,7 +371,7 @@ export const en = {
     subtitle: 'Blues in C · right hand',
     press: 'Press harder: more bow',
     slide: 'Slide up and down the key: louder and softer',
-    rock: 'Rock your finger: the tone pulses, the pitch stays',
+    rock: 'Rock your finger back and forth: vibrato – the faster, the faster',
     legato: 'Glide to the next key: legato',
     start: 'Play',
     loading: 'Tuning the violin …',

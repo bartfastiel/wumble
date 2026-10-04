@@ -16,7 +16,7 @@ export interface SceneTouch {
   readonly x: number; // 0 … 1
   readonly y: number; // 0 … 1, 0 at the top
   readonly dynamics: number;
-  readonly tremor: number; // -1 … 1, the swing of a rocking finger
+  readonly vibrato: number; // 0 … 1, its depth
 }
 
 export interface Scene {
@@ -48,7 +48,7 @@ uniform vec4 u_keys[${KEYS_GLSL}];     // left, right, fitness (+10 for the toni
 uniform int u_touchCount;
 uniform float u_halfGap;
 uniform float u_bottom;  // device pixels kept free below the keys, for the status line
-uniform vec4 u_touches[${TOUCHES_GLSL}]; // x, y, dynamics, tremor
+uniform vec4 u_touches[${TOUCHES_GLSL}]; // x, y, dynamics, vibrato depth
 out vec4 colour;
 
 const vec3 NIGHT = vec3(0.043, 0.055, 0.078);
@@ -106,19 +106,19 @@ void main() {
     if (t >= u_touchCount) break;
     vec4 f = u_touches[t];
     float dyn = clamp(f.z, 0.0, 1.2);
-    float tremor = f.w;
+    float vibrato = f.w;
     vec2 at = vec2(f.x * u_res.x, f.y * u_res.y);
     float r = length(px - at);
-    // The pool of light breathes with the swing of a rocking finger
-    float radius = (28.0 + 110.0 * dyn) * s * (1.0 + 0.12 * tremor);
+    // The pool of light breathes with the vibrato
+    float radius = (28.0 + 110.0 * dyn) * s * (1.0 + 0.10 * vibrato * sin(u_time * 36.0));
     // The finger presses into the lacquer: the deeper the pressure, the wider and darker the hollow
     float hollow = exp(-pow(r / radius, 2.0)) * (0.06 + 0.30 * dyn);
     lacquer *= 1.0 - hollow;
     // and light gathers in the hollow
     lacquer += LIGHT * exp(-pow(r / (radius * 0.55), 2.0)) * (0.25 + 0.75 * dyn);
-    // Rings run outwards while the finger rocks – the pulse of the tone made visible
+    // Rings run outwards during vibrato – the pulse of the tone made visible
     float rings = 0.5 + 0.5 * sin(r / (9.0 * s) - u_time * 9.0);
-    lacquer += LIGHT * rings * abs(tremor) * 0.35 * exp(-r / (radius * 1.4));
+    lacquer += LIGHT * rings * vibrato * 0.35 * exp(-r / (radius * 1.4));
     spill += LIGHT * exp(-r / (radius * 0.9)) * (0.10 + 0.25 * dyn);
   }
 
@@ -254,7 +254,7 @@ export class Renderer {
     });
     this.touches.fill(0);
     scene.touches.slice(0, MAX_TOUCHES).forEach((t, i) => {
-      this.touches.set([t.x, t.y, t.dynamics, t.tremor], i * 4);
+      this.touches.set([t.x, t.y, t.dynamics, t.vibrato], i * 4);
     });
     gl.uniform2f(locations.u_res ?? null, width, height);
     // Sizes in the shader are layout pixels of a medium tablet, shrunk on a phone so a finger's light stays near it

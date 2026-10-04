@@ -371,7 +371,7 @@ export const de = {
     subtitle: 'Blues in C · rechte Hand',
     press: 'Fester drücken: mehr Bogendruck',
     slide: 'Auf der Taste hoch- und runterstreichen: lauter und leiser',
-    rock: 'Den Finger wiegen: der Ton pulsiert, die Tonhöhe bleibt',
+    rock: 'Den Finger hin und her wiegen: Vibrato – je schneller, desto schneller',
     legato: 'Zur Nachbartaste gleiten: gebunden',
     start: 'Spielen',
     loading: 'Die Geige wird gestimmt …',

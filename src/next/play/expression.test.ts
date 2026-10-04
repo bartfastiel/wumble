@@ -4,7 +4,6 @@ import { bluesKeys } from './keys';
 
 const keys = bluesKeys();
 const centre = (i: number): number => ((keys[i]?.left ?? 0) + (keys[i]?.right ?? 0)) / 2;
-const widthOf = (i: number): number => (keys[i]?.right ?? 0) - (keys[i]?.left ?? 0);
 const at = (time: number, x: number, y: number, pressure = 0.5): Sample => ({ time, x, y, pressure });
 
 // A device that reports real pressure, as a Pixel 6 Pro does in 1/63 steps
@@ -36,7 +35,7 @@ describe('Finger', () => {
     expect(e.key).toBe(4);
     expect(e.tone).toBe(keys[4]?.tone);
     expect(e.haptic).toBe('start');
-    expect(e.tremor).toBe(0);
+    expect(e.vibrato.depth).toBe(0);
   });
 
   it('without pressure, strikes softly at the top of a key and firmly at the bottom', () => {
@@ -81,22 +80,17 @@ describe('Finger', () => {
     expect(finger.move(at(100, centre(3), 0.8)).dynamics).toBeLessThan(start - 0.25);
   });
 
-  it('turns a rocking finger into a swing of strength, never of pitch, and lets a slow drift pass', () => {
+  it('turns a finger rocking back and forth into vibrato, never into pitch, and keeps the dynamics', () => {
     const finger = new Finger(keys, new PressureSense(), at(0, centre(5), 0.5));
     const still = finger.start(at(0, centre(5), 0.5));
-    const rocked = finger.move(at(8, centre(5) + widthOf(5) * 0.08, 0.5));
-    expect(rocked.tremor).toBeGreaterThan(0.3);
-    expect(rocked.dynamics).toBeGreaterThan(still.dynamics);
-    expect(rocked.tone).toBe(still.tone);
-    let e = rocked;
-    for (let t = 16; t < 3000; t += 8) e = finger.move(at(t, centre(5) + widthOf(5) * 0.08, 0.5));
-    expect(Math.abs(e.tremor)).toBeLessThan(0.01);
-  });
-
-  it('never swings beyond its depth', () => {
-    const finger = new Finger(keys, new PressureSense(), at(0, centre(6), 0.5));
-    finger.start(at(0, centre(6), 0.5));
-    expect(finger.move(at(4, centre(6) - widthOf(6) * 0.4, 0.5)).tremor).toBe(-1);
+    let e = still;
+    for (let t = 4; t <= 600; t += 4) {
+      e = finger.move(at(t, centre(5) + 0.01 * Math.sin((2 * Math.PI * 6 * t) / 1000), 0.5));
+    }
+    expect(e.vibrato.depth).toBeGreaterThan(0.3);
+    expect(e.vibrato.rate).toBeCloseTo(6, 0);
+    expect(e.tone).toBe(still.tone);
+    expect(e.dynamics).toBeCloseTo(still.dynamics);
   });
 
   it('slides legato onto a neighbour, lands on its exact pitch and tells the hand', () => {
@@ -106,7 +100,7 @@ describe('Finger', () => {
     expect(e.key).toBe(3);
     expect(e.tone).toBe(keys[3]?.tone);
     expect(e.haptic).toBe('key');
-    expect(e.tremor).toBe(0);
+    expect(e.vibrato.depth).toBe(0);
   });
 
   it('ticks once per dynamic step, not on every event', () => {

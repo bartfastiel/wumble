@@ -15,7 +15,7 @@ use reverb::Reverb;
 use voice::{Sine, Target, Voice};
 
 pub const VOICES: usize = 8;
-pub const VOICE_STRIDE: usize = 4; // gate, note, midi, dynamics
+pub const VOICE_STRIDE: usize = 6; // gate, note, midi, dynamics, vibrato rate, vibrato depth
 pub const GLOBALS: usize = VOICES * VOICE_STRIDE; // volume, reverb
 pub const CONTROL_LEN: usize = GLOBALS + 2;
 pub const METER_STRIDE: usize = 3; // level, dynamics, active
@@ -74,7 +74,14 @@ impl Engine {
     fn read_controls(&mut self) {
         for (v, voice) in self.voices.iter_mut().enumerate() {
             let c = &self.controls[v * VOICE_STRIDE..(v + 1) * VOICE_STRIDE];
-            voice.set(Target { gate: c[0] > 0.5, note: c[1] as u32, midi: c[2], dynamics: c[3] });
+            voice.set(Target {
+                gate: c[0] > 0.5,
+                note: c[1] as u32,
+                midi: c[2],
+                dynamics: c[3],
+                vibrato_rate: c[4],
+                vibrato_depth: c[5],
+            });
         }
     }
 
@@ -166,7 +173,7 @@ mod tests {
 
     fn play(engine: &mut Engine, voice: usize, note: u32, midi: f32, dynamics: f32, gate: bool) {
         let c = &mut engine.controls[voice * VOICE_STRIDE..(voice + 1) * VOICE_STRIDE];
-        c.copy_from_slice(&[if gate { 1.0 } else { 0.0 }, note as f32, midi, dynamics]);
+        c.copy_from_slice(&[if gate { 1.0 } else { 0.0 }, note as f32, midi, dynamics, 0.0, 0.0]);
     }
 
     fn run(engine: &mut Engine, seconds: f32) -> Vec<f32> {
@@ -241,6 +248,23 @@ mod tests {
             let p = pitch(&out[out.len() - 8192..]);
             assert!(cents(p, 440.0).abs() < 3.0, "step {i}: pitch {p}");
         }
+    }
+
+    #[test]
+    fn vibrato_swings_evenly_around_the_exact_pitch() {
+        let mut engine = Engine::new(RATE);
+        engine.controls[GLOBALS + 1] = 0.0;
+        play(&mut engine, 0, 1, 69.0, 0.6, true);
+        engine.controls[4] = 6.0;
+        engine.controls[5] = 1.0;
+        let out = run(&mut engine, 1.5);
+        // short windows follow the swing; over whole cycles (half a second at 6 Hz) they average to the key's pitch
+        let windows: Vec<f32> = out[out.len() - 24000..].chunks(1600).map(|w| cents(pitch(w), 440.0)).collect();
+        let centre = windows.iter().sum::<f32>() / windows.len() as f32;
+        assert!(centre.abs() < 3.0, "centre {centre} cents");
+        let (lo, hi) = windows.iter().fold((f32::MAX, f32::MIN), |(lo, hi), c| (lo.min(*c), hi.max(*c)));
+        assert!(hi - lo > 8.0, "the pitch did not swing: {lo} … {hi}");
+        assert!(lo > -22.0 && hi < 22.0, "swung too far: {lo} … {hi}");
     }
 
     #[test]

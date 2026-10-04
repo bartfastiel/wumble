@@ -75,6 +75,8 @@ const send = (state: Held, gate: boolean): void => {
     note: state.note,
     midi: e.tone,
     dynamics: e.dynamics,
+    vibratoRate: e.vibrato.rate,
+    vibratoDepth: e.vibrato.depth,
   });
   voiceKey[state.voice] = e.key;
   engine.commit();
@@ -155,7 +157,7 @@ const frame = (now: number): void => {
     x: h.x,
     y: h.y,
     dynamics: Math.max(0, h.expression.dynamics),
-    tremor: h.expression.tremor,
+    vibrato: h.expression.vibrato.depth,
   }));
   renderer.draw(
     {
